@@ -1,122 +1,230 @@
 package PaooGame.GameWindow;
 
+import PaooGame.*;
+import PaooGame.Graphics.Messages;
+import PaooGame.Tiles.Tile;
+
 import javax.swing.*;
+import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
-/*! \class GameWindow
-    \brief Implementeaza notiunea de fereastra a jocului.
-
-    Membrul wndFrame este un obiect de tip JFrame care va avea utilitatea unei
-    ferestre grafice si totodata si cea a unui container (toate elementele
-    grafice vor fi continute de fereastra).
- */
 public class GameWindow
 {
     private JFrame  wndFrame;       /*!< fereastra principala a jocului*/
+    private Player  player;
     private String  wndTitle;       /*!< titlul ferestrei*/
     private int     wndWidth;       /*!< latimea ferestrei in pixeli*/
     private int     wndHeight;      /*!< inaltimea ferestrei in pixeli*/
-
     private Canvas  canvas;         /*!< "panza/tablou" in care se poate desena*/
+    private int     playerX;
+    private int     playerY;
+    private int     mouseX;
+    private int     mouseY;
+    private List<FauxWindow> windows = new ArrayList<>();
+    private CliWindow cliMenu;
+    private Bar     statusBar;
+    private Level   level;
+    private boolean stop;
+    private KeyListener menuControl;
+    private KeyListener playerControl;
+    private MouseMotionListener mouseControl;
 
-    /*! \fn GameWindow(String title, int width, int height)
-            \brief Constructorul cu parametri al clasei GameWindow
 
-            Retine proprietatile ferestrei proprietatile (titlu, latime, inaltime)
-            in variabilele membre deoarece vor fi necesare pe parcursul jocului.
-            Crearea obiectului va trebui urmata de crearea ferestrei propriuzise
-            prin apelul metodei BuildGameWindow()
-
-            \param title Titlul ferestrei.
-            \param width Latimea ferestrei in pixeli.
-            \param height Inaltimea ferestrei in pixeli.
-         */
     public GameWindow(String title, int width, int height){
         wndTitle    = title;    /*!< Retine titlul ferestrei.*/
         wndWidth    = width;    /*!< Retine latimea ferestrei.*/
         wndHeight   = height;   /*!< Retine inaltimea ferestrei.*/
         wndFrame    = null;     /*!< Fereastra nu este construita.*/
+        player      = null;
+        level       = null;
+        stop        = false;
+        cliMenu     = null;
+        statusBar   = null;
     }
 
-    /*! \fn private void BuildGameWindow()
-        \brief Construieste/creaza fereastra si seteaza toate proprietatile
-        necesare: dimensiuni, pozitionare in centrul ecranului, operatia de
-        inchidere, invalideaza redimensionarea ferestrei, afiseaza fereastra.
-
-     */
     public void BuildGameWindow()
     {
-            /// Daca fereastra a mai fost construita intr-un apel anterior
-            /// se renunta la apel
         if(wndFrame != null)
         {
             return;
         }
-            /// Aloca memorie pentru obiectul de tip fereastra si seteaza denumirea
-            /// ce apare in bara de titlu
-        wndFrame = new JFrame(wndTitle);
-            /// Seteaza dimensiunile ferestrei in pixeli
-        wndFrame.setSize(wndWidth, wndHeight);
-            /// Operatia de inchidere (fereastra sa poata fi inchisa atunci cand
-            /// este apasat butonul x din dreapta sus al ferestrei). Totodata acest
-            /// lucru garanteaza ca nu doar fereastra va fi inchisa ci intregul
-            /// program
-        wndFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            /// Avand in vedere ca dimensiunea ferestrei poate fi modificata
-            /// si corespunzator continutul actualizat (aici ma refer la dalele
-            /// randate) va recomand sa constrangeti deocamdata jucatorul
-            /// sa se joace in fereastra stabilitata de voi. Puteti reveni asupra
-            /// urmatorului apel ulterior.
-        wndFrame.setResizable(false);
-            /// Recomand ca fereastra sa apara in centrul ecranului. Pentru orice
-            /// alte pozitie se va apela "wndFrame.setLocation(x, y)" etc.
-        wndFrame.setLocationRelativeTo(null);
-            /// Implicit o fereastra cand este creata nu este vizibila motiv pentru
-            /// care trebuie setata aceasta proprietate
-        wndFrame.setVisible(true);
 
-            /// Creaza obiectul de tip canvas (panza) pe care se poate desena.
+        wndFrame = new JFrame(wndTitle);
+        wndFrame.setSize(wndWidth, wndHeight);
+        wndFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        wndFrame.setResizable(false);
+        wndFrame.setLocationRelativeTo(null);
+        wndFrame.setVisible(true);
+        wndFrame.setFocusable(true);
+
         canvas = new Canvas();
-            /// In aceeasi maniera trebuiesc setate proprietatile pentru acest obiect
-            /// canvas (panza): dimensiuni preferabile, minime, maxime etc.
-            /// Urmotorul apel de functie seteaza dimensiunea "preferata"/implicita
-            /// a obiectului de tip canvas.
-            /// Functia primeste ca parametru un obiect de tip Dimension ca incapsuleaza
-            /// doua proprietati: latime si inaltime. Cum acest obiect nu exista
-            /// a fost creat unul si dat ca parametru.
         canvas.setPreferredSize(new Dimension(wndWidth, wndHeight));
-            /// Avand in vedere ca elementele unei ferestre pot fi scalate atunci cand
-            /// fereastra este redimensionata
         canvas.setMaximumSize(new Dimension(wndWidth, wndHeight));
         canvas.setMinimumSize(new Dimension(wndWidth, wndHeight));
-            /// Avand in vedere ca obiectul de tip canvas, proaspat creat, nu este automat
-            /// adaugat in fereastra trebuie apelata metoda add a obiectul wndFrame
+
+        menuControl = new MenuControl();
+        mouseControl = new MouseControls();
+        playerControl = new PlayerControl();
+
+        canvas.addKeyListener(menuControl);
+//        canvas.addMouseListener(new MouseControls());
+//        canvas.addMouseMotionListener(new MouseControls());
+
+//        windows.add(new CliWindow(0,0, wndWidth, wndHeight));
+//        player = new Player(0,0);
+
+        cliMenu = new CliWindow(0,0, wndWidth, wndHeight);
+        cliMenu.addText(Messages.title);
+        windows.add(cliMenu);
+
+        statusBar = new Bar(50, wndHeight - 150, 100, 50);
+
         wndFrame.add(canvas);
-            /// Urmatorul apel de functie are ca scop eventuala redimensionare a ferestrei
-            /// ca tot ce contine sa poate fi afisat complet
         wndFrame.pack();
     }
 
-    /*! \fn public int GetWndWidth()
-        \brief Returneaza latimea ferestrei.
-     */
     public int GetWndWidth()
     {
         return wndWidth;
     }
-
-    /*! \fn public int GetWndWidth()
-        \brief Returneaza inaltimea ferestrei.
-     */
     public int GetWndHeight()
     {
         return wndHeight;
     }
-
-    /*! \fn public int GetCanvas()
-        \brief Returneaza referinta catre canvas-ul din fereastra pe care se poate desena.
-     */
     public Canvas GetCanvas() {
         return canvas;
+    }
+    public int GetPlayerX() { return playerX; }
+    public int GetPlayerY() { return playerY; }
+    public int GetMouseX() { return mouseX; }
+    public int GetMouseY() { return mouseY; }
+    public Player GetPlayer() { return player; }
+    public List<FauxWindow> GetWindows() { return windows; }
+    public Bar GetBar() { return statusBar; }
+    public Container GetContent() { return wndFrame.getContentPane(); }
+    public boolean GetStop() { return stop; }
+
+    public void Stop() {
+        wndFrame.dispose();
+    }
+    public void StartLevel(int levelNumber) {
+        if(levelNumber == 1) {
+            canvas.removeKeyListener(menuControl);
+
+            windows.remove(cliMenu);
+            windows.add(new FauxWindow(100, 500, 800, 500));
+            windows.add(new FauxWindow(1000, 200, 800, 500));
+            canvas.addMouseMotionListener(mouseControl);
+            statusBar.SetActive(true);
+
+            player = new Player(300, 910);
+            canvas.addKeyListener(playerControl);
+        }
+    }
+
+    public void DisplayCLIMenu() {
+        if(!windows.contains(cliMenu)) {
+            cliMenu.setTransparent(true);
+            windows.add(cliMenu);
+
+            canvas.removeKeyListener(playerControl);
+            canvas.removeMouseMotionListener(mouseControl);
+            canvas.addKeyListener(menuControl);
+        }
+    }
+
+    public void HideCLIMenu() {
+        if(windows.size() != 1) {
+            cliMenu.setTransparent(false);
+            canvas.removeKeyListener(menuControl);
+            windows.remove(cliMenu);
+            canvas.addMouseMotionListener(mouseControl);
+            canvas.addKeyListener(playerControl);
+        }
+    }
+
+
+    public class PlayerControl extends KeyAdapter {
+
+        @Override
+        public void keyPressed(KeyEvent event) {
+            int keyCode = event.getKeyCode();
+            if (keyCode == KeyEvent.VK_LEFT) {
+                if(player.getX() >= 0)
+                    player.subX();
+            }
+            if (keyCode == KeyEvent.VK_RIGHT) {
+                if(player.getX() <= (wndWidth - Tile.TILE_WIDTH))
+                    player.addX();
+            }
+            if (keyCode == KeyEvent.VK_UP) {
+                if(player.getY() >= 0)
+                    player.subY();
+            }
+            if (keyCode == KeyEvent.VK_DOWN) {
+                if(player.getY() <= (wndHeight - Tile.TILE_HEIGHT))
+                    player.addY();
+            }
+            if (keyCode == KeyEvent.VK_ESCAPE) {
+                DisplayCLIMenu();
+            }
+        }
+    }
+    public class MouseControls extends MouseInputAdapter {
+        public void mouseMoved(MouseEvent e) {
+            mouseX = e.getX();
+            mouseY = e.getY();
+        }
+    }
+    public class MenuControl extends KeyAdapter {
+
+        @Override
+        public void keyPressed(KeyEvent event) {
+            char key = event.getKeyChar();
+            int keyCode = event.getKeyCode();
+            if(keyCode == KeyEvent.VK_BACK_SPACE && !Objects.equals(cliMenu.getUserInput(), "")) {
+                if(!Objects.equals(cliMenu.getUserInput(), ">"))
+                    cliMenu.setUserInput(cliMenu.getUserInput().substring(0,cliMenu.getUserInput().length() - 1));
+            }
+            else if(keyCode == KeyEvent.VK_ENTER) {
+                String prompt = cliMenu.getUserInput();
+                String[] args = prompt.split(" ");
+                cliMenu.addHistory();
+                switch (args[0]) {
+                    case "exit":
+                        stop = true;
+                        break;
+                    case "clear":
+                        cliMenu.clearHistory();
+                        break;
+                    case "play":
+                        if(args.length > 1)
+                            try {
+                                StartLevel(Integer.parseInt(args[1]));
+                            }
+                            catch(NumberFormatException ex) {
+                                System.out.println("whoops");
+                            }
+                        break;
+                    case "help":
+                        cliMenu.addText(Messages.help);
+                        break;
+                    case "title":
+                        cliMenu.addText(Messages.title);
+                        break;
+                }
+            }
+            else if (keyCode == KeyEvent.VK_ESCAPE) {
+                HideCLIMenu();
+            }
+            else if(Character.isLetter(key) || Character.isDigit(key) || key == ' '){
+                cliMenu.setUserInput(cliMenu.getUserInput() + key);
+                //System.out.println(cliMenu.getUserInput());
+            }
+        }
     }
 }
