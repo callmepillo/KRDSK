@@ -10,5 +10,6 @@ public class Main {
         Game paooGame = new Game("PaooGame", screenDimension.width, screenDimension.height);
         paooGame.StartGame();
         //Linia 1
+        //linia 2/sebi
     }
 }
