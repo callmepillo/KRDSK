@@ -46,7 +46,7 @@ public class GameWindow
         statusBar   = null;
     }
 
-    public void BuildGameWindow()
+    public void BuildGameWindow(InputController ctrl)
     {
         if(wndFrame != null)
         {
@@ -66,9 +66,9 @@ public class GameWindow
         canvas.setMaximumSize(new Dimension(wndWidth, wndHeight));
         canvas.setMinimumSize(new Dimension(wndWidth, wndHeight));
 
-        menuControl = new MenuControl();
-        mouseControl = new MouseControls();
-        playerControl = new PlayerControl();
+        menuControl = ctrl.kControl;
+        mouseControl = ctrl.mControl;
+        playerControl = ctrl.pControl;
 
         canvas.addKeyListener(menuControl);
 //        canvas.addMouseListener(new MouseControls());
@@ -107,6 +107,13 @@ public class GameWindow
     public Bar GetBar() { return statusBar; }
     public Container GetContent() { return wndFrame.getContentPane(); }
     public boolean GetStop() { return stop; }
+    public CliWindow GetCliWindow() { return cliMenu; }
+
+    public void SetMouse(int x, int y) {
+        mouseX = x;
+        mouseY = y;
+    }
+    public void SetStop(boolean state) { stop = state; }
 
     public void Stop() {
         wndFrame.dispose();
@@ -144,87 +151,6 @@ public class GameWindow
             windows.remove(cliMenu);
             canvas.addMouseMotionListener(mouseControl);
             canvas.addKeyListener(playerControl);
-        }
-    }
-
-
-    public class PlayerControl extends KeyAdapter {
-
-        @Override
-        public void keyPressed(KeyEvent event) {
-            int keyCode = event.getKeyCode();
-            if (keyCode == KeyEvent.VK_LEFT) {
-                if(player.getX() >= 0)
-                    player.subX();
-            }
-            if (keyCode == KeyEvent.VK_RIGHT) {
-                if(player.getX() <= (wndWidth - Tile.TILE_WIDTH))
-                    player.addX();
-            }
-            if (keyCode == KeyEvent.VK_UP) {
-                if(player.getY() >= 0)
-                    player.subY();
-            }
-            if (keyCode == KeyEvent.VK_DOWN) {
-                if(player.getY() <= (wndHeight - Tile.TILE_HEIGHT))
-                    player.addY();
-            }
-            if (keyCode == KeyEvent.VK_ESCAPE) {
-                DisplayCLIMenu();
-            }
-        }
-    }
-    public class MouseControls extends MouseInputAdapter {
-        public void mouseMoved(MouseEvent e) {
-            mouseX = e.getX();
-            mouseY = e.getY();
-        }
-    }
-    public class MenuControl extends KeyAdapter {
-
-        @Override
-        public void keyPressed(KeyEvent event) {
-            char key = event.getKeyChar();
-            int keyCode = event.getKeyCode();
-            if(keyCode == KeyEvent.VK_BACK_SPACE && !Objects.equals(cliMenu.getUserInput(), "")) {
-                if(!Objects.equals(cliMenu.getUserInput(), ">"))
-                    cliMenu.setUserInput(cliMenu.getUserInput().substring(0,cliMenu.getUserInput().length() - 1));
-            }
-            else if(keyCode == KeyEvent.VK_ENTER) {
-                String prompt = cliMenu.getUserInput();
-                String[] args = prompt.split(" ");
-                cliMenu.addHistory();
-                switch (args[0]) {
-                    case "exit":
-                        stop = true;
-                        break;
-                    case "clear":
-                        cliMenu.clearHistory();
-                        break;
-                    case "play":
-                        if(args.length > 1)
-                            try {
-                                StartLevel(Integer.parseInt(args[1]));
-                            }
-                            catch(NumberFormatException ex) {
-                                System.out.println("whoops");
-                            }
-                        break;
-                    case "help":
-                        cliMenu.addText(Messages.help);
-                        break;
-                    case "title":
-                        cliMenu.addText(Messages.title);
-                        break;
-                }
-            }
-            else if (keyCode == KeyEvent.VK_ESCAPE) {
-                HideCLIMenu();
-            }
-            else if(Character.isLetter(key) || Character.isDigit(key) || key == ' '){
-                cliMenu.setUserInput(cliMenu.getUserInput() + key);
-                //System.out.println(cliMenu.getUserInput());
-            }
         }
     }
 }
