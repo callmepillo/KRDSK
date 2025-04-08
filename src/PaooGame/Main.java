@@ -9,5 +9,7 @@ public class Main {
         System.out.println(screenDimension.width + " " + screenDimension.height);
         Game paooGame = new Game("PaooGame", screenDimension.width, screenDimension.height);
         paooGame.StartGame();
+
+        //linia 2/sebi
     }
 }
