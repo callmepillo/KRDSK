@@ -1,23 +1,36 @@
 package PaooGame;
 
+//the game window which we want to control
 import PaooGame.GameWindow.GameWindow;
+
+//for constants regarding cli messages
 import PaooGame.Graphics.Messages;
+
+//for TILE_HEIGHT and TILE_WIDTH constants
 import PaooGame.Tiles.Tile;
 
+//we use the MouseInputAdapter from Swing and MouseEvent from AWT to handle the mouse
 import javax.swing.event.MouseInputAdapter;
+import java.awt.event.MouseEvent;
+
+//we use the KeyAdapter/KeyEvent from AWT
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
+
+//using Objects.equals for string comparison for null safety and good practice
 import java.util.Objects;
 
 public class InputController {
     private GameWindow Win;
-    private int[][] distortX;
-    private int[][] distortY;
+    private int[][] distortX; //we use the disotrsion maps in order to correctly
+    private int[][] distortY; //handle mouse events
     public PlayerControl pControl;
     public MouseControls mControl;
     public MenuControl   kControl;
 
+    /*this implementation makes an InputController specialized (it only modifies a certain
+    GameWindow, not all of them; if we would have multiple GameWindows we would need multiple
+    InputControllers */
     public InputController(GameWindow Window, int[][] distortX, int[][] distortY) {
         this.Win = Window;
         this.distortX = distortX;
@@ -27,8 +40,8 @@ public class InputController {
         kControl = new MenuControl();
     }
 
+    //player control (with arrow keys) and primitive boundry check
     public class PlayerControl extends KeyAdapter {
-
         @Override
         public void keyPressed(KeyEvent event) {
             int keyCode = event.getKeyCode();
@@ -54,26 +67,40 @@ public class InputController {
         }
     }
 
+    //mouse coordinate handler
     public class MouseControls extends MouseInputAdapter {
         public void mouseMoved(MouseEvent e) {
             Win.SetMouse(distortX[e.getY()][e.getX()], distortY[e.getY()][e.getX()]);
+            /*We see that we are giving the distorted coordinates as arguments to the
+            * SetMouse function in order to correctly the map the real screen coordinates
+            * to the distored screen ones. This is necessary because when we are drawing
+            * objects to the BufferedImage in Game.java, we use the normal dimensions, so
+            * an objects pixels correspond to the real ones, but after that we distort the
+            * whole image, so the objects pixels wont corespond to the real X,Y space. So,
+            * if we dont pass the distortX and distortY, we have objects in a distorted space
+            * and a mouse in a real space.*/
         }
     }
 
+    //keyboard input handler for the CliWindow (
     public class MenuControl extends KeyAdapter {
-
         @Override
         public void keyPressed(KeyEvent event) {
             char key = event.getKeyChar();
             int keyCode = event.getKeyCode();
+
+            //we are first checking the backspace character, that should delete a character (only it there are any to delete)
             if(keyCode == KeyEvent.VK_BACK_SPACE && !Objects.equals(Win.GetCliWindow().getUserInput(), "")) {
                 if(!Objects.equals(Win.GetCliWindow().getUserInput(), ">"))
                     Win.GetCliWindow().setUserInput(Win.GetCliWindow().getUserInput().substring(0,Win.GetCliWindow().getUserInput().length() - 1));
             }
+            //the enter key works as an 'execute command'
             else if(keyCode == KeyEvent.VK_ENTER) {
                 String prompt = Win.GetCliWindow().getUserInput();
                 String[] args = prompt.split(" ");
-                Win.GetCliWindow().addHistory();
+                Win.GetCliWindow().addHistory(); //we are adding the command to the history so we can display it like a terminal would
+
+                //after we split the command, we are using the first argument to check the requested operation
                 switch (args[0]) {
                     case "exit":
                         Win.SetStop(true);
@@ -98,12 +125,13 @@ public class InputController {
                         break;
                 }
             }
+            //in order to use the same cliWindow for the pause menu -> WIP
             else if (keyCode == KeyEvent.VK_ESCAPE) {
                 Win.HideCLIMenu();
             }
+            //add the key to the command
             else if(Character.isLetter(key) || Character.isDigit(key) || key == ' '){
                 Win.GetCliWindow().setUserInput(Win.GetCliWindow().getUserInput() + key);
-                //System.out.println(cliMenu.getUserInput());
             }
         }
     }
