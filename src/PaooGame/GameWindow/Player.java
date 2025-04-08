@@ -1,7 +1,6 @@
-package PaooGame;
+package PaooGame.GameWindow;
 
 import PaooGame.Graphics.Assets;
-import PaooGame.Graphics.Colors;
 import PaooGame.Tiles.Tile;
 
 import java.awt.*;

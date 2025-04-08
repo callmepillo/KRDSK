@@ -1,4 +1,4 @@
-package PaooGame;
+package PaooGame.GameWindow;
 
 import PaooGame.Graphics.Colors;
 

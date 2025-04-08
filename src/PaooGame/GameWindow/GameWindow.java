@@ -2,15 +2,12 @@ package PaooGame.GameWindow;
 
 import PaooGame.*;
 import PaooGame.Graphics.Messages;
-import PaooGame.Tiles.Tile;
 
 import javax.swing.*;
-import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class GameWindow
 {
