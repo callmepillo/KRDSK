@@ -18,6 +18,7 @@ import java.util.Random;
 
 public class Game implements Runnable {
     private GameWindow      wnd;        /*!< Fereastra in care se va desena tabla jocului*/
+    private InputController ctr;
     private boolean         runState;   /*!< Flag ce starea firului de executie.*/
     private boolean         pausedState;
     private Thread          gameThread; /*!< Referinta catre thread-ul de update si draw al ferestrei*/
@@ -34,9 +35,10 @@ public class Game implements Runnable {
 
     private void InitGame() {
             /// Este construita fereastra grafica.
-        wnd.BuildGameWindow();
         distortionMapX = precomputeDistortionMapX(wnd.GetWndWidth(), wnd.GetWndHeight(), 0.1);
         distortionMapY = precomputeDistortionMapY(wnd.GetWndWidth(), wnd.GetWndHeight(), 0.1);
+        ctr = new InputController(wnd, distortionMapX, distortionMapY);
+        wnd.BuildGameWindow(ctr);
         /// Se incarca toate elementele grafice (dale)
         Assets.Init();
     }
