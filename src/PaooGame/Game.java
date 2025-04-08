@@ -143,6 +143,8 @@ public class Game implements Runnable {
         }
         Graphics2D imgGraphics = frameBuffer.createGraphics();
 
+        //currently, the current font is correct only for linux -> (add a OS checker) OR (find a more universal monospace font)
+        //linux -> Adwaita Mono, windows -> Consolas
         imgGraphics.setFont(new Font("Adwaita Mono", Font.BOLD, 30));
         imgGraphics.setStroke(new java.awt.BasicStroke(10));
         imgGraphics.setColor(Colors.background);
