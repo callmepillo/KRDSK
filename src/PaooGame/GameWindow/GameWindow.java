@@ -2,6 +2,9 @@ package PaooGame.GameWindow;
 
 import PaooGame.*;
 import PaooGame.Graphics.Messages;
+import PaooGame.Levels.Level;
+import PaooGame.Levels.TestLevel;
+import PaooGame.Tiles.Tile;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,7 +27,7 @@ public class GameWindow
     private List<FauxWindow> windows = new ArrayList<>();
     private CliWindow cliMenu;
     private Bar     statusBar;
-    private Level   level;
+    private Level level;
     private boolean stop;
     private KeyListener menuControl;
     private KeyListener playerControl;
@@ -120,8 +123,9 @@ public class GameWindow
             canvas.removeKeyListener(menuControl);
 
             windows.remove(cliMenu);
-            windows.add(new FauxWindow(100, 500, 800, 500));
-            windows.add(new FauxWindow(1000, 200, 800, 500));
+            //Recomended size should be a multiple of Tile.TILE_WIDTH and Tile.TILE_HEIGHT
+            windows.add(new FauxWindow(100, 500, 8*Tile.TILE_WIDTH, 6*Tile.TILE_HEIGHT, Level.testLevel, 0));
+            windows.add(new FauxWindow(1000, 200, 8*Tile.TILE_WIDTH, 6*Tile.TILE_HEIGHT, Level.testLevel, 1));
             canvas.addMouseMotionListener(mouseControl);
             statusBar.SetActive(true);
 

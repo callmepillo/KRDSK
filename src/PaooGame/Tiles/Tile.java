@@ -13,15 +13,16 @@ public class Tile
 
         /// De remarcat ca urmatoarele dale sunt statice si publice. Acest lucru imi permite sa le am incarcate
         /// o singura data in memorie
-    public static Tile grassTile        = new GrassTile(0);     /*!< Dala de tip iarba*/
-    public static Tile mountainTile     = new MountainTile(1);  /*!< Dala de tip munte/piatra*/
+    //public static Tile grassTile        = new GrassTile(0);     /*!< Dala de tip iarba*/
+    public static Tile mountainTile     = new MountainTile(7);  /*!< Dala de tip munte/piatra*/
     public static Tile waterTile        = new WaterTile(2);     /*!< Dala de tip apa*/
     public static Tile treeTile         = new TreeTile(3);      /*!< Dala de tip copac*/
     public static Tile soilTile         = new SoilTile(4);      /*!< Dala de tip sol/pamant*/
     public static Tile plantTile        = new PlantTile(5);
+    public static Tile floorTile        = new FloorTile(1);
 
-    public static final int TILE_WIDTH  = 100; //48                      /*!< Latimea unei dale.*/
-    public static final int TILE_HEIGHT = 100; //48;                       /*!< Inaltimea unei dale.*/
+    public static final int TILE_WIDTH  = 70; //48                      /*!< Latimea unei dale.*/
+    public static final int TILE_HEIGHT = 70; //48;                       /*!< Inaltimea unei dale.*/
 
     protected BufferedImage img;                                    /*!< Imaginea aferenta tipului de dala.*/
     protected final int id;                                         /*!< Id-ul unic aferent tipului de dala.*/
@@ -60,6 +61,13 @@ public class Tile
             /// Desenare dala
         g.drawImage(img, x, y, TILE_WIDTH, TILE_HEIGHT, null);
     }
+
+    public void Draw(Graphics g, int x, int y, int width, int height)
+    {
+        /// Desenare dala
+        g.drawImage(img, x, y, width, height, null);
+    }
+
 
     /*! \fn public boolean IsSolid()
         \brief Returneaza proprietatea de dala solida (supusa coliziunilor) sau nu.

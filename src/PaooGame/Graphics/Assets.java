@@ -25,6 +25,7 @@ public class Assets
     public static BufferedImage rockRight;
     public static BufferedImage tree;
     public static BufferedImage plant;
+    public static BufferedImage floor;
 
     /*! \fn public static void Init()
         \brief Functia initializaza referintele catre elementele grafice utilizate.
@@ -53,5 +54,6 @@ public class Assets
         rockLeft = sheet.crop(0, 3);
         rockRight = sheet.crop(1, 3);
         plant = sheet.crop(9,3);
+        floor = sheet.crop(1, 4);
     }
 }
