@@ -11,6 +11,7 @@ import PaooGame.Tiles.Tile;
 
 //we use the MouseInputAdapter from Swing and MouseEvent from AWT to handle the mouse
 import javax.swing.event.MouseInputAdapter;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 
 //we use the KeyAdapter/KeyEvent from AWT
@@ -62,7 +63,18 @@ public class InputController {
                     Win.GetPlayer().addY();
             }
             if (keyCode == KeyEvent.VK_ESCAPE) {
-                Win.DisplayCLIMenu();
+                Win.DisplayPauseMenu();
+            }
+            if (Character.isDigit(event.getKeyChar())) {
+                int number = Integer.parseInt(Character.toString(event.getKeyChar()));
+                if (Win.GetBar().isActive(number)) {
+                    Win.removeRoom(number);
+                    Win.GetBar().setActive(number, false);
+                }
+                else {
+                    Win.addRoom(number);
+                    Win.GetBar().setActive(number, true);
+                }
             }
         }
     }
@@ -103,7 +115,10 @@ public class InputController {
                 //after we split the command, we are using the first argument to check the requested operation
                 switch (args[0]) {
                     case "exit":
-                        Win.SetStop(true);
+                        if(Win.IsInLevel())
+                            Win.DisplayStartMenu(); //save/load?
+                        else
+                            Win.SetStop(true);
                         break;
                     case "clear":
                         Win.GetCliWindow().clearHistory();
@@ -123,11 +138,20 @@ public class InputController {
                     case "title":
                         Win.GetCliWindow().addText(Messages.title);
                         break;
+                    case "paused":
+                        Win.GetCliWindow().addText(Messages.paused);
+                        break;
+                    case "numpie":
+                        Win.GetCliWindow().addText("Matematici Discrete - Sebi 2024");
+                        break;
+                    default:
+                        Win.GetCliWindow().addText("Command \"" + prompt + "\" not found");
+                        break;
                 }
             }
             //in order to use the same cliWindow for the pause menu -> WIP
             else if (keyCode == KeyEvent.VK_ESCAPE) {
-                Win.HideCLIMenu();
+                Win.HidePauseMenu();
             }
             //add the key to the command
             else if(Character.isLetter(key) || Character.isDigit(key) || key == ' '){

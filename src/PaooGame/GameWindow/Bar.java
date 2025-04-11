@@ -47,11 +47,11 @@ public class Bar {
         active = act;
     }
 
-    public Bar(int pX, int pY, int size, int space) {
+    public Bar(int pX, int pY, int size, int space, int noCells) {
         cells = new ArrayList<Cell>();
         posX = pX;
         posY = pY;
-        for(int i = 0; i < 10; ++i) {
+        for(int i = 0; i < noCells; ++i) {
             cells.add(new Cell(i, size, posX + i*(size+space)));
         }
         active = false;
@@ -63,5 +63,13 @@ public class Bar {
                 c.Draw(g);
             }
         }
+    }
+
+    public boolean isActive(int number) {
+        return cells.get(number).active;
+    }
+
+    public void setActive(int cell, boolean state) {
+        cells.get(cell).active = state;
     }
 }

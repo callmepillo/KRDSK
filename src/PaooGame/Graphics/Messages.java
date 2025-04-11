@@ -21,4 +21,12 @@ public class Messages {
                                 "load <name> -- load the saved game with the given name (WIP)\n" +
                                 "stats -- see the current players statistics (WIP)\n" +
                                 "exit -- leaves the game\n";
+    public static String paused =   "ooooooooo.         .o.       ooooo     ooo  .oooooo..o oooooooooooo oooooooooo.   \n" +
+                                    "`888   `Y88.      .888.      `888'     `8' d8P'    `Y8 `888'     `8 `888'   `Y8b  \n" +
+                                    " 888   .d88'     .8\"888.      888       8  Y88bo.       888          888      888 \n" +
+                                    " 888ooo88P'     .8' `888.     888       8   `\"Y8888o.   888oooo8     888      888 \n" +
+                                    " 888           .88ooo8888.    888       8       `\"Y88b  888    \"     888      888 \n" +
+                                    " 888          .8'     `888.   `88.    .8'  oo     .d8P  888       o  888     d88' \n" +
+                                    "o888o        o88o     o8888o    `YbodP'    8\"\"88888P'  o888ooooood8 o888bood8P'   \n" +
+                                    "---------------------------------------TUI------------------------------------------\n";
 }
