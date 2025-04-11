@@ -29,6 +29,7 @@ public class GameWindow
     private Bar     statusBar;
     private Level level;
     private boolean stop;
+    private boolean inLevel;
     private KeyListener menuControl;
     private KeyListener playerControl;
     private MouseMotionListener mouseControl;
@@ -42,6 +43,7 @@ public class GameWindow
         player      = null;
         level       = null;
         stop        = false;
+        inLevel = false;
         cliMenu     = null;
         statusBar   = null;
     }
@@ -70,7 +72,7 @@ public class GameWindow
         mouseControl = ctrl.mControl;
         playerControl = ctrl.pControl;
 
-        canvas.addKeyListener(menuControl);
+//        canvas.addKeyListener(menuControl);
 //        canvas.addMouseListener(new MouseControls());
 //        canvas.addMouseMotionListener(new MouseControls());
 
@@ -78,10 +80,8 @@ public class GameWindow
 //        player = new Player(0,0);
 
         cliMenu = new CliWindow(0,0, wndWidth, wndHeight);
-        cliMenu.addText(Messages.title);
-        windows.add(cliMenu);
 
-        statusBar = new Bar(50, wndHeight - 150, 100, 50);
+        DisplayStartMenu();
 
         wndFrame.add(canvas);
         wndFrame.pack();
@@ -108,6 +108,7 @@ public class GameWindow
     public Container GetContent() { return wndFrame.getContentPane(); }
     public boolean GetStop() { return stop; }
     public CliWindow GetCliWindow() { return cliMenu; }
+    public boolean IsInLevel() { return inLevel; }
 
     public void SetMouse(int x, int y) {
         mouseX = x;
@@ -119,13 +120,16 @@ public class GameWindow
         wndFrame.dispose();
     }
     public void StartLevel(int levelNumber) {
+        inLevel = true;
         if(levelNumber == 1) {
-            canvas.removeKeyListener(menuControl);
+            removeAllListeners();
 
             windows.remove(cliMenu);
+            level = Level.testLevel;
+            statusBar = new Bar(50, wndHeight - 150, 100, 50, level.GetNumberOfRooms());
             //Recomended size should be a multiple of Tile.TILE_WIDTH and Tile.TILE_HEIGHT
-            windows.add(new FauxWindow(100, 500, 8*Tile.TILE_WIDTH, 6*Tile.TILE_HEIGHT, Level.testLevel, 0));
-            windows.add(new FauxWindow(1000, 200, 8*Tile.TILE_WIDTH, 6*Tile.TILE_HEIGHT, Level.testLevel, 1));
+//            windows.add(new FauxWindow(100, 500, 8*Tile.TILE_WIDTH, 6*Tile.TILE_HEIGHT, level, 0));
+//            windows.add(new FauxWindow(1000, 200, 8*Tile.TILE_WIDTH, 6*Tile.TILE_HEIGHT, level, 1));
             canvas.addMouseMotionListener(mouseControl);
             statusBar.SetActive(true);
 
@@ -134,24 +138,52 @@ public class GameWindow
         }
     }
 
-    public void DisplayCLIMenu() {
-        if(!windows.contains(cliMenu)) {
+    public void DisplayPauseMenu() {
+        if(!windows.contains(cliMenu) && inLevel) {
             cliMenu.setTransparent(true);
             windows.add(cliMenu);
+            cliMenu.clearHistory();
+            cliMenu.addText(Messages.paused);
 
-            canvas.removeKeyListener(playerControl);
-            canvas.removeMouseMotionListener(mouseControl);
+            removeAllListeners();
             canvas.addKeyListener(menuControl);
         }
     }
 
-    public void HideCLIMenu() {
-        if(windows.size() != 1) {
+    public void DisplayStartMenu() {
+        inLevel = false;
+        windows.clear();
+        cliMenu.setTransparent(false);
+        cliMenu.clearHistory();
+        cliMenu.addText(Messages.title);
+        windows.add(cliMenu);
+
+        removeAllListeners();
+        canvas.addKeyListener(menuControl);
+    }
+
+    public void HidePauseMenu() {
+        if(windows.size() != 1 && inLevel) {
             cliMenu.setTransparent(false);
-            canvas.removeKeyListener(menuControl);
             windows.remove(cliMenu);
+
+            removeAllListeners();
             canvas.addMouseMotionListener(mouseControl);
             canvas.addKeyListener(playerControl);
         }
+    }
+
+    public void removeAllListeners() {
+        canvas.removeMouseMotionListener(mouseControl);
+        canvas.removeKeyListener(playerControl);
+        canvas.removeKeyListener(menuControl);
+    }
+
+    public void removeRoom(int number) {
+        windows.removeIf( win -> win.GetRoom() == number);
+    }
+
+    public void addRoom(int number) {
+        windows.add(new FauxWindow(100, 500, 8*Tile.TILE_WIDTH, 6*Tile.TILE_HEIGHT, level, number));
     }
 }

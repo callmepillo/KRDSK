@@ -22,6 +22,7 @@ public class FauxWindow extends JPanel {
         this.posY = y;
         this.width = width;
         this.height = height;
+        this.room = -1;
     }
 
     //This one is for a window that contains a level
@@ -69,5 +70,9 @@ public class FauxWindow extends JPanel {
             g.drawRect(posX, posY, width, height);
         g.setStroke(orgStroke);
         g.setColor(orgColor);
+    }
+
+    public int GetRoom() {
+        return room;
     }
 }

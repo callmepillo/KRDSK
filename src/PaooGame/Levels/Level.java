@@ -32,4 +32,8 @@ public class Level {
         * For this reason, there is an overloaded function of Tile::Draw that also takes a width
         * and height argument to display only slices of a tile*/
     }
+
+    public int GetNumberOfRooms() {
+        return tileMap.length;
+    }
 }
