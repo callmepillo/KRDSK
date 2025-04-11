@@ -4,6 +4,7 @@ import PaooGame.GameWindow.FauxWindow;
 import PaooGame.GameWindow.GameWindow;
 import PaooGame.Graphics.Assets;
 import PaooGame.Graphics.Colors;
+import PaooGame.Graphics.MyFonts;
 import PaooGame.Tiles.Tile;
 
 // For Buffer
@@ -42,6 +43,7 @@ public class Game implements Runnable {
         wnd.BuildGameWindow(ctr);
         /// Se incarca toate elementele grafice (dale)
         Assets.Init();
+        MyFonts.Init((float)30.0);
     }
 
     public void run() {
@@ -144,9 +146,8 @@ public class Game implements Runnable {
         }
         Graphics2D imgGraphics = frameBuffer.createGraphics();
 
-        //currently, the current font is correct only for linux -> (add a OS checker) OR (find a more universal monospace font)
-        //linux -> Adwaita Mono, windows -> Consolas
-        imgGraphics.setFont(new Font("Adwaita Mono", Font.BOLD, 30));
+        //
+        imgGraphics.setFont(MyFonts.JetBrains);
         imgGraphics.setStroke(new java.awt.BasicStroke(10));
         imgGraphics.setColor(Colors.background);
         imgGraphics.fillRect(0, 0, width, height);
