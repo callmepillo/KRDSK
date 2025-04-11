@@ -13,7 +13,7 @@ import PaooGame.Graphics.Assets;
     */
     public WaterTile(int id)
     {
-        super(Assets.water, id);
+        super(Assets.big_bush_left, id);
     }
 
     /*! \fn public boolean IsSolid()

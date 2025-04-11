@@ -14,7 +14,7 @@ public class TreeTile extends Tile
      */
     public TreeTile(int id)
     {
-        super(Assets.tree, id);
+        super(Assets.bonzai, id);
     }
 
     /*! \fn public boolean IsSolid()

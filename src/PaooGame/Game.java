@@ -160,7 +160,7 @@ public class Game implements Runnable {
 //        Tile.mountainTile.Draw(imgGraphics, 0, 2*Tile.TILE_HEIGHT);
 //        Tile.mountainTile.Draw(imgGraphics, 0, 3*Tile.TILE_HEIGHT);
 //        Tile.mountainTile.Draw(imgGraphics, 0, 4*Tile.TILE_HEIGHT);
-        Tile.plantTile.Draw(imgGraphics, 0, 0);
+        //Tile.plantTile.Draw(imgGraphics, 0, 0);
 
         if(wnd.GetPlayer() != null)
             wnd.GetPlayer().Draw(imgGraphics);

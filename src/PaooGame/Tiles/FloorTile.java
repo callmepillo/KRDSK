@@ -15,6 +15,6 @@ public class FloorTile extends Tile
     public FloorTile(int id)
     {
         /// Apel al constructorului clasei de baza
-        super(Assets.floor, id);
+        super(Assets.floor_middle, id);
     }
 }

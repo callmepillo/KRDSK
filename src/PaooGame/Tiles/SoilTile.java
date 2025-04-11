@@ -14,7 +14,7 @@ public class SoilTile extends Tile
      */
     public SoilTile(int id)
     {
-        super(Assets.soil, id);
+        super(Assets.small_bush, id);
     }
 
 }

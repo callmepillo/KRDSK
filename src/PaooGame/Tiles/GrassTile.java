@@ -15,6 +15,6 @@ public class GrassTile extends Tile
     public GrassTile(int id)
     {
             /// Apel al constructorului clasei de baza
-        super(Assets.grass, id);
+        super(Assets.grass_left, id);
     }
 }

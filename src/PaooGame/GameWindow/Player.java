@@ -41,7 +41,7 @@ public class Player {
         Stroke orgStroke = g.getStroke();
         Color orgColor = g.getColor();
 
-        playerSprite = new Tile(Assets.playerRight, 6);
+        playerSprite = new Tile(Assets.bonzai, 6);
 
         g.setColor(Color.CYAN);
         g.setStroke(new java.awt.BasicStroke(3));

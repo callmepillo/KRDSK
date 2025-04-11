@@ -14,7 +14,7 @@ public class PlantTile extends Tile
      */
     public PlantTile(int id)
     {
-        super(Assets.plant, id);
+        super(Assets.bonzai, id);
     }
 
 }
