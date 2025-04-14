@@ -24,6 +24,7 @@ public class GameWindow
     private int     playerY;
     private int     mouseX;
     private int     mouseY;
+    private boolean mousePressed;
     private List<FauxWindow> windows = new ArrayList<>();
     private CliWindow cliMenu;
     private Bar     statusBar;
@@ -32,7 +33,9 @@ public class GameWindow
     private boolean inLevel;
     private KeyListener menuControl;
     private KeyListener playerControl;
-    private MouseMotionListener mouseControl;
+    private MouseMotionListener mouseMotionControl;
+    private MouseListener mousePressedControl;
+
 
 
     public GameWindow(String title, int width, int height){
@@ -69,7 +72,8 @@ public class GameWindow
         canvas.setMinimumSize(new Dimension(wndWidth, wndHeight));
 
         menuControl = ctrl.kControl;
-        mouseControl = ctrl.mControl;
+        mouseMotionControl = ctrl.mMControl;
+        mousePressedControl = ctrl.mPControl;
         playerControl = ctrl.pControl;
 
 //        canvas.addKeyListener(menuControl);
@@ -102,6 +106,7 @@ public class GameWindow
     public int GetPlayerY() { return playerY; }
     public int GetMouseX() { return mouseX; }
     public int GetMouseY() { return mouseY; }
+    public boolean GetMousePressed() { return mousePressed; }
     public Player GetPlayer() { return player; }
     public List<FauxWindow> GetWindows() { return windows; }
     public Bar GetBar() { return statusBar; }
@@ -114,6 +119,7 @@ public class GameWindow
         mouseX = x;
         mouseY = y;
     }
+    public void SetMousePressed(boolean state) { mousePressed = state; }
     public void SetStop(boolean state) { stop = state; }
 
     public void Stop() {
@@ -121,21 +127,36 @@ public class GameWindow
     }
     public void StartLevel(int levelNumber) {
         inLevel = true;
-        if(levelNumber == 1) {
-            removeAllListeners();
+        switch (levelNumber) {
+            case(1):
+                level = Level.testLevel;
+                break;
+            case(2):
+                level = Level.testLevel;
+                break;
+            case(3):
+                level = Level.testLevel;
+                break;
+            default:
+                level = Level.testLevel;
+                break;
+        }
+        removeAllListeners();
 
-            windows.remove(cliMenu);
-            level = Level.testLevel;
-            statusBar = new Bar(50, wndHeight - 150, 100, 50, level.GetNumberOfRooms());
+        windows.remove(cliMenu);
+        statusBar = new Bar(50, wndHeight - 150, 100, 50, level.GetNumberOfRooms());
+        for(int i = 0; i < level.GetNumberOfRooms(); ++i)
+            windows.add(new FauxWindow(100, 500, 8*Tile.TILE_WIDTH, 6*Tile.TILE_HEIGHT, level, i));
             //Recomended size should be a multiple of Tile.TILE_WIDTH and Tile.TILE_HEIGHT
 //            windows.add(new FauxWindow(100, 500, 8*Tile.TILE_WIDTH, 6*Tile.TILE_HEIGHT, level, 0));
 //            windows.add(new FauxWindow(1000, 200, 8*Tile.TILE_WIDTH, 6*Tile.TILE_HEIGHT, level, 1));
-            canvas.addMouseMotionListener(mouseControl);
-            statusBar.SetActive(true);
+        canvas.addMouseListener(mousePressedControl);
+        canvas.addMouseMotionListener(mouseMotionControl);
+        statusBar.SetActive(true);
 
-            player = new Player(300, 910);
-            canvas.addKeyListener(playerControl);
-        }
+        player = new Player(300, 910);
+        getRoom(0).enterPlayer(player);
+        canvas.addKeyListener(playerControl);
     }
 
     public void DisplayPauseMenu() {
@@ -168,22 +189,38 @@ public class GameWindow
             windows.remove(cliMenu);
 
             removeAllListeners();
-            canvas.addMouseMotionListener(mouseControl);
+            canvas.addMouseListener(mousePressedControl);
+            canvas.addMouseMotionListener(mouseMotionControl);
             canvas.addKeyListener(playerControl);
         }
     }
 
     public void removeAllListeners() {
-        canvas.removeMouseMotionListener(mouseControl);
+        canvas.removeMouseMotionListener(mouseMotionControl);
+        canvas.removeMouseListener(mousePressedControl);
         canvas.removeKeyListener(playerControl);
         canvas.removeKeyListener(menuControl);
     }
 
     public void removeRoom(int number) {
-        windows.removeIf( win -> win.GetRoom() == number);
+        for(FauxWindow win: windows) {
+            if(win.GetRoom() == number)
+                win.setVisible(false);
+        }
     }
 
     public void addRoom(int number) {
-        windows.add(new FauxWindow(100, 500, 8*Tile.TILE_WIDTH, 6*Tile.TILE_HEIGHT, level, number));
+        for(FauxWindow win: windows) {
+            if(win.GetRoom() == number)
+                win.setVisible(true);
+        }
+    }
+
+    public FauxWindow getRoom(int number) {
+        for(FauxWindow win: windows) {
+            if(win.GetRoom() == number)
+                return win;
+        }
+        return null;
     }
 }

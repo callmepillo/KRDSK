@@ -12,6 +12,10 @@ public class Assets
         /// Referinte catre elementele grafice (dale) utilizate in joc.
         public static BufferedImage floor_middle;
 
+        public static BufferedImage player_idle;
+        public static BufferedImage player_dance_one;
+        public static BufferedImage player_dance_two;
+
     public static BufferedImage left_upper_door;
     public static BufferedImage left_midle_door;
     public static BufferedImage left_down_door;
@@ -131,7 +135,7 @@ public class Assets
     {
             /// Se creaza temporar un obiect SpriteSheet initializat prin intermediul clasei ImageLoader
         SpriteSheet sheet = new SpriteSheet(ImageLoader.LoadImage("/textures/firstCorrectSprite_resized.png"));
-
+        SpriteSheet playerSheet = new SpriteSheet(ImageLoader.LoadImage("/textures/krdsk.png"));
             /// Se obtin subimaginile corespunzatoare elementelor necesare.
 //        grass = sheet.crop(0, 0);
 //        soil = sheet.crop(1, 0);
@@ -150,6 +154,9 @@ public class Assets
 
         floor_middle = sheet.crop(1, 4);
 
+        player_idle = playerSheet.crop(0, 0);
+        player_dance_one = playerSheet.crop(1,0);
+        player_dance_two = playerSheet.crop(2,0);
 
         left_upper_door=sheet.crop(0,0);
         left_midle_door=sheet.crop(0,1);

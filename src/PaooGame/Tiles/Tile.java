@@ -13,23 +13,6 @@ public class Tile
 
     /// De remarcat ca urmatoarele dale sunt statice si publice. Acest lucru imi permite sa le am incarcate
     /// o singura data in memorie
-    //public static Tile grassTile        = new GrassTile(0);     /*!< Dala de tip iarba*/
-    // public static Tile playerLeft = new Tile(Assets.playerLeft, 0);
-    //public static Tile playerRight = new Tile(Assets.playerRight, 1);
-//    public static Tile soil = new Tile(Assets.soil, 2);
-//    public static Tile grass = new Tile(Assets.grass, 3);
-//    public static Tile mountain = new Tile(Assets.mountain, 4);
-//    public static Tile townGrass = new Tile(Assets.townGrass, 5);
-//    public static Tile townGrassDestroyed = new Tile(Assets.townGrassDestroyed, 6);
-//    public static Tile townSoil = new Tile(Assets.townSoil, 7);
-//    public static Tile water = new Tile(Assets.water, 8);
-//    public static Tile rockUp = new Tile(Assets.rockUp, 9);
-//    public static Tile rockDown = new Tile(Assets.rockDown, 10);
-//    public static Tile rockLeft = new Tile(Assets.rockLeft, 11);
-//    public static Tile rockRight = new Tile(Assets.rockRight, 12);
-//    public static Tile tree = new Tile(Assets.tree, 13);
-//    public static Tile plant = new Tile(Assets.plant, 14);
-//    public static Tile floor = new Tile(Assets.floor, 15);
     public static Tile left_upper_door = new Tile(Assets.left_upper_door, 16);
     public static Tile left_midle_door = new Tile(Assets.left_midle_door, 17);
     public static Tile left_down_door = new Tile(Assets.left_down_door, 18);

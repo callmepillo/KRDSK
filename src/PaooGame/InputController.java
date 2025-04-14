@@ -26,7 +26,8 @@ public class InputController {
     private int[][] distortX; //we use the disotrsion maps in order to correctly
     private int[][] distortY; //handle mouse events
     public PlayerControl pControl;
-    public MouseControls mControl;
+    public MouseMotionControls mMControl;
+    public MousePressedControls mPControl;
     public MenuControl   kControl;
 
     /*this implementation makes an InputController specialized (it only modifies a certain
@@ -37,7 +38,8 @@ public class InputController {
         this.distortX = distortX;
         this.distortY = distortY;
         pControl = new PlayerControl();
-        mControl = new MouseControls();
+        mMControl = new MouseMotionControls();
+        mPControl = new MousePressedControls();
         kControl = new MenuControl();
     }
 
@@ -80,7 +82,7 @@ public class InputController {
     }
 
     //mouse coordinate handler
-    public class MouseControls extends MouseInputAdapter {
+    public class MouseMotionControls extends MouseInputAdapter {
         public void mouseMoved(MouseEvent e) {
             Win.SetMouse(distortX[e.getY()][e.getX()], distortY[e.getY()][e.getX()]);
             /*We see that we are giving the distorted coordinates as arguments to the
@@ -91,6 +93,21 @@ public class InputController {
             * whole image, so the objects pixels wont corespond to the real X,Y space. So,
             * if we dont pass the distortX and distortY, we have objects in a distorted space
             * and a mouse in a real space.*/
+        }
+        public void mouseDragged(MouseEvent e) {
+            Win.SetMouse(distortX[e.getY()][e.getX()], distortY[e.getY()][e.getX()]);
+        }
+    }
+
+    public class MousePressedControls extends MouseInputAdapter {
+        @Override
+        public void mousePressed(MouseEvent e) {
+            Win.SetMousePressed(true);
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            Win.SetMousePressed(false);
         }
     }
 
