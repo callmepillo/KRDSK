@@ -2,10 +2,7 @@ package PaooGame.GameWindow;
 
 import PaooGame.*;
 import PaooGame.Graphics.Messages;
-import PaooGame.Levels.Level;
-import PaooGame.Levels.LevelOne;
-import PaooGame.Levels.LevelTwo;
-import PaooGame.Levels.TestLevel;
+import PaooGame.Levels.*;
 import PaooGame.Tiles.Tile;
 
 import javax.swing.*;
@@ -127,7 +124,7 @@ public class GameWindow
             removeAllListeners();
 
             windows.remove(cliMenu);
-            level = new LevelTwo();
+            level = new LevelThree();
             statusBar = new Bar(50, wndHeight - 150, 100, 50, level.GetNumberOfRooms());
             //Recomended size should be a multiple of Tile.TILE_WIDTH and Tile.TILE_HEIGHT
 //            windows.add(new FauxWindow(100, 500, 8*Tile.TILE_WIDTH, 6*Tile.TILE_HEIGHT, level, 0));
