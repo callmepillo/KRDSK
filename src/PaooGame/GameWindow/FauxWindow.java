@@ -2,6 +2,7 @@ package PaooGame.GameWindow;
 
 import PaooGame.Graphics.Colors;
 import PaooGame.Levels.Level;
+import PaooGame.Tiles.Tile;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,7 +54,7 @@ public class FauxWindow extends JPanel {
     public void setVisible(boolean vis) { this.visible = vis; }
     public void enterPlayer(Player player) {
         this.player = player;
-        player.setXY(posX, posY);
+        player.setXY(posX, posY + height - Tile.TILE_HEIGHT);
     }
     public void leavePlayer() { this.player = null; }
 
@@ -76,7 +77,7 @@ public class FauxWindow extends JPanel {
     public void Update(int mouseX, int mouseY, boolean mouseP) {
         if(player != null)
             player.Update(posX, posX+width, posY, posY+height);
-        if(mouseX >= posX && mouseX <= posX+width && mouseY >= posY && mouseY <= posY+height) {
+        if(mouseX >= posX && mouseX <= posX+width && mouseY >= posY && mouseY <= posY+height && visible) {
             if(mouseP && offsetMX == 0 && offsetMY == 0) {
                 offsetMX = posX - mouseX;
                 offsetMY = posY - mouseY;
