@@ -83,4 +83,13 @@ public class Player {
         posX = x;
         posY = y;
     }
+
+    //public void moveLeft() {}
+    //public void moveRight() {}
+    //public void jump() {}
 }
+
+//Jucatorul trebuie sa:
+//  mearga stanga/dreapta (viteza/acceleratie/whatev)
+//  sara (viteza/acceleratie/gravitate)
+//  gravitatie!!!
