@@ -59,7 +59,7 @@ public class CliWindow extends FauxWindow {
     }
 
     @Override
-    public void Update(int mouseX, int mouseY) {
+    public void Update(int mouseX, int mouseY, boolean mouseP) {
     }
 
     @Override
