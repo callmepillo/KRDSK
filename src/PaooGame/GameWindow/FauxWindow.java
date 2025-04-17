@@ -20,6 +20,8 @@ public class FauxWindow extends JPanel {
     private boolean mouseIn;
     private Player player;
     protected boolean visible;
+    private static FauxWindow draggedWindow = null;
+    private boolean isDragged;
 
     //This constructor is for a basic FauxWindow, used for CliWindow
     public FauxWindow(int x, int y, int width, int height) {
@@ -42,6 +44,7 @@ public class FauxWindow extends JPanel {
         this.mouseIn = false;
         this.player = null;
         this.visible = false;
+        this.isDragged = false;
     }
 
     public void setWidth(int width) {
@@ -67,6 +70,10 @@ public class FauxWindow extends JPanel {
         return height;
     }
 
+    public boolean isDraggable(int mouseX, int mouseY, boolean mouseP) {
+        return (mouseX >= posX && mouseX <= posX+width && mouseY >= posY && mouseY <= posY+height && visible);
+    }
+
     public void move(int mouseX, int mouseY) {
         if(player == null) {
             posX = mouseX + offsetMX;
@@ -77,19 +84,32 @@ public class FauxWindow extends JPanel {
     public void Update(int mouseX, int mouseY, boolean mouseP) {
         if(player != null)
             player.Update(posX, posX+width, posY, posY+height);
-        if(mouseX >= posX && mouseX <= posX+width && mouseY >= posY && mouseY <= posY+height && visible) {
-            if(mouseP && offsetMX == 0 && offsetMY == 0) {
+
+        if (draggedWindow == this) {
+            if (mouseP) {
+                move(mouseX, mouseY);
+            } else {
+                // Mouse released, stop dragging
+                offsetMX = 0;
+                offsetMY = 0;
+                draggedWindow = null;
+                isDragged = false;
+            }
+            return;
+        }
+
+        // If no window is being dragged and the mouse is over this one
+        if (draggedWindow == null && isDraggable(mouseX, mouseY, mouseP) && player == null) {
+            if (mouseP) {
                 offsetMX = posX - mouseX;
                 offsetMY = posY - mouseY;
+                draggedWindow = this;
+                isDragged = true;
             }
             mouseIn = true;
-            if(mouseP)
-                move(mouseX, mouseY);
-        }
-        else {
-            offsetMX = 0;
-            offsetMY = 0;
+        } else {
             mouseIn = false;
+            isDragged = false;
         }
     }
 
@@ -97,6 +117,8 @@ public class FauxWindow extends JPanel {
         if(visible) {
             Color orgColor = g.getColor();
             Stroke orgStroke = g.getStroke();
+            g.setColor(Colors.background);
+            g.fillRect(posX, posY, width, height);
             level.Draw(g, posX, posX + width, posY, room);
             g.setColor(Colors.term);
             g.setStroke(new java.awt.BasicStroke(3));
