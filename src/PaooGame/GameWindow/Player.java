@@ -11,7 +11,7 @@ public class Player {
     private int posY;
     private int velX;
     private int velY;
-    private int speed = 10;
+    private int speed = 1;
 
     public Player(int x, int y) {
         posX = x;
@@ -20,9 +20,11 @@ public class Player {
         velY = 0;
     }
 
-    public void Update() {
-        posX += velX * speed;
-        posY += velY * speed;
+    public void Update(int borderLeft, int borderRight, int borderUp, int borderDown) {
+        if(posX >= borderLeft && (posX + Tile.TILE_WIDTH) <= borderRight && posY >= borderUp && (posY + Tile.TILE_HEIGHT) <= borderDown) {
+            posX += velX * speed;
+            posY += velY * speed;
+        }
 
         if(velX > 0) {
             --velX;
@@ -76,4 +78,18 @@ public class Player {
     public int getY() {
         return posY;
     }
+
+    public void setXY(int x, int y) {
+        posX = x;
+        posY = y;
+    }
+
+    //public void moveLeft() {}
+    //public void moveRight() {}
+    //public void jump() {}
 }
+
+//Jucatorul trebuie sa:
+//  mearga stanga/dreapta (viteza/acceleratie/whatev)
+//  sara (viteza/acceleratie/gravitate)
+//  gravitatie!!!
