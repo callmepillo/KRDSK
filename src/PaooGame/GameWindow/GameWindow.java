@@ -2,8 +2,7 @@ package PaooGame.GameWindow;
 
 import PaooGame.*;
 import PaooGame.Graphics.Messages;
-import PaooGame.Levels.Level;
-import PaooGame.Levels.TestLevel;
+import PaooGame.Levels.*;
 import PaooGame.Tiles.Tile;
 
 import javax.swing.*;
@@ -129,20 +128,19 @@ public class GameWindow
         inLevel = true;
         switch (levelNumber) {
             case(1):
-                level = Level.testLevel;
+                level = new LevelOne();
                 break;
             case(2):
-                level = Level.testLevel;
+                level = new LevelTwo();
                 break;
             case(3):
-                level = Level.testLevel;
+                level = new LevelThree();
                 break;
             default:
                 level = Level.testLevel;
                 break;
         }
         removeAllListeners();
-
         windows.remove(cliMenu);
         statusBar = new Bar(50, wndHeight - 150, 100, 50, level.GetNumberOfRooms());
         for(int i = 0; i < level.GetNumberOfRooms(); ++i)
