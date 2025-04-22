@@ -2,7 +2,7 @@ package PaooGame.Levels;
 
 public class LevelThree extends Level{
     public LevelThree() {
-        tileMap = new int[][][] {
+        this.tileMap = new int[][][] {
                 //camera 0 Level 3
                 {
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},

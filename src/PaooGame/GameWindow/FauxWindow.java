@@ -14,8 +14,8 @@ public class FauxWindow extends JPanel {
     protected int posY;
     private int offsetMX;
     private int offsetMY;
-    protected int width;
-    protected int height;
+    protected static int width;
+    protected static int height;
     protected int room;
     private boolean mouseIn;
     private Player player;
@@ -23,22 +23,23 @@ public class FauxWindow extends JPanel {
     private static FauxWindow draggedWindow = null;
     private boolean isDragged;
 
+    public static void setWindowSize(int width, int height) {
+        FauxWindow.width = width;
+        FauxWindow.height = height;
+    }
+
     //This constructor is for a basic FauxWindow, used for CliWindow
-    public FauxWindow(int x, int y, int width, int height) {
+    public FauxWindow(int x, int y) {
         this.posX = x;
         this.posY = y;
-        this.width = width;
-        this.height = height;
         this.room = -1;
         this.visible = true;
     }
 
     //This one is for a window that contains a level
-    public FauxWindow(int x, int y, int width, int height, Level level, int room) {
+    public FauxWindow(int x, int y, Level level, int room) {
         this.posX = x;
         this.posY = y;
-        this.width = width;
-        this.height = height;
         this.level = level;
         this.room = room;
         this.mouseIn = false;
@@ -47,12 +48,6 @@ public class FauxWindow extends JPanel {
         this.isDragged = false;
     }
 
-    public void setWidth(int width) {
-        this.width = width;
-    }
-    public void setHeight(int height) {
-        this.height = height;
-    }
     public void setLevel(Level level) { this.level = level; }
     public void setVisible(boolean vis) { this.visible = vis; }
     public void enterPlayer(Player player) {
@@ -83,7 +78,7 @@ public class FauxWindow extends JPanel {
 
     public void Update(int mouseX, int mouseY, boolean mouseP) {
         if(player != null)
-            player.Update(posX, posX+width, posY, posY+height);
+            player.Update(posX, posY, level.GetRoomMap(room));
 
         if (draggedWindow == this) {
             if (mouseP) {

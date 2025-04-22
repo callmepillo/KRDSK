@@ -7,12 +7,9 @@ import java.awt.*;
 public class Level {
     public static final int LEVEL_WIDTH = 10; //Sizes for the level
     public static final int LEVEL_HEIGHT = 6; //Sizes for the level
-    public static int[][][] tileMap;
+    public int[][][] tileMap;
     //this is a tile map that contains the rooms, the rows and the columns of tiles
     //the coordinates correspond to [room][row][column]
-
-    public static Level testLevel = new TestLevel(); //static variable so we load the level at start
-
     //Draw function for a level
     public void Draw(Graphics2D g, int leftBound, int rightBound, int upperBound, int room) {
         for(int i = 0; i < LEVEL_HEIGHT; ++i) {
@@ -36,4 +33,6 @@ public class Level {
     public int GetNumberOfRooms() {
         return tileMap.length;
     }
+    public int[][] GetRoomMap(int x) { return tileMap[x]; }
+    public int[][][] getTileMap() { return tileMap; }
 }

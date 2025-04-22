@@ -2,7 +2,7 @@ package PaooGame.Levels;
 
 public class TestLevel extends Level{
     public TestLevel() {
-        tileMap = new int[][][] {
+        this.tileMap = new int[][][] {
                 {
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
