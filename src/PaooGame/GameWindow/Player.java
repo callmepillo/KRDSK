@@ -12,6 +12,7 @@ public class Player {
     private int velX;
     private int velY;
     private int speed = 1;
+    private boolean freezed = false;
 
     public Player(int x, int y) {
         posX = x;
@@ -20,10 +21,12 @@ public class Player {
         velY = 0;
     }
 
-    public void Update(int borderLeft, int borderRight, int borderUp, int borderDown) {
-        if(posX >= borderLeft && (posX + Tile.TILE_WIDTH) <= borderRight && posY >= borderUp && (posY + Tile.TILE_HEIGHT) <= borderDown) {
-            posX += velX * speed;
-            posY += velY * speed;
+    public void Update(int roomX, int roomY, int[][] roomMap) {
+        int newX = posX + velX * speed;
+        int newY = posY + velY * speed;
+        if(CollisionChecker.CanMoveHere(getRectangle(), roomX, roomY, newX, newY, roomMap) && !freezed) {
+            posX = newX;
+            posY = newY;
         }
 
         if(velX > 0) {
@@ -43,9 +46,10 @@ public class Player {
         Stroke orgStroke = g.getStroke();
         Color orgColor = g.getColor();
 
-        playerSprite = new Tile(Assets.bonzai, 6);
+        playerSprite = new Tile(Assets.player_idle, 6);
 
-        g.setColor(Color.CYAN);
+        //drawing the hitbox for debugging purposes
+        g.setColor(Color.RED);
         g.setStroke(new java.awt.BasicStroke(3));
         g.drawRect(posX, posY, Tile.TILE_WIDTH, Tile.TILE_HEIGHT);
 
@@ -55,11 +59,11 @@ public class Player {
         g.setColor(orgColor);
     }
 
-    public void addX() {
+    public void moveRight() {
         velX += 5;
     }
 
-    public void subX() {
+    public void moveLeft() {
         velX -= 5;
     }
 
@@ -67,16 +71,16 @@ public class Player {
         return posX;
     }
 
-    public void addY() {
+    public int getY() {
+        return posY;
+    }
+
+    public void moveDown() {
         velY += 5;
     }
 
-    public void subY() {
+    public void jump() {
         velY -= 5;
-    }
-
-    public int getY() {
-        return posY;
     }
 
     public void setXY(int x, int y) {
@@ -84,9 +88,9 @@ public class Player {
         posY = y;
     }
 
-    //public void moveLeft() {}
-    //public void moveRight() {}
-    //public void jump() {}
+    public Rectangle getRectangle() {
+        return new Rectangle(posX, posY, Tile.TILE_WIDTH, Tile.TILE_HEIGHT);
+    }
 }
 
 //Jucatorul trebuie sa:

@@ -82,6 +82,7 @@ public class GameWindow
 //        windows.add(new CliWindow(0,0, wndWidth, wndHeight));
 //        player = new Player(0,0);
 
+        FauxWindow.setWindowSize(8*Tile.TILE_WIDTH, 6*Tile.TILE_HEIGHT);
         cliMenu = new CliWindow(0,0, wndWidth, wndHeight);
 
         DisplayStartMenu();
@@ -137,14 +138,14 @@ public class GameWindow
                 level = new LevelThree();
                 break;
             default:
-                level = Level.testLevel;
+                level = new TestLevel();
                 break;
         }
         removeAllListeners();
         windows.remove(cliMenu);
         statusBar = new Bar(50, wndHeight - 150, 100, 50, level.GetNumberOfRooms());
         for(int i = 0; i < level.GetNumberOfRooms(); ++i)
-            windows.add(new FauxWindow(100, 500, 8*Tile.TILE_WIDTH, 6*Tile.TILE_HEIGHT, level, i));
+            windows.add(new FauxWindow(100, 500, level, i));
             //Recomended size should be a multiple of Tile.TILE_WIDTH and Tile.TILE_HEIGHT
 //            windows.add(new FauxWindow(100, 500, 8*Tile.TILE_WIDTH, 6*Tile.TILE_HEIGHT, level, 0));
 //            windows.add(new FauxWindow(1000, 200, 8*Tile.TILE_WIDTH, 6*Tile.TILE_HEIGHT, level, 1));

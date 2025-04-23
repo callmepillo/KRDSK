@@ -9,13 +9,17 @@ import PaooGame.Graphics.Colors;
 public class CliWindow extends FauxWindow {
     private String userInput;
     private int stringX;
+    private int cliWidth;
+    private int cliHeight;
     private int stringY;
     private ArrayList<String> history;
     private boolean transparent;
     private int line;
 
     public CliWindow(int x, int y, int width, int height) {
-        super(x, y, width, height);
+        super(x, y);
+        cliHeight = height;
+        cliWidth = width;
         userInput = "";
         stringX = 50;
         stringY = 50;
@@ -70,13 +74,13 @@ public class CliWindow extends FauxWindow {
             g.setColor(Colors.background_transp);
         else
             g.setColor(Colors.background);
-        g.fillRect(posX, posY, width, height);
+        g.fillRect(posX, posY, cliWidth, cliHeight);
         if(transparent)
             g.setColor(Colors.term_transp);
         else
             g.setColor(Colors.term);
         g.setStroke(new java.awt.BasicStroke(10));
-        g.drawRect(posX, posY, width, height);
+        g.drawRect(posX, posY, cliWidth, cliHeight);
         line = 2;
         for(String str : history)
         {

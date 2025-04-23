@@ -3,6 +3,7 @@ package PaooGame.GameWindow;
 import PaooGame.Graphics.Colors;
 import PaooGame.Levels.Level;
 import PaooGame.Tiles.Tile;
+import jdk.swing.interop.SwingInterOpUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,52 +15,49 @@ public class FauxWindow extends JPanel {
     protected int posY;
     private int offsetMX;
     private int offsetMY;
-    protected int width;
-    protected int height;
+    protected static int width;
+    protected static int height;
     protected int room;
     private boolean mouseIn;
     private Player player;
     protected boolean visible;
     private static FauxWindow draggedWindow = null;
     private boolean isDragged;
+    private int levelOffset;
+
+    public static void setWindowSize(int width, int height) {
+        FauxWindow.width = width;
+        FauxWindow.height = height;
+    }
 
     //This constructor is for a basic FauxWindow, used for CliWindow
-    public FauxWindow(int x, int y, int width, int height) {
+    public FauxWindow(int x, int y) {
         this.posX = x;
         this.posY = y;
-        this.width = width;
-        this.height = height;
         this.room = -1;
         this.visible = true;
     }
 
     //This one is for a window that contains a level
-    public FauxWindow(int x, int y, int width, int height, Level level, int room) {
+    public FauxWindow(int x, int y, Level level, int room) {
         this.posX = x;
         this.posY = y;
-        this.width = width;
-        this.height = height;
         this.level = level;
         this.room = room;
         this.mouseIn = false;
         this.player = null;
         this.visible = false;
         this.isDragged = false;
+        this.levelOffset = 0;
     }
 
-    public void setWidth(int width) {
-        this.width = width;
-    }
-    public void setHeight(int height) {
-        this.height = height;
-    }
     public void setLevel(Level level) { this.level = level; }
     public void setVisible(boolean vis) { this.visible = vis; }
     public void enterPlayer(Player player) {
         this.player = player;
         player.setXY(posX, posY + height - Tile.TILE_HEIGHT);
     }
-    public void leavePlayer() { this.player = null; }
+    public void leavePlayer() { this.player = null; this.levelOffset = 0; }
 
 
     public int getWidth() {
@@ -82,8 +80,15 @@ public class FauxWindow extends JPanel {
     }
 
     public void Update(int mouseX, int mouseY, boolean mouseP) {
-        if(player != null)
-            player.Update(posX, posX+width, posY, posY+height);
+        if(player != null && visible) {
+            int newOffset = CollisionChecker.CheckCloseToBorder(player.getRectangle(), levelOffset, posX, posX + width);
+            if(newOffset > levelOffset)
+                player.setXY(player.getX() - 1, player.getY());
+            else if(newOffset < levelOffset)
+                player.setXY(player.getX() + 1, player.getY());
+            levelOffset = newOffset;
+            player.Update(posX - levelOffset, posY, level.GetRoomMap(room));
+        }
 
         if (draggedWindow == this) {
             if (mouseP) {
@@ -119,7 +124,7 @@ public class FauxWindow extends JPanel {
             Stroke orgStroke = g.getStroke();
             g.setColor(Colors.background);
             g.fillRect(posX, posY, width, height);
-            level.Draw(g, posX, posX + width, posY, room);
+            level.Draw(g, posX, posX + width, posY, room, levelOffset);
             g.setColor(Colors.term);
             g.setStroke(new java.awt.BasicStroke(3));
             if (mouseIn)

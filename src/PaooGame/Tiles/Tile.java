@@ -62,7 +62,7 @@ public class Tile
     public static Tile chair1_down = new Tile(Assets.chair1_down, 62);
     public static Tile chair2_up = new Tile(Assets.chair2_up, 63);
     public static Tile chair2_down = new Tile(Assets.chair2_down, 64);
-    public static Tile box = new Tile(Assets.box, 65);
+    public static Tile box = new Tile(Assets.box, 65, true);
     public static Tile small_table = new Tile(Assets.small_table, 66);
     public static Tile grass_left = new Tile(Assets.grass_left, 67);
     public static Tile grass_right = new Tile(Assets.grass_right, 68);
@@ -92,12 +92,12 @@ public class Tile
     public static Tile double_round_obstacle_right = new Tile(Assets.double_round_obstacle_right, 92);
 
 
-    public static final int TILE_WIDTH  = 70; //48                      /*!< Latimea unei dale.*/
-    public static final int TILE_HEIGHT = 70; //48;                       /*!< Inaltimea unei dale.*/
+    public static final int TILE_WIDTH  = 80; //48                      /*!< Latimea unei dale.*/
+    public static final int TILE_HEIGHT = 80; //48;                       /*!< Inaltimea unei dale.*/
 
     protected BufferedImage img;                                    /*!< Imaginea aferenta tipului de dala.*/
     protected final int id;                                         /*!< Id-ul unic aferent tipului de dala.*/
-
+    protected boolean solid;
     /*! \fn public Tile(BufferedImage texture, int id)
         \brief Constructorul aferent clasei.
 
@@ -108,7 +108,15 @@ public class Tile
     {
         img = image;
         id = idd;
+        this.solid = false;
+        tiles[id] = this;
+    }
 
+    public Tile(BufferedImage image, int idd, boolean solid)
+    {
+        img = image;
+        id = idd;
+        this.solid = solid;
         tiles[id] = this;
     }
 
@@ -139,13 +147,17 @@ public class Tile
         g.drawImage(img, x, y, width, height, null);
     }
 
+    public void Draw(Graphics g, int x, int y, int width, int height, int sx, int sy, int sw, int sh) {
+        BufferedImage cropped = img.getSubimage(sx, sy, sw * 100/TILE_WIDTH, sh * 100/TILE_HEIGHT);
+        g.drawImage(cropped, x, y, width, height, null);
+    }
 
     /*! \fn public boolean IsSolid()
         \brief Returneaza proprietatea de dala solida (supusa coliziunilor) sau nu.
      */
     public boolean IsSolid()
     {
-        return false;
+        return solid;
     }
 
     /*! \fn public int GetId()
