@@ -3,6 +3,7 @@ package PaooGame.GameWindow;
 import PaooGame.Graphics.Colors;
 import PaooGame.Levels.Level;
 import PaooGame.Tiles.Tile;
+import jdk.swing.interop.SwingInterOpUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,6 +23,7 @@ public class FauxWindow extends JPanel {
     protected boolean visible;
     private static FauxWindow draggedWindow = null;
     private boolean isDragged;
+    private int levelOffset;
 
     public static void setWindowSize(int width, int height) {
         FauxWindow.width = width;
@@ -46,6 +48,7 @@ public class FauxWindow extends JPanel {
         this.player = null;
         this.visible = false;
         this.isDragged = false;
+        this.levelOffset = 0;
     }
 
     public void setLevel(Level level) { this.level = level; }
@@ -54,7 +57,7 @@ public class FauxWindow extends JPanel {
         this.player = player;
         player.setXY(posX, posY + height - Tile.TILE_HEIGHT);
     }
-    public void leavePlayer() { this.player = null; }
+    public void leavePlayer() { this.player = null; this.levelOffset = 0; }
 
 
     public int getWidth() {
@@ -77,8 +80,15 @@ public class FauxWindow extends JPanel {
     }
 
     public void Update(int mouseX, int mouseY, boolean mouseP) {
-        if(player != null)
-            player.Update(posX, posY, level.GetRoomMap(room));
+        if(player != null && visible) {
+            int newOffset = CollisionChecker.CheckCloseToBorder(player.getRectangle(), levelOffset, posX, posX + width);
+            if(newOffset > levelOffset)
+                player.setXY(player.getX() - 1, player.getY());
+            else if(newOffset < levelOffset)
+                player.setXY(player.getX() + 1, player.getY());
+            levelOffset = newOffset;
+            player.Update(posX - levelOffset, posY, level.GetRoomMap(room));
+        }
 
         if (draggedWindow == this) {
             if (mouseP) {
@@ -114,7 +124,7 @@ public class FauxWindow extends JPanel {
             Stroke orgStroke = g.getStroke();
             g.setColor(Colors.background);
             g.fillRect(posX, posY, width, height);
-            level.Draw(g, posX, posX + width, posY, room);
+            level.Draw(g, posX, posX + width, posY, room, levelOffset);
             g.setColor(Colors.term);
             g.setStroke(new java.awt.BasicStroke(3));
             if (mouseIn)

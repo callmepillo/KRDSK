@@ -12,6 +12,7 @@ public class Player {
     private int velX;
     private int velY;
     private int speed = 1;
+    private boolean freezed = false;
 
     public Player(int x, int y) {
         posX = x;
@@ -23,11 +24,10 @@ public class Player {
     public void Update(int roomX, int roomY, int[][] roomMap) {
         int newX = posX + velX * speed;
         int newY = posY + velY * speed;
-        if(CollisionChecker.CanMoveHere(new Rectangle(posX, posY, Tile.TILE_WIDTH, Tile.TILE_HEIGHT), roomX, roomY, newX, newY, roomMap)) {
+        if(CollisionChecker.CanMoveHere(getRectangle(), roomX, roomY, newX, newY, roomMap) && !freezed) {
             posX = newX;
             posY = newY;
         }
-
 
         if(velX > 0) {
             --velX;
@@ -59,11 +59,11 @@ public class Player {
         g.setColor(orgColor);
     }
 
-    public void addX() {
+    public void moveRight() {
         velX += 5;
     }
 
-    public void subX() {
+    public void moveLeft() {
         velX -= 5;
     }
 
@@ -71,22 +71,37 @@ public class Player {
         return posX;
     }
 
-    public void addY() {
+    public int getY() {
+        return posY;
+    }
+
+    public int getNewX() {
+        return posX + velX * speed;
+    }
+
+    public int getNewY() {
+        return posY + velY * speed;
+    }
+
+    public void moveDown() {
         velY += 5;
     }
 
-    public void subY() {
+    public void jump() {
         velY -= 5;
-    }
-
-    public int getY() {
-        return posY;
     }
 
     public void setXY(int x, int y) {
         posX = x;
         posY = y;
     }
+
+    public Rectangle getRectangle() {
+        return new Rectangle(posX, posY, Tile.TILE_WIDTH, Tile.TILE_HEIGHT);
+    }
+
+    public void freeze() { freezed = true; }
+    public void unfreeze() { freezed = false; }
 
     //public void moveLeft() {}
     //public void moveRight() {}

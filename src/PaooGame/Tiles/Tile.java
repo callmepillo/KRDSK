@@ -147,6 +147,10 @@ public class Tile
         g.drawImage(img, x, y, width, height, null);
     }
 
+    public void Draw(Graphics g, int x, int y, int width, int height, int sx, int sy, int sw, int sh) {
+        g.drawImage(img, x, y, x+width, y+height, sx, sy, sx+sw, sy+sh, null);
+    }
+
 
     /*! \fn public boolean IsSolid()
         \brief Returneaza proprietatea de dala solida (supusa coliziunilor) sau nu.

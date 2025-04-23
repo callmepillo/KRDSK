@@ -50,19 +50,19 @@ public class InputController {
             int keyCode = event.getKeyCode();
             if (keyCode == KeyEvent.VK_LEFT) {
                 if(Win.GetPlayer().getX() >= 0)
-                    Win.GetPlayer().subX();
+                    Win.GetPlayer().moveLeft();
             }
             if (keyCode == KeyEvent.VK_RIGHT) {
                 if(Win.GetPlayer().getX() <= (Win.GetWndWidth() - Tile.TILE_WIDTH))
-                    Win.GetPlayer().addX();
+                    Win.GetPlayer().moveRight();
             }
             if (keyCode == KeyEvent.VK_UP) {
                 if(Win.GetPlayer().getY() >= 0)
-                    Win.GetPlayer().subY();
+                    Win.GetPlayer().jump();
             }
             if (keyCode == KeyEvent.VK_DOWN) {
                 if(Win.GetPlayer().getY() <= (Win.GetWndHeight() - Tile.TILE_HEIGHT))
-                    Win.GetPlayer().addY();
+                    Win.GetPlayer().moveDown();
             }
             if (keyCode == KeyEvent.VK_ESCAPE) {
                 Win.DisplayPauseMenu();
