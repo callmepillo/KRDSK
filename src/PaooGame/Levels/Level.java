@@ -26,9 +26,20 @@ public class Level {
                     else if (tileX > rightBound || tileX + Tile.TILE_WIDTH < leftBound)
                         break;
                     else if (tileX < rightBound && tileX + Tile.TILE_WIDTH > rightBound)
-                        Tile.tiles[tileMap[room][i][j]].Draw(g, tileX,  tileY, rightBound - tileX, Tile.TILE_HEIGHT, 0, 0, rightBound - tileX, Tile.TILE_HEIGHT);
+                        Tile.tiles[tileMap[room][i][j]].Draw(
+                                g, tileX,  tileY,
+                                rightBound - tileX, Tile.TILE_HEIGHT,
+                                0, 0,
+                                rightBound - tileX, Tile.TILE_HEIGHT
+                        );
                     else if (tileX < leftBound && tileX + Tile.TILE_WIDTH > leftBound)
-                        Tile.tiles[tileMap[room][i][j]].Draw(g, tileX,  tileY, tileX + Tile.TILE_WIDTH - leftBound, Tile.TILE_HEIGHT, leftBound - tileX, 0, tileX + Tile.TILE_WIDTH - leftBound, Tile.TILE_HEIGHT);
+                        Tile.tiles[tileMap[room][i][j]].Draw(
+                                g,
+                                leftBound,  tileY,
+                                tileX + Tile.TILE_WIDTH - leftBound, Tile.TILE_HEIGHT,
+                                leftBound - tileX, 0,
+                                tileX + Tile.TILE_WIDTH - leftBound, Tile.TILE_HEIGHT
+                        );
                     else break;
                 }
             }

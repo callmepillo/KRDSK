@@ -92,8 +92,8 @@ public class Tile
     public static Tile double_round_obstacle_right = new Tile(Assets.double_round_obstacle_right, 92);
 
 
-    public static final int TILE_WIDTH  = 70; //48                      /*!< Latimea unei dale.*/
-    public static final int TILE_HEIGHT = 70; //48;                       /*!< Inaltimea unei dale.*/
+    public static final int TILE_WIDTH  = 80; //48                      /*!< Latimea unei dale.*/
+    public static final int TILE_HEIGHT = 80; //48;                       /*!< Inaltimea unei dale.*/
 
     protected BufferedImage img;                                    /*!< Imaginea aferenta tipului de dala.*/
     protected final int id;                                         /*!< Id-ul unic aferent tipului de dala.*/
@@ -148,9 +148,9 @@ public class Tile
     }
 
     public void Draw(Graphics g, int x, int y, int width, int height, int sx, int sy, int sw, int sh) {
-        g.drawImage(img, x, y, x+width, y+height, sx, sy, sx+sw, sy+sh, null);
+        BufferedImage cropped = img.getSubimage(sx, sy, sw * 100/TILE_WIDTH, sh * 100/TILE_HEIGHT);
+        g.drawImage(cropped, x, y, width, height, null);
     }
-
 
     /*! \fn public boolean IsSolid()
         \brief Returneaza proprietatea de dala solida (supusa coliziunilor) sau nu.
