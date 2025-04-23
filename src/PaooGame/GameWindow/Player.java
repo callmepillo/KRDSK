@@ -75,14 +75,6 @@ public class Player {
         return posY;
     }
 
-    public int getNewX() {
-        return posX + velX * speed;
-    }
-
-    public int getNewY() {
-        return posY + velY * speed;
-    }
-
     public void moveDown() {
         velY += 5;
     }
@@ -99,13 +91,6 @@ public class Player {
     public Rectangle getRectangle() {
         return new Rectangle(posX, posY, Tile.TILE_WIDTH, Tile.TILE_HEIGHT);
     }
-
-    public void freeze() { freezed = true; }
-    public void unfreeze() { freezed = false; }
-
-    //public void moveLeft() {}
-    //public void moveRight() {}
-    //public void jump() {}
 }
 
 //Jucatorul trebuie sa:
