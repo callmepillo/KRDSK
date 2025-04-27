@@ -56,12 +56,16 @@ public class InputController {
                 if(Win.GetPlayer().getX() <= (Win.GetWndWidth() - Tile.TILE_WIDTH))
                     Win.GetPlayer().moveRight();
             }
-            if (keyCode == KeyEvent.VK_UP) {
+            if (keyCode == KeyEvent.VK_SPACE) {
                 if(Win.GetPlayer().getY() >= 0)
                     Win.GetPlayer().jump();
             }
+            if (keyCode == KeyEvent.VK_ESCAPE) {
+                // if(Win.GetPlayer().getY() >= 0)
+                Win.DisplayPauseMenu();
+            }
             if (keyCode == KeyEvent.VK_DOWN) {
-                if(Win.GetPlayer().getY() <= (Win.GetWndHeight() - Tile.TILE_HEIGHT))
+               // if(Win.GetPlayer().getY() <= (Win.GetWndHeight() - Tile.TILE_HEIGHT))
                     Win.GetPlayer().moveDown();
             }
             if (keyCode == KeyEvent.VK_ESCAPE) {
@@ -77,6 +81,14 @@ public class InputController {
                     Win.addRoom(number);
                     Win.GetBar().setActive(number, true);
                 }
+            }
+        }
+
+        public void keyReleased(KeyEvent event)
+        {
+            int keyCode=event.getKeyCode();
+            if (keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT || keyCode == KeyEvent.VK_DOWN) {
+                Win.GetPlayer().stopMoving();
             }
         }
     }

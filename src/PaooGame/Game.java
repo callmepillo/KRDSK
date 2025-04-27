@@ -116,8 +116,8 @@ public class Game implements Runnable {
 
         for(FauxWindow win : wnd.GetWindows())
             win.Update(wnd.GetMouseX(), wnd.GetMouseY(), wnd.GetMousePressed());
-//        if(wnd.GetPlayer() != null)
-//            wnd.GetPlayer().Update();
+        if(wnd.GetPlayer() != null)
+            wnd.GetPlayer().Update(wnd.GetMouseX(), wnd.GetMouseY(), distortionMapX);
     }
 
     private void Draw() {
