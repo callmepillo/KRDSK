@@ -49,16 +49,13 @@ public class InputController {
         public void keyPressed(KeyEvent event) {
             int keyCode = event.getKeyCode();
             if (keyCode == KeyEvent.VK_LEFT) {
-                if(Win.GetPlayer().getX() >= 0)
-                    Win.GetPlayer().moveLeft();
+                Win.GetPlayer().moveLeft();
             }
             if (keyCode == KeyEvent.VK_RIGHT) {
-                if(Win.GetPlayer().getX() <= (Win.GetWndWidth() - Tile.TILE_WIDTH))
-                    Win.GetPlayer().moveRight();
+                Win.GetPlayer().moveRight();
             }
             if (keyCode == KeyEvent.VK_SPACE) {
-                if(Win.GetPlayer().getY() >= 0)
-                    Win.GetPlayer().jump();
+                Win.GetPlayer().jump();
             }
             if (keyCode == KeyEvent.VK_ESCAPE) {
                 // if(Win.GetPlayer().getY() >= 0)
@@ -68,9 +65,7 @@ public class InputController {
                // if(Win.GetPlayer().getY() <= (Win.GetWndHeight() - Tile.TILE_HEIGHT))
                     Win.GetPlayer().moveDown();
             }
-            if (keyCode == KeyEvent.VK_ESCAPE) {
-                Win.DisplayPauseMenu();
-            }
+
             if (Character.isDigit(event.getKeyChar())) {
                 int number = Integer.parseInt(Character.toString(event.getKeyChar()));
                 if (Win.GetBar().isActive(number)) {
@@ -87,9 +82,16 @@ public class InputController {
         public void keyReleased(KeyEvent event)
         {
             int keyCode=event.getKeyCode();
-            if (keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT || keyCode == KeyEvent.VK_DOWN) {
+           if (keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT || keyCode == KeyEvent.VK_DOWN) {
                 Win.GetPlayer().stopMoving();
             }
+        /*    if (keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT) {
+                Win.GetPlayer().stopMoving();
+            }
+            if (keyCode == KeyEvent.VK_DOWN) {
+                Win.GetPlayer().stopVerticalMoving();
+            }
+*/
         }
     }
 

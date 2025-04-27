@@ -16,12 +16,15 @@ public class Player {
     private int speed = 1;
     private boolean freezed = false;
     private boolean onGround = false;
+    private final int gravity=1;
+    private final int jumpStrength=-15;
 
     public Player(int x, int y) {
         posX = x;
         posY = y;
         velX = 0;
         velY = 0;
+        playerSprite=new Tile(Assets.player_idle, 6);
     }
 
     public void Update(int roomX, int roomY, int[][] roomMap) {
@@ -37,18 +40,15 @@ public class Player {
         } else if (velX < 0) {
             ++velX;
         }
+        velY+=gravity;
 
-        if (!onGround) {
-            velY += 1;
 
-        } else {
-            velY = 0;
-        }
 
         //verific daca jucatorul loveste pamantul
         if (posY >= roomY - Tile.TILE_HEIGHT) {
-            onGround = true;
+           posY=roomY- Tile.TILE_HEIGHT;
             velY = 0;//caderea este oprita
+            onGround=true;
         } else {
             onGround = false;
         }
@@ -89,14 +89,14 @@ public class Player {
     public void stopMoving()
     {
         velX=0;
-        velY=0;
+        //velY=0;
     }
 
     public void jump()
     {
         if(onGround)
         {
-            velY=-15;
+            velY=jumpStrength;
             onGround=false;
         }
     }
@@ -112,9 +112,12 @@ public class Player {
         return posY;
     }
 
+    public void stopVerticalMoving() {
+        velY = 0;
+    }
 
 
-   /* public void jump() {
+    /* public void jump() {
         velY -= 5;
     }
 */
