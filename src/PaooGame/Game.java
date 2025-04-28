@@ -116,8 +116,7 @@ public class Game implements Runnable {
 
         for(FauxWindow win : wnd.GetWindows())
             win.Update(wnd.GetMouseX(), wnd.GetMouseY(), wnd.GetMousePressed());
-        if(wnd.GetPlayer() != null)
-            wnd.GetPlayer().Update(wnd.GetMouseX(), wnd.GetMouseY(), distortionMapX);
+
     }
 
     private void Draw() {
@@ -162,8 +161,8 @@ public class Game implements Runnable {
 //        Tile.mountainTile.Draw(imgGraphics, 0, 4*Tile.TILE_HEIGHT);
         //Tile.plantTile.Draw(imgGraphics, 0, 0);
 
-       if(wnd.GetPlayer() != null)
-           wnd.GetPlayer().Draw(imgGraphics);
+     //  if(wnd.GetPlayer() != null)
+       //    wnd.GetPlayer().Draw(imgGraphics);
         if(wnd.GetBar() != null)
             wnd.GetBar().Draw(imgGraphics);
         try {

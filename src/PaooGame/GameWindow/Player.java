@@ -45,8 +45,8 @@ public class Player {
 
 
         //verific daca jucatorul loveste pamantul
-        if (posY >= roomY - Tile.TILE_HEIGHT) {
-           posY=roomY- Tile.TILE_HEIGHT;
+        if (posY >= roomY+FauxWindow.height - Tile.TILE_HEIGHT) {
+           posY=roomY+FauxWindow.height- Tile.TILE_HEIGHT;
             velY = 0;//caderea este oprita
             onGround=true;
         } else {
