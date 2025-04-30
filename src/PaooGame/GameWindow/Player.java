@@ -18,6 +18,7 @@ public class Player {
     private boolean onGround = false;
     private final int gravity=1;
     private final int jumpStrength=-15;
+    private boolean jump=false;
 
     public Player(int x, int y) {
         posX = x;
@@ -28,11 +29,18 @@ public class Player {
     }
 
     public void Update(int roomX, int roomY, int[][] roomMap) {
+
+       velY+=gravity;
         int newX = posX + velX * speed;
-        int newY = posY + velY * speed;
-        if (CollisionChecker.CanMoveHere(getRectangle(), roomX, roomY, newX, newY, roomMap) && !freezed) {
+//miscarea pe orizontala
+        if (CollisionChecker.CanMoveHere(getRectangle(), roomX, roomY, newX, posY, roomMap) && !freezed) {
             posX = newX;
-            posY = newY;
+        }
+        int newY = posY + velY * speed;
+
+        if(CollisionChecker.CanMoveHere(getRectangle(), roomX, roomY, posX, newY, roomMap)&&!freezed){
+
+            posY=newY;
         }
 
         if (velX > 0) {
@@ -59,6 +67,17 @@ public class Player {
             ++velY;
             */
 
+    }
+
+    public void Jump(){
+        if(onGround && !jump){
+            velY=jumpStrength;
+            onGround=false;
+            jump=true;
+        }
+    }
+    public void releaseJump(){
+        jump=false;
     }
 
     public void Draw(Graphics2D g) {

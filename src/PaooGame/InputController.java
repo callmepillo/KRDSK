@@ -4,6 +4,7 @@ package PaooGame;
 import PaooGame.GameWindow.GameWindow;
 
 //for constants regarding cli messages
+import PaooGame.GameWindow.KeyInput;
 import PaooGame.Graphics.Messages;
 
 //for TILE_HEIGHT and TILE_WIDTH constants
@@ -91,7 +92,10 @@ public class InputController {
             if (keyCode == KeyEvent.VK_DOWN) {
                 Win.GetPlayer().stopVerticalMoving();
             }
-*/
+*/          if(key== KeyEvent.VK_SPACE)
+            {
+                player.releaseJump();
+            }
         }
     }
 
