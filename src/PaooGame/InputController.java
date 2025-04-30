@@ -92,9 +92,11 @@ public class InputController {
             if (keyCode == KeyEvent.VK_DOWN) {
                 Win.GetPlayer().stopVerticalMoving();
             }
-*/          if(key== KeyEvent.VK_SPACE)
+
+*/          int key=event.getKeyCode();
+            if(key== KeyEvent.VK_SPACE)
             {
-                player.releaseJump();
+                Win.GetPlayer().releaseJump();
             }
         }
     }

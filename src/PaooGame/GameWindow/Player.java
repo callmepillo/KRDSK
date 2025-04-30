@@ -5,7 +5,6 @@ import PaooGame.Tiles.Tile;
 
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 
 public class Player {
     private Tile playerSprite;
@@ -17,8 +16,8 @@ public class Player {
     private boolean freezed = false;
     private boolean onGround = false;
     private final int gravity=1;
-    private final int jumpStrength=-15;
-    private boolean jump=false;
+    private final int jumpStrength=-19;
+    private boolean jumpPressed =false;
 
     public Player(int x, int y) {
         posX = x;
@@ -31,6 +30,7 @@ public class Player {
     public void Update(int roomX, int roomY, int[][] roomMap) {
 
        velY+=gravity;
+
         int newX = posX + velX * speed;
 //miscarea pe orizontala
         if (CollisionChecker.CanMoveHere(getRectangle(), roomX, roomY, newX, posY, roomMap) && !freezed) {
@@ -48,18 +48,16 @@ public class Player {
         } else if (velX < 0) {
             ++velX;
         }
-        velY+=gravity;
-
-
 
         //verific daca jucatorul loveste pamantul
-        if (posY >= roomY+FauxWindow.height - Tile.TILE_HEIGHT) {
+      /*  if (posY >= roomY+FauxWindow.height - Tile.TILE_HEIGHT) {
            posY=roomY+FauxWindow.height- Tile.TILE_HEIGHT;
             velY = 0;//caderea este oprita
             onGround=true;
         } else {
             onGround = false;
         }
+*/
 
     /*    if(velY > 0)
             --velY;
@@ -69,15 +67,18 @@ public class Player {
 
     }
 
-    public void Jump(){
-        if(onGround && !jump){
+    public void jump(){
+        if(onGround && !jumpPressed){
             velY=jumpStrength;
             onGround=false;
-            jump=true;
+            jumpPressed =true;
         }
     }
     public void releaseJump(){
-        jump=false;
+        jumpPressed =false;
+        if(velY<-4) {
+            velY = -4;
+        }
     }
 
     public void Draw(Graphics2D g) {
@@ -111,14 +112,7 @@ public class Player {
         //velY=0;
     }
 
-    public void jump()
-    {
-        if(onGround)
-        {
-            velY=jumpStrength;
-            onGround=false;
-        }
-    }
+
     public void moveDown() {
         velY = 5;
     }
@@ -136,7 +130,7 @@ public class Player {
     }
 
 
-    /* public void jump() {
+    /* public void jumpPressed() {
         velY -= 5;
     }
 */
