@@ -29,7 +29,7 @@ public class InputController {
     public PlayerControl pControl;
     public MouseMotionControls mMControl;
     public MousePressedControls mPControl;
-    public MenuControl   kControl;
+    public MenuControl kControl;
 
     /*this implementation makes an InputController specialized (it only modifies a certain
     GameWindow, not all of them; if we would have multiple GameWindows we would need multiple
@@ -42,6 +42,10 @@ public class InputController {
         mMControl = new MouseMotionControls();
         mPControl = new MousePressedControls();
         kControl = new MenuControl();
+
+        //adaugam keyInput pentru a gestiona intrarile jucatorului
+        KeyInput keyInput=new KeyInput(Win.GetPlayer());
+        //Win.addKeyListener(keyInput);
     }
 
     //player control (with arrow keys) and primitive boundry check

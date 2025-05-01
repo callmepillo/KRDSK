@@ -29,13 +29,16 @@ public class Player {
 
     public void Update(int roomX, int roomY, int[][] roomMap) {
 
-       velY+=gravity;
+        if(!onGround) {
+            velY += gravity;
+        }
 
         int newX = posX + velX * speed;
-//miscarea pe orizontala
+        //miscarea pe orizontala
         if (CollisionChecker.CanMoveHere(getRectangle(), roomX, roomY, newX, posY, roomMap) && !freezed) {
             posX = newX;
         }
+
         int newY = posY + velY * speed;
 
         if(CollisionChecker.CanMoveHere(getRectangle(), roomX, roomY, posX, newY, roomMap)&&!freezed){
@@ -43,28 +46,22 @@ public class Player {
             posY=newY;
         }
 
+        if(velY>=0 && newY>=roomY+FauxWindow.height-Tile.TILE_HEIGHT)
+        {
+            posY=roomY+FauxWindow.height-Tile.TILE_HEIGHT;
+            velY=0;
+            onGround=true;
+        }
+        else{
+            if(velY>0){
+                onGround=false;
+            }
+        }
         if (velX > 0) {
             --velX;
         } else if (velX < 0) {
             ++velX;
         }
-
-        //verific daca jucatorul loveste pamantul
-      /*  if (posY >= roomY+FauxWindow.height - Tile.TILE_HEIGHT) {
-           posY=roomY+FauxWindow.height- Tile.TILE_HEIGHT;
-            velY = 0;//caderea este oprita
-            onGround=true;
-        } else {
-            onGround = false;
-        }
-*/
-
-    /*    if(velY > 0)
-            --velY;
-        else if(velY < 0)
-            ++velY;
-            */
-
     }
 
     public void jump(){
@@ -76,8 +73,8 @@ public class Player {
     }
     public void releaseJump(){
         jumpPressed =false;
-        if(velY<-4) {
-            velY = -4;
+        if(velY<-5) {
+            velY = -5;
         }
     }
 
@@ -144,7 +141,3 @@ public class Player {
     }
 }
 
-//Jucatorul trebuie sa:
-//  mearga stanga/dreapta (viteza/acceleratie/whatev)
-//  sara (viteza/acceleratie/gravitate)
-//  gravitatie!!!

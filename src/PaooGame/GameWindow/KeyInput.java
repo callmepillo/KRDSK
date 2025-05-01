@@ -31,10 +31,12 @@ import java.awt.event.KeyListener;
     {
         int key =e.getKeyCode();
 
-
         if(key==KeyEvent.VK_RIGHT || key== KeyEvent.VK_LEFT)
         {
             player.stopMoving();
+        }
+        if(key==KeyEvent.VK_SPACE){
+            player.releaseJump();
         }
     }
     @Override

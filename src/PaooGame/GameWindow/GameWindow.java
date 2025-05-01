@@ -34,6 +34,8 @@ public class GameWindow
     private KeyListener playerControl;
     private MouseMotionListener mouseMotionControl;
     private MouseListener mousePressedControl;
+    private int[][]distortX;
+    private int[][]distortY;
 
 
 
@@ -56,7 +58,8 @@ public class GameWindow
         {
             return;
         }
-
+        distortX=new int[wndHeight][wndWidth];
+        distortY=new int[wndHeight][wndWidth];
         wndFrame = new JFrame(wndTitle);
         wndFrame.setSize(wndWidth, wndHeight);
         wndFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -144,17 +147,26 @@ public class GameWindow
         removeAllListeners();
         windows.remove(cliMenu);
         statusBar = new Bar(50, wndHeight - 150, 100, 50, level.GetNumberOfRooms());
-        for(int i = 0; i < level.GetNumberOfRooms(); ++i)
+        for(int i = 0; i < level.GetNumberOfRooms(); ++i) {
             windows.add(new FauxWindow(100, 500, level, i));
+        }
             //Recomended size should be a multiple of Tile.TILE_WIDTH and Tile.TILE_HEIGHT
 //            windows.add(new FauxWindow(100, 500, 8*Tile.TILE_WIDTH, 6*Tile.TILE_HEIGHT, level, 0));
 //            windows.add(new FauxWindow(1000, 200, 8*Tile.TILE_WIDTH, 6*Tile.TILE_HEIGHT, level, 1));
+
+
+        KeyInput keyInput=new KeyInput(player);
+        canvas.addKeyListener(keyInput);
+
         canvas.addMouseListener(mousePressedControl);
         canvas.addMouseMotionListener(mouseMotionControl);
         statusBar.SetActive(true);
 
         player = new Player(300, 910);
         getRoom(0).enterPlayer(player);
+
+        InputController inputController=new InputController(this, distortX, distortY);
+
         canvas.addKeyListener(playerControl);
     }
 
