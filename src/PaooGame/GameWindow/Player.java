@@ -1,5 +1,6 @@
 package PaooGame.GameWindow;
 
+import PaooGame.Game;
 import PaooGame.Graphics.Assets;
 import PaooGame.Tiles.Tile;
 
@@ -12,12 +13,14 @@ public class Player {
     private int posY;
     private int velX;
     private int velY;
-    private int speed = 1;
+    private float speed = 5.0f;
     private boolean freezed = false;
     private boolean onGround = false;
     private final int gravity=1;
     private final int jumpStrength=-19;
     private boolean jumpPressed =false;
+    private boolean moving =false;
+    private boolean left, up, right, down;
 
     public Player(int x, int y) {
         posX = x;
@@ -28,40 +31,58 @@ public class Player {
     }
 
     public void Update(int roomX, int roomY, int[][] roomMap) {
+//
+        moving = false;
+        if(left && !right) {
+            posX-=speed;
+            moving=true;
 
-        if(!onGround) {
-            velY += gravity;
+        }else if(right && !left) {
+            posX+=speed;
+            moving=true;
+
         }
 
-        int newX = posX + velX * speed;
-        //miscarea pe orizontala
-        if (CollisionChecker.CanMoveHere(getRectangle(), roomX, roomY, newX, posY, roomMap) && !freezed) {
-            posX = newX;
+        if(up &&!down) {
+            posY-=speed;
+            moving=true;
+        }else if(down && !up) {
+            posY+=speed;
+            moving=true;
         }
-
-        int newY = posY + velY * speed;
-
-        if(CollisionChecker.CanMoveHere(getRectangle(), roomX, roomY, posX, newY, roomMap)&&!freezed){
-
-            posY=newY;
-        }
-
-        if(velY>=0 && newY>=roomY+FauxWindow.height-Tile.TILE_HEIGHT)
-        {
-            posY=roomY+FauxWindow.height-Tile.TILE_HEIGHT;
-            velY=0;
-            onGround=true;
-        }
-        else{
-            if(velY>0){
-                onGround=false;
-            }
-        }
-        if (velX > 0) {
-            --velX;
-        } else if (velX < 0) {
-            ++velX;
-        }
+//        if(!onGround) {
+//            velY += gravity;
+//        }
+//
+//        int newX = posX + velX * speed;
+//        //miscarea pe orizontala
+//        if (CollisionChecker.CanMoveHere(getRectangle(), roomX, roomY, newX, posY, roomMap) && !freezed) {
+//            posX = newX;
+//        }
+//
+//        int newY = posY + velY * speed;
+//
+//        if(CollisionChecker.CanMoveHere(getRectangle(), roomX, roomY, posX, newY, roomMap)&&!freezed){
+//
+//            posY=newY;
+//        }
+//
+//        if(velY>=0 && newY>=roomY+FauxWindow.height-Tile.TILE_HEIGHT)
+//        {
+//            posY=roomY+FauxWindow.height-Tile.TILE_HEIGHT;
+//            velY=0;
+//            onGround=true;
+//        }
+//        else{
+//            if(velY>0){
+//                onGround=false;
+//            }
+//        }
+//        if (velX > 0) {
+//            --velX;
+//        } else if (velX < 0) {
+//            ++velX;
+//        }
     }
 
     public void jump(){
@@ -139,5 +160,40 @@ public class Player {
     public Rectangle getRectangle() {
         return new Rectangle(posX, posY, Tile.TILE_WIDTH, Tile.TILE_HEIGHT);
     }
+
+    public boolean isLeft() {
+        return left;
+    }
+    public void setLeft(boolean left) {
+        this.left = left;
+    }
+
+    public boolean isRight() {
+        return right;
+    }
+    public void setRight(boolean right) {
+        this.right = right;
+    }
+    public boolean isUp() {
+        return up;
+    }
+    public void setUp(boolean up) {
+        this.up = up;
+    }
+    public boolean isDown() {
+        return down;
+    }
+    public void setDown(boolean down) {
+        this.down = down;
+    }
+
+    public void resetDirBooleans() {
+        left=false;
+        right=false;
+        up=false;
+        down=false;
+
+    }
+
 }
 

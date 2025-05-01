@@ -304,6 +304,11 @@ public class Game implements Runnable {
         // Copy processed pixels back to the image
         System.arraycopy(outputPixels, 0, pixels, 0, pixels.length);
     }
+//    public Player getPlayer() {
+//        return player;
+//    }
+
+
 //    private void applyBarrelDistortionV1(BufferedImage image, double distortionFactor) {
 //        int width = wnd.GetWndWidth();
 //        int height = wnd.GetWndHeight();

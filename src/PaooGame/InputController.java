@@ -48,26 +48,45 @@ public class InputController {
     public class PlayerControl extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent event) {
-            int keyCode = event.getKeyCode();
-            if (keyCode == KeyEvent.VK_LEFT) {
-                Win.GetPlayer().moveLeft();
-            }
-            if (keyCode == KeyEvent.VK_RIGHT) {
-                Win.GetPlayer().moveRight();
-            }
-            if (keyCode == KeyEvent.VK_SPACE) {
-                Win.GetPlayer().jump();
-            }
-            if (keyCode == KeyEvent.VK_ESCAPE) {
-                // if(Win.GetPlayer().getY() >= 0)
-                Win.DisplayPauseMenu();
-            }
-            if (keyCode == KeyEvent.VK_DOWN) {
-               // if(Win.GetPlayer().getY() <= (Win.GetWndHeight() - Tile.TILE_HEIGHT))
-                    Win.GetPlayer().moveDown();
+            switch (event.getKeyCode()){
+                case KeyEvent.VK_W:
+                    Win.GetPlayer().setUp(true);
+                    break;
+                case KeyEvent.VK_A:
+                    Win.GetPlayer().setLeft(true);
+                    break;
+                case KeyEvent.VK_S:
+                    Win.GetPlayer().setDown(true);
+                    break;
+                case KeyEvent.VK_D:
+                    Win.GetPlayer().setRight(true);
+                    break;
+                case KeyEvent.VK_ESCAPE:
+                    Win.DisplayPauseMenu();
+                    break;
             }
 
-            if (Character.isDigit(event.getKeyChar())) {
+
+//            int keyCode = event.getKeyCode();
+//            if (keyCode == KeyEvent.VK_LEFT) {
+//                Win.GetPlayer().moveLeft();
+//            }
+//            if (keyCode == KeyEvent.VK_RIGHT) {
+//                Win.GetPlayer().moveRight();
+//            }
+//            if (keyCode == KeyEvent.VK_SPACE) {
+//                Win.GetPlayer().jump();
+//            }
+           // if (keyCode == KeyEvent.VK_ESCAPE) {
+                // if(Win.GetPlayer().getY() >= 0)
+             //   Win.DisplayPauseMenu();
+            //}
+//            if (keyCode == KeyEvent.VK_DOWN) {
+//               // if(Win.GetPlayer().getY() <= (Win.GetWndHeight() - Tile.TILE_HEIGHT))
+//                    Win.GetPlayer().moveDown();
+//            }
+//
+           if (Character.isDigit(event.getKeyChar())) {
                 int number = Integer.parseInt(Character.toString(event.getKeyChar()));
                 if (Win.GetBar().isActive(number)) {
                     Win.removeRoom(number);
@@ -82,23 +101,39 @@ public class InputController {
 
         public void keyReleased(KeyEvent event)
         {
-            int keyCode=event.getKeyCode();
-           if (keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT || keyCode == KeyEvent.VK_DOWN) {
-                Win.GetPlayer().stopMoving();
-            }
-        /*    if (keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT) {
-                Win.GetPlayer().stopMoving();
-            }
-            if (keyCode == KeyEvent.VK_DOWN) {
-                Win.GetPlayer().stopVerticalMoving();
-            }
-
-*/          //int key=event.getKeyCode();
-            if(keyCode == KeyEvent.VK_SPACE)
-            {
-                Win.GetPlayer().releaseJump();
+            switch (event.getKeyCode()){
+                case KeyEvent.VK_W:
+                    Win.GetPlayer().setUp(false);
+                    break;
+                case KeyEvent.VK_A:
+                    Win.GetPlayer().setLeft(false);
+                    break;
+                case KeyEvent.VK_S:
+                    Win.GetPlayer().setDown(false);
+                    break;
+                case KeyEvent.VK_D:
+                    Win.GetPlayer().setRight(false);
+                    break;
             }
         }
+
+//            int keyCode=event.getKeyCode();
+//           if (keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT || keyCode == KeyEvent.VK_DOWN) {
+//                Win.GetPlayer().stopMoving();
+//            }
+//        /*    if (keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT) {
+//                Win.GetPlayer().stopMoving();
+//            }
+//            if (keyCode == KeyEvent.VK_DOWN) {
+//                Win.GetPlayer().stopVerticalMoving();
+//            }
+//
+//*/          //int key=event.getKeyCode();
+//            if(keyCode == KeyEvent.VK_SPACE)
+//            {
+//                Win.GetPlayer().releaseJump();
+//            }
+//        }
     }
 
     //mouse coordinate handler

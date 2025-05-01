@@ -38,7 +38,6 @@ public class GameWindow
     private int[][]distortY;
 
 
-
     public GameWindow(String title, int width, int height){
         wndTitle    = title;    /*!< Retine titlul ferestrei.*/
         wndWidth    = width;    /*!< Retine latimea ferestrei.*/
@@ -58,6 +57,7 @@ public class GameWindow
         {
             return;
         }
+
         distortX=new int[wndHeight][wndWidth];
         distortY=new int[wndHeight][wndWidth];
         wndFrame = new JFrame(wndTitle);
@@ -67,6 +67,7 @@ public class GameWindow
         wndFrame.setLocationRelativeTo(null);
         wndFrame.setVisible(true);
         wndFrame.setFocusable(true);
+        //wndFrame.addFocusListener();
 
         canvas = new Canvas();
         canvas.setPreferredSize(new Dimension(wndWidth, wndHeight));
@@ -92,6 +93,19 @@ public class GameWindow
 
         wndFrame.add(canvas);
         wndFrame.pack();
+        wndFrame.addWindowFocusListener(new WindowFocusListener() {
+            @Override
+            public void windowLostFocus(WindowEvent e) {
+                //System.out.println("Bye");
+                windowFocusLost();
+            }
+
+            public void windowGainedFocus(WindowEvent e) {
+
+            }
+
+        });
+
     }
 
     public int GetWndWidth()
@@ -235,4 +249,11 @@ public class GameWindow
         }
         return null;
     }
+
+    public void windowFocusLost() {
+        if(player != null) {
+            player.resetDirBooleans();
+        }
+    }
+
 }
