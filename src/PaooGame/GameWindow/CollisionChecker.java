@@ -4,6 +4,7 @@ import PaooGame.Levels.Level;
 import PaooGame.Tiles.Tile;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.TimeoutException;
@@ -49,5 +50,15 @@ public class CollisionChecker {
             levelOffset = 0;
 
         return levelOffset;
+    }
+
+    public static float GetEntityXPosNextToWall(Rectangle2D, Float hitbox, float xSpeed) {
+       ///////am ramas aici
+        int currentTile=(int)(hitbox.x/);
+        if(xSpeed>0){
+            //right
+        }else {
+            //left
+        }
     }
 }

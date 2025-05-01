@@ -16,11 +16,20 @@ public class Player {
     private float speed = 5.0f;
     private boolean freezed = false;
     private boolean onGround = false;
-    private final int gravity=1;
+    private float gravity=0.04f;
     private final int jumpStrength=-19;
     private boolean jumpPressed =false;
     private boolean moving =false;
     private boolean left, up, right, down;
+    private int roomX;
+    private int roomY;
+
+    private boolean jump;
+    private float airSpeed=0f;
+    private float jumpSpeed=-2.25f;
+    private float fallSpeedAfterCollision=0.5f;
+    private boolean inAir=false;
+
 
     public Player(int x, int y) {
         posX = x;
@@ -33,34 +42,36 @@ public class Player {
     public void Update(int roomX, int roomY, int[][] roomMap) {
 //
         moving = false;
-        if(left && !right) {
-            posX-=speed;
-            moving=true;
+        if(!left && !right && !inAir)
+            return;
 
-        }else if(right && !left) {
-            posX+=speed;
-            moving=true;
-
+        float xSpeed=0;
+        if(left) {
+            xSpeed-=speed;
+        }
+        if(right) {
+            xSpeed+=speed;
         }
 
-        if(up &&!down) {
-            posY-=speed;
-            moving=true;
-        }else if(down && !up) {
-            posY+=speed;
-            moving=true;
+        if(inAir) {
+
+        }else {
+            updateXpos(xSpeed);
         }
+
+
+
 //        if(!onGround) {
 //            velY += gravity;
 //        }
 //
-//        int newX = posX + velX * speed;
+    //     int newX = posX + velX * speed;
 //        //miscarea pe orizontala
 //        if (CollisionChecker.CanMoveHere(getRectangle(), roomX, roomY, newX, posY, roomMap) && !freezed) {
 //            posX = newX;
 //        }
 //
-//        int newY = posY + velY * speed;
+  //         int newY = posY + velY * speed;
 //
 //        if(CollisionChecker.CanMoveHere(getRectangle(), roomX, roomY, posX, newY, roomMap)&&!freezed){
 //
@@ -83,6 +94,14 @@ public class Player {
 //        } else if (velX < 0) {
 //            ++velX;
 //        }
+    }
+
+    private void updateXpos(float xSpeed) {
+        if (CollisionChecker.CanMoveHere(hitbox.x+xSpeed, hitbox.y) {
+           posX += xSpeed;
+       }else {
+            posX=GetEntityXPosNextToWall(posX, xSpeed);
+        }
     }
 
     public void jump(){
