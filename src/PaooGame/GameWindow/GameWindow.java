@@ -155,8 +155,9 @@ public class GameWindow
 //            windows.add(new FauxWindow(1000, 200, 8*Tile.TILE_WIDTH, 6*Tile.TILE_HEIGHT, level, 1));
 
 
-        KeyInput keyInput=new KeyInput(player);
-        canvas.addKeyListener(keyInput);
+        //NU LUCRAM CU KEYINPUT!!! STERGE ACEASTA CLASA!!! NOI LUCRAM DOAR CU INPUTCONTROLLER!!!
+//        KeyInput keyInput=new KeyInput(player);
+//        canvas.addKeyListener(keyInput);
 
         canvas.addMouseListener(mousePressedControl);
         canvas.addMouseMotionListener(mouseMotionControl);
@@ -165,7 +166,7 @@ public class GameWindow
         player = new Player(300, 910);
         getRoom(0).enterPlayer(player);
 
-        InputController inputController=new InputController(this, distortX, distortY);
+        InputController inputController = new InputController(this, distortX, distortY);
 
         canvas.addKeyListener(playerControl);
     }

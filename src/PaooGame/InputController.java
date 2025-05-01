@@ -42,10 +42,6 @@ public class InputController {
         mMControl = new MouseMotionControls();
         mPControl = new MousePressedControls();
         kControl = new MenuControl();
-
-        //adaugam keyInput pentru a gestiona intrarile jucatorului
-        KeyInput keyInput=new KeyInput(Win.GetPlayer());
-        //Win.addKeyListener(keyInput);
     }
 
     //player control (with arrow keys) and primitive boundry check
@@ -97,8 +93,8 @@ public class InputController {
                 Win.GetPlayer().stopVerticalMoving();
             }
 
-*/          int key=event.getKeyCode();
-            if(key== KeyEvent.VK_SPACE)
+*/          //int key=event.getKeyCode();
+            if(keyCode == KeyEvent.VK_SPACE)
             {
                 Win.GetPlayer().releaseJump();
             }
