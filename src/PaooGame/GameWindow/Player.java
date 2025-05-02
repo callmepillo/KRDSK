@@ -122,9 +122,13 @@ public class Player {
         }
     }
 
-    private void resetInAir() {
+    public void resetInAir() {
         inAir = false;
         airSpeed = 0;
+    }
+
+    public void setInAir(boolean inAir) {
+        this.inAir = inAir;
     }
 
     public void jump(){
@@ -152,7 +156,7 @@ public class Player {
         g.setStroke(new java.awt.BasicStroke(3));
         g.drawRect(getRectangle().x, getRectangle().y, getRectangle().width, getRectangle().height);
 
-        playerSprite.Draw(g, posX - 5, posY); //so its centered on the hitbox
+        playerSprite.Draw(g, posX - 5, posY - Tile.TILE_HEIGHT/2); //so its centered on the hitbox
 
         g.setStroke(orgStroke);
         g.setColor(orgColor);
@@ -201,7 +205,7 @@ public class Player {
 
     public Rectangle getRectangle() {
         //i wanted to make the hitbox a little smaller
-        return new Rectangle(posX, posY, Tile.TILE_WIDTH - 10, Tile.TILE_HEIGHT);
+        return new Rectangle(posX, posY, Tile.TILE_WIDTH - 10, Tile.TILE_HEIGHT/2);
     }
 
     public boolean isLeft() {

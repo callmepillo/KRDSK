@@ -23,8 +23,6 @@ public class Level {
                     int tileY = upperBound + i * Tile.TILE_HEIGHT;
                     if (tileX + Tile.TILE_WIDTH <= rightBound && tileX >= leftBound)
                         Tile.tiles[tileMap[room][i][j]].Draw(g, tileX,  tileY);
-                    else if (tileX > rightBound || tileX + Tile.TILE_WIDTH < leftBound)
-                        break;
                     else if (tileX < rightBound && tileX + Tile.TILE_WIDTH > rightBound)
                         Tile.tiles[tileMap[room][i][j]].Draw(
                                 g, tileX,  tileY,
@@ -40,7 +38,6 @@ public class Level {
                                 leftBound - tileX, 0,
                                 tileX + Tile.TILE_WIDTH - leftBound, Tile.TILE_HEIGHT
                         );
-                    else break;
                 }
             }
         }

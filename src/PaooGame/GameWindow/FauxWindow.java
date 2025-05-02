@@ -55,7 +55,8 @@ public class FauxWindow extends JPanel {
     public void setVisible(boolean vis) { this.visible = vis; }
     public void enterPlayer(Player player) {
         this.player = player;
-        player.setXY(posX, posY + height - Tile.TILE_HEIGHT);
+        player.setXY(posX, posY + height - Tile.TILE_HEIGHT - Tile.TILE_HEIGHT/2);
+        player.setInAir(true);
     }
     public void leavePlayer() { this.player = null; this.levelOffset = 0; }
 

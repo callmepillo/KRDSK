@@ -64,13 +64,13 @@ public class CollisionChecker {
     }
 
     public static int GetEntityYPosUnderRoofOrAboveFloor(Rectangle player, int roomY, int airSpeed) {
-        int currentTile = (int) Math.round( (player.y - roomY) / (double) Tile.TILE_HEIGHT);
+        int currentTile = (int) Math.floor( (player.y - roomY) / (double) Tile.TILE_HEIGHT);
         if( airSpeed > 0 ) {
             int tileYPos = currentTile * Tile.TILE_HEIGHT + roomY;
             int yOffset = Tile.TILE_HEIGHT - player.height;
             return tileYPos + yOffset;
         }else {
-            return currentTile * Tile.TILE_WIDTH + roomY;
+            return currentTile * Tile.TILE_HEIGHT + roomY;
         }
     }
 
