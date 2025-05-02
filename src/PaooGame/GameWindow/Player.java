@@ -13,7 +13,7 @@ public class Player {
     private int posY;
     private int velX;
     private int velY;
-    private int speed = 3; //changed to int
+    private int speed = 4; //changed to int
     private boolean freezed = false;
     private boolean onGround = false;
     private int gravity = 1;

@@ -83,9 +83,9 @@ public class FauxWindow extends JPanel {
         if(player != null && visible) {
             int newOffset = CollisionChecker.CheckCloseToBorder(player.getRectangle(), levelOffset, posX, posX + width);
             if(newOffset > levelOffset)
-                player.setXY(player.getX() - 1, player.getY());
+                player.setXY(player.getX() - 2, player.getY());
             else if(newOffset < levelOffset)
-                player.setXY(player.getX() + 1, player.getY());
+                player.setXY(player.getX() + 2, player.getY());
             levelOffset = newOffset;
             player.Update(posX - levelOffset, posY, level.GetRoomMap(room));
         }
