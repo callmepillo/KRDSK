@@ -22,6 +22,7 @@ public class FauxWindow extends JPanel {
     private Player player;
     protected boolean visible;
     private static FauxWindow draggedWindow = null;
+    private static FauxWindow playerWindow = null;
     private boolean isDragged;
     private int levelOffset;
 
@@ -55,11 +56,21 @@ public class FauxWindow extends JPanel {
     public void setVisible(boolean vis) { this.visible = vis; }
     public void enterPlayer(Player player) {
         this.player = player;
+        playerWindow = this;
         player.setXY(posX, posY + height - Tile.TILE_HEIGHT - Tile.TILE_HEIGHT/2);
         player.setInAir(true);
     }
-    public void leavePlayer() { this.player = null; this.levelOffset = 0; }
 
+    public void leavePlayer() {
+        playerWindow = null;
+        this.player = null;
+    }
+
+    public static int getPlayerRoom() {
+        if(playerWindow != null)
+            return playerWindow.room;
+        else return 0;
+    }
 
     public int getWidth() {
         return width;

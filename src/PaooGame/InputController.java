@@ -218,6 +218,19 @@ public class InputController {
                                 System.out.println("whoops");
                             }
                         break;
+                    case "db":
+                        if(args.length > 2)
+                            switch (args[1]) {
+                                case "enter":
+                                    try {
+                                        Win.EnterRoom(Integer.parseInt(args[2]));
+                                        Win.HidePauseMenu();
+                                    }
+                                    catch(NumberFormatException ex) {
+                                        System.out.println("whoops");
+                                    }
+                            }
+                        break;
                     case "help":
                         Win.GetCliWindow().addText(Messages.help);
                         break;

@@ -185,6 +185,15 @@ public class GameWindow
         canvas.addKeyListener(playerControl);
     }
 
+    public void EnterRoom(int room) {
+        getRoom(GetCurrentRoom()).leavePlayer();
+        getRoom(room).enterPlayer(player);
+    }
+
+    public int GetCurrentRoom() {
+        return FauxWindow.getPlayerRoom();
+    }
+
     public void DisplayPauseMenu() {
         if(!windows.contains(cliMenu) && inLevel) {
             cliMenu.setTransparent(true);
