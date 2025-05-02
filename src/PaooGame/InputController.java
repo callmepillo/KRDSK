@@ -61,6 +61,9 @@ public class InputController {
                 case KeyEvent.VK_D:
                     Win.GetPlayer().setRight(true);
                     break;
+                case KeyEvent.VK_SPACE:
+                    Win.GetPlayer().setJump(true);
+                    break;
                 case KeyEvent.VK_ESCAPE:
                     Win.DisplayPauseMenu();
                     break;
@@ -113,6 +116,9 @@ public class InputController {
                     break;
                 case KeyEvent.VK_D:
                     Win.GetPlayer().setRight(false);
+                    break;
+                case KeyEvent.VK_SPACE:
+                    Win.GetPlayer().setJump(false);
                     break;
             }
         }

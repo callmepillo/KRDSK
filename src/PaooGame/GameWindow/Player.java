@@ -13,22 +13,19 @@ public class Player {
     private int posY;
     private int velX;
     private int velY;
-    private float speed = 5.0f;
+    private int speed = 3; //changed to int
     private boolean freezed = false;
     private boolean onGround = false;
-    private float gravity=0.04f;
-    private final int jumpStrength=-19;
-    private boolean jumpPressed =false;
-    private boolean moving =false;
+    private int gravity = 1;
+    private final int jumpStrength = -19;
+    private boolean jumpPressed = false;
+    private boolean moving = false;
     private boolean left, up, right, down;
-    private int roomX;
-    private int roomY;
-
     private boolean jump;
-    private float airSpeed=0f;
-    private float jumpSpeed=-2.25f;
-    private float fallSpeedAfterCollision=0.5f;
-    private boolean inAir=false;
+    private int airSpeed = 0;
+    private int jumpSpeed = -20;
+    private int fallSpeedAfterCollision = 1;
+    private boolean inAir = false;
 
 
     public Player(int x, int y) {
@@ -40,25 +37,46 @@ public class Player {
     }
 
     public void Update(int roomX, int roomY, int[][] roomMap) {
-//
         moving = false;
+
+        if(jump)
+            jump();
+
         if(!left && !right && !inAir)
             return;
 
-        float xSpeed=0;
+        int xSpeed = 0;
+
         if(left) {
-            xSpeed-=speed;
+            xSpeed -= speed;
         }
         if(right) {
-            xSpeed+=speed;
+            xSpeed += speed;
+        }
+
+        if(!inAir) {
+            if(!CollisionChecker.IsEntityOnFloor(getRectangle(), roomX, roomY, roomMap)) {
+                inAir = true;
+            }
         }
 
         if(inAir) {
-
-        }else {
-            updateXpos(xSpeed);
+            if(CollisionChecker.CanMoveHere(getRectangle(), roomX, roomY, posX, posY + airSpeed, roomMap)) {
+                posY += airSpeed;
+                airSpeed += gravity;
+                updateXpos(xSpeed, roomX, roomY, roomMap);
+            } else {
+                posY = CollisionChecker.GetEntityYPosUnderRoofOrAboveFloor(getRectangle(), roomY, airSpeed);
+                if(airSpeed > 0)
+                    resetInAir();
+                else
+                    airSpeed = fallSpeedAfterCollision;
+                updateXpos(xSpeed, roomX, roomY, roomMap);
+            }
+        } else {
+            updateXpos(xSpeed, roomX, roomY, roomMap);
         }
-
+        moving = true;
 
 
 //        if(!onGround) {
@@ -96,21 +114,26 @@ public class Player {
 //        }
     }
 
-    private void updateXpos(float xSpeed) {
-        if (CollisionChecker.CanMoveHere(hitbox.x+xSpeed, hitbox.y) {
-           posX += xSpeed;
-       }else {
-            posX=GetEntityXPosNextToWall(posX, xSpeed);
+    private void updateXpos(int xSpeed, int roomX, int roomY, int[][] roomMap) {
+        if (CollisionChecker.CanMoveHere(getRectangle(), roomX, roomY, posX + xSpeed, posY, roomMap)) {
+            posX += xSpeed;
+        } else {
+            posX = CollisionChecker.GetEntityXPosNextToWall(getRectangle(), roomX, xSpeed);
         }
     }
 
-    public void jump(){
-        if(onGround && !jumpPressed){
-            velY=jumpStrength;
-            onGround=false;
-            jumpPressed =true;
-        }
+    private void resetInAir() {
+        inAir = false;
+        airSpeed = 0;
     }
+
+    public void jump(){
+        if(inAir)
+            return;
+        inAir = true;
+        airSpeed = jumpSpeed;
+    }
+
     public void releaseJump(){
         jumpPressed =false;
         if(velY<-5) {
@@ -127,9 +150,9 @@ public class Player {
         //drawing the hitbox for debugging purposes
         g.setColor(Color.RED);
         g.setStroke(new java.awt.BasicStroke(3));
-        g.drawRect(posX, posY, Tile.TILE_WIDTH, Tile.TILE_HEIGHT);
+        g.drawRect(getRectangle().x, getRectangle().y, getRectangle().width, getRectangle().height);
 
-        playerSprite.Draw(g, posX, posY);
+        playerSprite.Draw(g, posX - 5, posY); //so its centered on the hitbox
 
         g.setStroke(orgStroke);
         g.setColor(orgColor);
@@ -177,7 +200,8 @@ public class Player {
     }
 
     public Rectangle getRectangle() {
-        return new Rectangle(posX, posY, Tile.TILE_WIDTH, Tile.TILE_HEIGHT);
+        //i wanted to make the hitbox a little smaller
+        return new Rectangle(posX, posY, Tile.TILE_WIDTH - 10, Tile.TILE_HEIGHT);
     }
 
     public boolean isLeft() {
@@ -204,6 +228,12 @@ public class Player {
     }
     public void setDown(boolean down) {
         this.down = down;
+    }
+    public boolean isJump() {
+        return jump;
+    }
+    public void setJump(boolean jump) {
+        this.jump = jump;
     }
 
     public void resetDirBooleans() {
