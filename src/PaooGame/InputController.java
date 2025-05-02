@@ -49,15 +49,19 @@ public class InputController {
         @Override
         public void keyPressed(KeyEvent event) {
             switch (event.getKeyCode()){
+                case KeyEvent.VK_UP:
                 case KeyEvent.VK_W:
                     Win.GetPlayer().setUp(true);
                     break;
+                case KeyEvent.VK_LEFT:
                 case KeyEvent.VK_A:
                     Win.GetPlayer().setLeft(true);
                     break;
+                case KeyEvent.VK_DOWN:
                 case KeyEvent.VK_S:
                     Win.GetPlayer().setDown(true);
                     break;
+                case KeyEvent.VK_RIGHT:
                 case KeyEvent.VK_D:
                     Win.GetPlayer().setRight(true);
                     break;
@@ -105,15 +109,19 @@ public class InputController {
         public void keyReleased(KeyEvent event)
         {
             switch (event.getKeyCode()){
+                case KeyEvent.VK_UP:
                 case KeyEvent.VK_W:
                     Win.GetPlayer().setUp(false);
                     break;
+                case KeyEvent.VK_LEFT:
                 case KeyEvent.VK_A:
                     Win.GetPlayer().setLeft(false);
                     break;
+                case KeyEvent.VK_DOWN:
                 case KeyEvent.VK_S:
                     Win.GetPlayer().setDown(false);
                     break;
+                case KeyEvent.VK_RIGHT:
                 case KeyEvent.VK_D:
                     Win.GetPlayer().setRight(false);
                     break;
