@@ -20,7 +20,8 @@ public class CollisionChecker {
         for(int i = 0; i < lvlMap.length; ++i) {
             for(int j = 0; j < lvlMap[i].length; ++j) {
                 if(lvlMap[i][j] != 0 && Tile.tiles[lvlMap[i][j]].IsSolid()) {
-                    solidObjects.add(new Rectangle(roomX + j*Tile.TILE_WIDTH,roomY + i*Tile.TILE_HEIGHT,  Tile.TILE_WIDTH, Tile.TILE_HEIGHT));
+                    //solidObjects.add(new Rectangle(roomX + j*Tile.TILE_WIDTH,roomY + i*Tile.TILE_HEIGHT,  Tile.TILE_WIDTH, Tile.TILE_HEIGHT));
+                    solidObjects.add(Tile.tiles[lvlMap[i][j]].getHitbox(roomX + j*Tile.TILE_WIDTH, roomY + i*Tile.TILE_HEIGHT));
                 }
             }
         }
@@ -63,14 +64,33 @@ public class CollisionChecker {
         }
     }
 
-    public static int GetEntityYPosUnderRoofOrAboveFloor(Rectangle player, int roomY, int airSpeed) {
-        int currentTile = (int) Math.floor( (player.y - roomY) / (double) Tile.TILE_HEIGHT);
+    public static int GetEntityYPosUnderRoofOrAboveFloor(Rectangle player, int roomX, int roomY, int airSpeed, int[][] lvlMap) {
+        int currentTileY = (int) Math.floor( (player.y - roomY) / (double) Tile.TILE_HEIGHT);
+
+        //Calculate current tile in order to implement hitbox
+        int currentTileX = (int) Math.round( (player.x - roomX) / (double) Tile.TILE_WIDTH);
+        int aboveOffset = 0;
+        int underOffset = 0;
+        int tileYPos = currentTileY * Tile.TILE_HEIGHT + roomY;
+        Tile AboveTile = Tile.tiles[lvlMap[currentTileY][currentTileX]];
+
+        Tile UnderTile = null;
+        if(currentTileY + 1 < 6)
+            UnderTile = Tile.tiles[lvlMap[currentTileY + 1][currentTileX]];
+
+        if(AboveTile != null && AboveTile.IsSolid()) {
+            aboveOffset = AboveTile.getHitbox(0, 0).height;
+        }
+
+        if(UnderTile != null && UnderTile.IsSolid()) {
+            underOffset = UnderTile.getHitbox(0, 0).y;
+        }
+
         if( airSpeed > 0 ) {
-            int tileYPos = currentTile * Tile.TILE_HEIGHT + roomY;
             int yOffset = Tile.TILE_HEIGHT - player.height;
-            return tileYPos + yOffset;
+            return tileYPos + yOffset + underOffset;
         }else {
-            return currentTile * Tile.TILE_HEIGHT + roomY;
+            return currentTileY * Tile.TILE_HEIGHT + roomY + aboveOffset;
         }
     }
 

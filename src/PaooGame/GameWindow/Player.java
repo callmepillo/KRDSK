@@ -66,7 +66,7 @@ public class Player {
                 airSpeed += gravity;
                 updateXpos(xSpeed, roomX, roomY, roomMap);
             } else {
-                posY = CollisionChecker.GetEntityYPosUnderRoofOrAboveFloor(getRectangle(), roomY, airSpeed);
+                posY = CollisionChecker.GetEntityYPosUnderRoofOrAboveFloor(getRectangle(), roomX, roomY, airSpeed, roomMap);
                 if(airSpeed > 0)
                     resetInAir();
                 else
