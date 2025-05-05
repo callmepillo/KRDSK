@@ -5,6 +5,7 @@ import PaooGame.GameWindow.GameWindow;
 
 //for constants regarding cli messages
 import PaooGame.GameWindow.KeyInput;
+import PaooGame.GameWindow.Options;
 import PaooGame.Graphics.Messages;
 
 //for TILE_HEIGHT and TILE_WIDTH constants
@@ -47,19 +48,12 @@ public class InputController {
 
     //player control (with arrow keys) and primitive boundry check
     public class PlayerControl extends KeyAdapter {
-        private boolean optWASD = false;
-        private boolean optSPACE = true;
-
-        public void setOptWASD(boolean val) {
-            optWASD = val;
-        }
-
-        public void setOptSPACE(boolean val) {
-            optSPACE = val;
-        }
 
         @Override
         public void keyPressed(KeyEvent event) {
+            boolean optWASD = Options.getWASD();
+            boolean optSPACE = Options.getSpace();
+
             if(optWASD) {
                 switch (event.getKeyCode()) {
                     case KeyEvent.VK_W:
@@ -157,6 +151,10 @@ public class InputController {
 //                    Win.GetPlayer().setJump(false);
 //                    break;
 //            }
+
+            boolean optWASD = Options.getWASD();
+            boolean optSPACE = Options.getSpace();
+
             if(optWASD) {
                 switch (event.getKeyCode()) {
                     case KeyEvent.VK_W:

@@ -145,7 +145,6 @@ public class GameWindow
         wndFrame.dispose();
     }
     public void StartLevel(int levelNumber) {
-        inLevel = true;
         switch (levelNumber) {
             case(1):
                 level = new LevelOne();
@@ -157,9 +156,10 @@ public class GameWindow
                 level = new LevelThree();
                 break;
             default:
-                level = new TestLevel();
-                break;
+                GetCliWindow().addText(Messages.lvlNotAvalible);
+                return;
         }
+        inLevel = true;
         removeAllListeners();
         windows.remove(cliMenu);
         statusBar = new Bar(50, wndHeight - 150, 100, 50, level.GetNumberOfRooms());
@@ -288,6 +288,8 @@ public class GameWindow
                     catch(NumberFormatException ex) {
                         System.out.println("whoops");
                     }
+                else
+                    GetCliWindow().addText(Messages.lvlNotAvalible);
                 break;
             case "db":
                 if(args.length > 2)
@@ -307,7 +309,8 @@ public class GameWindow
                     switch (args[1]) {
                         case "wasd":
                             try {
-                                ((InputController.PlayerControl) playerControl).setOptWASD(Boolean.parseBoolean(args[2]));
+                                Options.setWASD(Boolean.parseBoolean(args[2]));
+                                GetCliWindow().addText(Messages.option("wasd", args[2]));
                                 HidePauseMenu();
                             }
                             catch(NumberFormatException ex) {
@@ -316,17 +319,34 @@ public class GameWindow
                             break;
                         case "space":
                             try {
-                                ((InputController.PlayerControl) playerControl).setOptSPACE(Boolean.parseBoolean(args[2]));
+                                Options.setSpace(Boolean.parseBoolean(args[2]));
+                                GetCliWindow().addText(Messages.option("space", args[2]));
                                 HidePauseMenu();
                             }
                             catch(NumberFormatException ex) {
                                 System.out.println("whoops");
                             }
                             break;
+                        default:
+                            GetCliWindow().addText(Messages.optionNotAvalible);
                     }
+                else if (args.length == 2 && args[1].equals("status"))
+                    GetCliWindow().addText(Messages.optionStatus());
+
                 break;
             case "help":
-                GetCliWindow().addText(Messages.help);
+                if(args.length > 1) {
+                    switch (args[1]) {
+                        case "option":
+                            GetCliWindow().addText(Messages.optionHelp);
+                            break;
+                        default:
+                            GetCliWindow().addText(Messages.helpPageNotAvalible);
+                            break;
+                    }
+                }
+                else
+                    GetCliWindow().addText(Messages.help);
                 break;
             case "title":
                 GetCliWindow().addText(Messages.title);

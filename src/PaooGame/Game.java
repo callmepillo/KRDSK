@@ -2,6 +2,7 @@ package PaooGame;
 
 import PaooGame.GameWindow.FauxWindow;
 import PaooGame.GameWindow.GameWindow;
+import PaooGame.GameWindow.Options;
 import PaooGame.Graphics.Assets;
 import PaooGame.Graphics.Colors;
 import PaooGame.Graphics.MyFonts;
