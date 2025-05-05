@@ -67,7 +67,9 @@ public class GameWindow
         wndFrame.setLocationRelativeTo(null);
         wndFrame.setVisible(true);
         wndFrame.setFocusable(true);
-        //wndFrame.addFocusListener();
+
+        //Fullscreen
+        GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(wndFrame);
 
         canvas = new Canvas();
         canvas.setPreferredSize(new Dimension(wndWidth, wndHeight));
@@ -265,4 +267,79 @@ public class GameWindow
         }
     }
 
+    public void handleWindowCommand(String prompt) {
+        String[] args = prompt.split(" ");
+
+        switch (args[0]) {
+            case "exit":
+                if(IsInLevel())
+                    DisplayStartMenu(); //save/load?
+                else
+                    SetStop(true);
+                break;
+            case "clear":
+                GetCliWindow().clearHistory();
+                break;
+            case "play":
+                if(args.length > 1)
+                    try {
+                        StartLevel(Integer.parseInt(args[1]));
+                    }
+                    catch(NumberFormatException ex) {
+                        System.out.println("whoops");
+                    }
+                break;
+            case "db":
+                if(args.length > 2)
+                    switch (args[1]) {
+                        case "enter":
+                            try {
+                                EnterRoom(Integer.parseInt(args[2]));
+                                HidePauseMenu();
+                            }
+                            catch(NumberFormatException ex) {
+                                System.out.println("whoops");
+                            }
+                    }
+                break;
+            case "option":
+                if(args.length > 2)
+                    switch (args[1]) {
+                        case "wasd":
+                            try {
+                                ((InputController.PlayerControl) playerControl).setOptWASD(Boolean.parseBoolean(args[2]));
+                                HidePauseMenu();
+                            }
+                            catch(NumberFormatException ex) {
+                                System.out.println("whoops");
+                            }
+                            break;
+                        case "space":
+                            try {
+                                ((InputController.PlayerControl) playerControl).setOptSPACE(Boolean.parseBoolean(args[2]));
+                                HidePauseMenu();
+                            }
+                            catch(NumberFormatException ex) {
+                                System.out.println("whoops");
+                            }
+                            break;
+                    }
+                break;
+            case "help":
+                GetCliWindow().addText(Messages.help);
+                break;
+            case "title":
+                GetCliWindow().addText(Messages.title);
+                break;
+            case "paused":
+                GetCliWindow().addText(Messages.paused);
+                break;
+            case "numpie":
+                GetCliWindow().addText("Matematici Discrete - Sebi 2024");
+                break;
+            default:
+                GetCliWindow().addText("Command \"" + prompt + "\" not found");
+                break;
+        }
+    }
 }
