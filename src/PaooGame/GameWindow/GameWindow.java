@@ -34,7 +34,8 @@ public class GameWindow
     private KeyListener playerControl;
     private MouseMotionListener mouseMotionControl;
     private MouseListener mousePressedControl;
-
+    private int[][]distortX;
+    private int[][]distortY;
 
 
     public GameWindow(String title, int width, int height){
@@ -57,6 +58,8 @@ public class GameWindow
             return;
         }
 
+        distortX=new int[wndHeight][wndWidth];
+        distortY=new int[wndHeight][wndWidth];
         wndFrame = new JFrame(wndTitle);
         wndFrame.setSize(wndWidth, wndHeight);
         wndFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -64,6 +67,7 @@ public class GameWindow
         wndFrame.setLocationRelativeTo(null);
         wndFrame.setVisible(true);
         wndFrame.setFocusable(true);
+        //wndFrame.addFocusListener();
 
         canvas = new Canvas();
         canvas.setPreferredSize(new Dimension(wndWidth, wndHeight));
@@ -89,6 +93,19 @@ public class GameWindow
 
         wndFrame.add(canvas);
         wndFrame.pack();
+        wndFrame.addWindowFocusListener(new WindowFocusListener() {
+            @Override
+            public void windowLostFocus(WindowEvent e) {
+                //System.out.println("Bye");
+                windowFocusLost();
+            }
+
+            public void windowGainedFocus(WindowEvent e) {
+
+            }
+
+        });
+
     }
 
     public int GetWndWidth()
@@ -144,18 +161,37 @@ public class GameWindow
         removeAllListeners();
         windows.remove(cliMenu);
         statusBar = new Bar(50, wndHeight - 150, 100, 50, level.GetNumberOfRooms());
-        for(int i = 0; i < level.GetNumberOfRooms(); ++i)
+        for(int i = 0; i < level.GetNumberOfRooms(); ++i) {
             windows.add(new FauxWindow(100, 500, level, i));
+        }
             //Recomended size should be a multiple of Tile.TILE_WIDTH and Tile.TILE_HEIGHT
 //            windows.add(new FauxWindow(100, 500, 8*Tile.TILE_WIDTH, 6*Tile.TILE_HEIGHT, level, 0));
 //            windows.add(new FauxWindow(1000, 200, 8*Tile.TILE_WIDTH, 6*Tile.TILE_HEIGHT, level, 1));
+
+
+        //NU LUCRAM CU KEYINPUT!!! STERGE ACEASTA CLASA!!! NOI LUCRAM DOAR CU INPUTCONTROLLER!!!
+//        KeyInput keyInput=new KeyInput(player);
+//        canvas.addKeyListener(keyInput);
+
         canvas.addMouseListener(mousePressedControl);
         canvas.addMouseMotionListener(mouseMotionControl);
         statusBar.SetActive(true);
 
         player = new Player(300, 910);
         getRoom(0).enterPlayer(player);
+
+        InputController inputController = new InputController(this, distortX, distortY);
+
         canvas.addKeyListener(playerControl);
+    }
+
+    public void EnterRoom(int room) {
+        getRoom(GetCurrentRoom()).leavePlayer();
+        getRoom(room).enterPlayer(player);
+    }
+
+    public int GetCurrentRoom() {
+        return FauxWindow.getPlayerRoom();
     }
 
     public void DisplayPauseMenu() {
@@ -222,4 +258,11 @@ public class GameWindow
         }
         return null;
     }
+
+    public void windowFocusLost() {
+        if(player != null) {
+            player.resetDirBooleans();
+        }
+    }
+
 }

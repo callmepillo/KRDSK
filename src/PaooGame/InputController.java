@@ -4,6 +4,7 @@ package PaooGame;
 import PaooGame.GameWindow.GameWindow;
 
 //for constants regarding cli messages
+import PaooGame.GameWindow.KeyInput;
 import PaooGame.Graphics.Messages;
 
 //for TILE_HEIGHT and TILE_WIDTH constants
@@ -28,7 +29,7 @@ public class InputController {
     public PlayerControl pControl;
     public MouseMotionControls mMControl;
     public MousePressedControls mPControl;
-    public MenuControl   kControl;
+    public MenuControl kControl;
 
     /*this implementation makes an InputController specialized (it only modifies a certain
     GameWindow, not all of them; if we would have multiple GameWindows we would need multiple
@@ -47,27 +48,52 @@ public class InputController {
     public class PlayerControl extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent event) {
-            int keyCode = event.getKeyCode();
-            if (keyCode == KeyEvent.VK_LEFT) {
-                if(Win.GetPlayer().getX() >= 0)
-                    Win.GetPlayer().moveLeft();
+            switch (event.getKeyCode()){
+                case KeyEvent.VK_UP:
+                case KeyEvent.VK_W:
+                    Win.GetPlayer().setUp(true);
+                    break;
+                case KeyEvent.VK_LEFT:
+                case KeyEvent.VK_A:
+                    Win.GetPlayer().setLeft(true);
+                    break;
+                case KeyEvent.VK_DOWN:
+                case KeyEvent.VK_S:
+                    Win.GetPlayer().setDown(true);
+                    break;
+                case KeyEvent.VK_RIGHT:
+                case KeyEvent.VK_D:
+                    Win.GetPlayer().setRight(true);
+                    break;
+                case KeyEvent.VK_SPACE:
+                    Win.GetPlayer().setJump(true);
+                    break;
+                case KeyEvent.VK_ESCAPE:
+                    Win.DisplayPauseMenu();
+                    break;
             }
-            if (keyCode == KeyEvent.VK_RIGHT) {
-                if(Win.GetPlayer().getX() <= (Win.GetWndWidth() - Tile.TILE_WIDTH))
-                    Win.GetPlayer().moveRight();
-            }
-            if (keyCode == KeyEvent.VK_UP) {
-                if(Win.GetPlayer().getY() >= 0)
-                    Win.GetPlayer().jump();
-            }
-            if (keyCode == KeyEvent.VK_DOWN) {
-                if(Win.GetPlayer().getY() <= (Win.GetWndHeight() - Tile.TILE_HEIGHT))
-                    Win.GetPlayer().moveDown();
-            }
-            if (keyCode == KeyEvent.VK_ESCAPE) {
-                Win.DisplayPauseMenu();
-            }
-            if (Character.isDigit(event.getKeyChar())) {
+
+
+//            int keyCode = event.getKeyCode();
+//            if (keyCode == KeyEvent.VK_LEFT) {
+//                Win.GetPlayer().moveLeft();
+//            }
+//            if (keyCode == KeyEvent.VK_RIGHT) {
+//                Win.GetPlayer().moveRight();
+//            }
+//            if (keyCode == KeyEvent.VK_SPACE) {
+//                Win.GetPlayer().jump();
+//            }
+           // if (keyCode == KeyEvent.VK_ESCAPE) {
+                // if(Win.GetPlayer().getY() >= 0)
+             //   Win.DisplayPauseMenu();
+            //}
+//            if (keyCode == KeyEvent.VK_DOWN) {
+//               // if(Win.GetPlayer().getY() <= (Win.GetWndHeight() - Tile.TILE_HEIGHT))
+//                    Win.GetPlayer().moveDown();
+//            }
+//
+           if (Character.isDigit(event.getKeyChar())) {
                 int number = Integer.parseInt(Character.toString(event.getKeyChar()));
                 if (Win.GetBar().isActive(number)) {
                     Win.removeRoom(number);
@@ -79,6 +105,49 @@ public class InputController {
                 }
             }
         }
+
+        public void keyReleased(KeyEvent event)
+        {
+            switch (event.getKeyCode()){
+                case KeyEvent.VK_UP:
+                case KeyEvent.VK_W:
+                    Win.GetPlayer().setUp(false);
+                    break;
+                case KeyEvent.VK_LEFT:
+                case KeyEvent.VK_A:
+                    Win.GetPlayer().setLeft(false);
+                    break;
+                case KeyEvent.VK_DOWN:
+                case KeyEvent.VK_S:
+                    Win.GetPlayer().setDown(false);
+                    break;
+                case KeyEvent.VK_RIGHT:
+                case KeyEvent.VK_D:
+                    Win.GetPlayer().setRight(false);
+                    break;
+                case KeyEvent.VK_SPACE:
+                    Win.GetPlayer().setJump(false);
+                    break;
+            }
+        }
+
+//            int keyCode=event.getKeyCode();
+//           if (keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT || keyCode == KeyEvent.VK_DOWN) {
+//                Win.GetPlayer().stopMoving();
+//            }
+//        /*    if (keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT) {
+//                Win.GetPlayer().stopMoving();
+//            }
+//            if (keyCode == KeyEvent.VK_DOWN) {
+//                Win.GetPlayer().stopVerticalMoving();
+//            }
+//
+//*/          //int key=event.getKeyCode();
+//            if(keyCode == KeyEvent.VK_SPACE)
+//            {
+//                Win.GetPlayer().releaseJump();
+//            }
+//        }
     }
 
     //mouse coordinate handler
@@ -147,6 +216,19 @@ public class InputController {
                             }
                             catch(NumberFormatException ex) {
                                 System.out.println("whoops");
+                            }
+                        break;
+                    case "db":
+                        if(args.length > 2)
+                            switch (args[1]) {
+                                case "enter":
+                                    try {
+                                        Win.EnterRoom(Integer.parseInt(args[2]));
+                                        Win.HidePauseMenu();
+                                    }
+                                    catch(NumberFormatException ex) {
+                                        System.out.println("whoops");
+                                    }
                             }
                         break;
                     case "help":

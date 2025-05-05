@@ -4,6 +4,7 @@ import PaooGame.Levels.Level;
 import PaooGame.Tiles.Tile;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.TimeoutException;
@@ -49,5 +50,31 @@ public class CollisionChecker {
             levelOffset = 0;
 
         return levelOffset;
+    }
+
+    public static int GetEntityXPosNextToWall(Rectangle player, int roomX, int xSpeed) {
+        int currentTile = (int) Math.round( (player.x - roomX) / (double) Tile.TILE_WIDTH);
+        if( xSpeed > 0 ) {
+            int tileXPos = currentTile * Tile.TILE_WIDTH + roomX;
+            int xOffset = Tile.TILE_WIDTH - player.width;
+            return tileXPos + xOffset;
+        }else {
+            return currentTile * Tile.TILE_WIDTH + roomX;
+        }
+    }
+
+    public static int GetEntityYPosUnderRoofOrAboveFloor(Rectangle player, int roomY, int airSpeed) {
+        int currentTile = (int) Math.floor( (player.y - roomY) / (double) Tile.TILE_HEIGHT);
+        if( airSpeed > 0 ) {
+            int tileYPos = currentTile * Tile.TILE_HEIGHT + roomY;
+            int yOffset = Tile.TILE_HEIGHT - player.height;
+            return tileYPos + yOffset;
+        }else {
+            return currentTile * Tile.TILE_HEIGHT + roomY;
+        }
+    }
+
+    public static boolean IsEntityOnFloor(Rectangle player, int roomX, int roomY, int[][] roomMap) {
+        return !CanMoveHere(player, roomX, roomY, player.x, player.y + 1, roomMap);
     }
 }

@@ -22,6 +22,7 @@ public class FauxWindow extends JPanel {
     private Player player;
     protected boolean visible;
     private static FauxWindow draggedWindow = null;
+    private static FauxWindow playerWindow = null;
     private boolean isDragged;
     private int levelOffset;
 
@@ -55,10 +56,21 @@ public class FauxWindow extends JPanel {
     public void setVisible(boolean vis) { this.visible = vis; }
     public void enterPlayer(Player player) {
         this.player = player;
-        player.setXY(posX, posY + height - Tile.TILE_HEIGHT);
+        playerWindow = this;
+        player.setXY(posX, posY + height - Tile.TILE_HEIGHT - Tile.TILE_HEIGHT/2);
+        player.setInAir(true);
     }
-    public void leavePlayer() { this.player = null; this.levelOffset = 0; }
 
+    public void leavePlayer() {
+        playerWindow = null;
+        this.player = null;
+    }
+
+    public static int getPlayerRoom() {
+        if(playerWindow != null)
+            return playerWindow.room;
+        else return 0;
+    }
 
     public int getWidth() {
         return width;
@@ -83,9 +95,9 @@ public class FauxWindow extends JPanel {
         if(player != null && visible) {
             int newOffset = CollisionChecker.CheckCloseToBorder(player.getRectangle(), levelOffset, posX, posX + width);
             if(newOffset > levelOffset)
-                player.setXY(player.getX() - 1, player.getY());
+                player.setXY(player.getX() - 2, player.getY());
             else if(newOffset < levelOffset)
-                player.setXY(player.getX() + 1, player.getY());
+                player.setXY(player.getX() + 2, player.getY());
             levelOffset = newOffset;
             player.Update(posX - levelOffset, posY, level.GetRoomMap(room));
         }
