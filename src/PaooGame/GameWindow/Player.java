@@ -214,7 +214,6 @@ public class Player {
     public void setLeft(boolean left) {
         this.left = left;
     }
-
     public boolean isRight() {
         return right;
     }

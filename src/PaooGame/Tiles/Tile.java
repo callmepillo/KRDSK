@@ -61,7 +61,7 @@ public class Tile
     public static Tile floor_right = new Tile(Assets.floor_right, 59);
     public static Tile small_fence = new Tile(Assets.small_fence, 60);
     public static Tile chair1_up = new Tile(Assets.chair1_up, 61);
-    public static Tile chair1_down = new Tile(Assets.chair1_down, 62, true, new Rectangle(5, 25, 70, 30));
+    public static Tile chair1_down = new Tile(Assets.chair1_down, 62, true, new Rectangle(5, 25, 70, 20));
     public static Tile chair2_up = new Tile(Assets.chair2_up, 63);
     public static Tile chair2_down = new Tile(Assets.chair2_down, 64);
     public static Tile box = new Tile(Assets.box, 65, true);

@@ -7,9 +7,11 @@ import java.awt.*;
 public class Level {
     public static final int LEVEL_WIDTH = 10; //Sizes for the level
     public static final int LEVEL_HEIGHT = 6; //Sizes for the level
+    public Door[] doors;
     public int[][][] tileMap;
     //this is a tile map that contains the rooms, the rows and the columns of tiles
     //the coordinates correspond to [room][row][column]
+
     //Draw function for a level
     public void Draw(Graphics2D g, int leftBound, int rightBound, int upperBound, int room, int offset) {
         int origLeftBound = leftBound;
@@ -41,6 +43,31 @@ public class Level {
                 }
             }
         }
+
+        for(Door door: doors) {
+            if(door.getOriginRoom() == room) {
+                int doorX = leftBound + door.getX() - offset;
+                int doorY = upperBound + door.getY();
+                if (doorX + Tile.TILE_WIDTH <= rightBound && doorX >= leftBound)
+                    door.Draw(g, leftBound - offset, upperBound);
+                else if (doorX < rightBound && doorX + Tile.TILE_WIDTH > rightBound)
+                    door.Draw(
+                            g, doorX, doorY,
+                            rightBound - doorX, Tile.TILE_HEIGHT,
+                            0, 0,
+                            rightBound - doorX, Tile.TILE_HEIGHT
+                    );
+                else if (doorX < leftBound && doorX + Tile.TILE_WIDTH > leftBound)
+                    door.Draw(
+                            g,
+                            leftBound, doorY,
+                            doorX + Tile.TILE_WIDTH - leftBound, Tile.TILE_HEIGHT,
+                            leftBound - doorX, 0,
+                            doorX + Tile.TILE_WIDTH - leftBound, Tile.TILE_HEIGHT
+                    );
+            }
+        }
+
         /*The draw functions iterates over each tile of a room and draws them if it is visible
         * In this case, the function only searches if the end tile has space in the window
         * (by checking if leftBound + (j+1)* Tile.TILE_WIDHT is smaller than rightBound
@@ -54,4 +81,5 @@ public class Level {
     }
     public int[][] GetRoomMap(int x) { return tileMap[x]; }
     public int[][][] getTileMap() { return tileMap; }
+    public Door[] getDoors() { return doors; }
 }

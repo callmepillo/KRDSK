@@ -1,5 +1,6 @@
 package PaooGame.GameWindow;
 
+import PaooGame.Levels.Door;
 import PaooGame.Levels.Level;
 import PaooGame.Tiles.Tile;
 
@@ -96,5 +97,13 @@ public class CollisionChecker {
 
     public static boolean IsEntityOnFloor(Rectangle player, int roomX, int roomY, int[][] roomMap) {
         return !CanMoveHere(player, roomX, roomY, player.x, player.y + 1, roomMap);
+    }
+
+    public static int CheckDoor(Rectangle player, int roomX, int roomY, Door[] doors) {
+        for(Door door: doors) {
+            if (player.intersects(door.getHitbox(roomX, roomY)))
+                return door.getDestinationRoom();
+        }
+        return doors[0].getOriginRoom();
     }
 }

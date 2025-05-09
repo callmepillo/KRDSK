@@ -24,7 +24,7 @@ public class GameWindow
     private int     mouseX;
     private int     mouseY;
     private boolean mousePressed;
-    private List<FauxWindow> windows = new ArrayList<>();
+    private static List<FauxWindow> windows = new ArrayList<>();
     private CliWindow cliMenu;
     private Bar     statusBar;
     private Level level;
@@ -88,6 +88,7 @@ public class GameWindow
 //        windows.add(new CliWindow(0,0, wndWidth, wndHeight));
 //        player = new Player(0,0);
 
+        FauxWindow.setWin(this);
         FauxWindow.setWindowSize(8*Tile.TILE_WIDTH, 6*Tile.TILE_HEIGHT);
         cliMenu = new CliWindow(0,0, wndWidth, wndHeight);
 
@@ -253,7 +254,7 @@ public class GameWindow
         }
     }
 
-    public FauxWindow getRoom(int number) {
+    public static FauxWindow getRoom(int number) {
         for(FauxWindow win: windows) {
             if(win.GetRoom() == number)
                 return win;

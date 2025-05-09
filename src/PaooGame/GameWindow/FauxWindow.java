@@ -1,6 +1,8 @@
 package PaooGame.GameWindow;
 
+import PaooGame.Game;
 import PaooGame.Graphics.Colors;
+import PaooGame.Levels.Door;
 import PaooGame.Levels.Level;
 import PaooGame.Tiles.Tile;
 import jdk.swing.interop.SwingInterOpUtils;
@@ -25,6 +27,7 @@ public class FauxWindow extends JPanel {
     private static FauxWindow playerWindow = null;
     private boolean isDragged;
     private int levelOffset;
+    private static GameWindow win;
 
     public static void setWindowSize(int width, int height) {
         FauxWindow.width = width;
@@ -91,15 +94,29 @@ public class FauxWindow extends JPanel {
         }
     }
 
+    public static void setWin(GameWindow window) {
+        win = window;
+    }
+
     public void Update(int mouseX, int mouseY, boolean mouseP) {
         if(player != null && visible) {
+
+            //check offset
             int newOffset = CollisionChecker.CheckCloseToBorder(player.getRectangle(), levelOffset, posX, posX + width);
             if(newOffset > levelOffset)
                 player.setXY(player.getX() - 2, player.getY());
             else if(newOffset < levelOffset)
                 player.setXY(player.getX() + 2, player.getY());
             levelOffset = newOffset;
-            player.Update(posX - levelOffset, posY, level.GetRoomMap(room));
+
+            //check door
+            int newRoom = CollisionChecker.CheckDoor(player.getRectangle(), posX - levelOffset, posY, level.getDoors());
+            if(newRoom != room) {
+                win.EnterRoom(newRoom);
+                System.out.println(newRoom);
+            } else {
+                player.Update(posX - levelOffset, posY, level.GetRoomMap(room));
+            }
         }
 
         if (draggedWindow == this) {
@@ -147,6 +164,10 @@ public class FauxWindow extends JPanel {
             g.setColor(orgColor);
             if (player != null)
                 player.Draw(g);
+
+            //draw hitbox for doors
+            for(Door door: level.getDoors())
+                door.drawHitbox(g,posX - levelOffset, posY);
         }
     }
 
