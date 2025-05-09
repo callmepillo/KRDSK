@@ -57,10 +57,11 @@ public class FauxWindow extends JPanel {
 
     public void setLevel(Level level) { this.level = level; }
     public void setVisible(boolean vis) { this.visible = vis; }
-    public void enterPlayer(Player player) {
+
+    public void enterPlayer(Player player, int x, int y) {
         this.player = player;
         playerWindow = this;
-        player.setXY(posX, posY + height - Tile.TILE_HEIGHT - Tile.TILE_HEIGHT/2);
+        player.setXY(posX + x, posY + y);
         player.setInAir(true);
     }
 
@@ -110,13 +111,11 @@ public class FauxWindow extends JPanel {
             levelOffset = newOffset;
 
             //check door
-            int newRoom = CollisionChecker.CheckDoor(player.getRectangle(), posX - levelOffset, posY, level.getDoors());
-            if(newRoom != -1) {
-                win.EnterRoom(newRoom);
-                System.out.println(newRoom);
-            } else {
-                player.Update(posX - levelOffset, posY, level.GetRoomMap(room));
+            Door door = CollisionChecker.CheckDoor(player.getRectangle(), posX - levelOffset, posY, level.getDoors());
+            if(door != null) {
+                win.EnterRoom(door.getDestinationRoom(), door.getDestX(), door.getDestY());
             }
+                player.Update(posX - levelOffset, posY, level.GetRoomMap(room));
         }
 
         if (draggedWindow == this) {
