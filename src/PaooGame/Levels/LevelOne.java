@@ -52,7 +52,8 @@ public class LevelOne extends Level{
         };
 
         this.doors = new Door[] {
-                new Door(0, 1, 9*Tile.TILE_WIDTH + (Tile.TILE_WIDTH/2 - 10), 2*Tile.TILE_HEIGHT)
+                new Door(0, 1, 9*Tile.TILE_WIDTH + (Tile.TILE_WIDTH/2 - 10), 2*Tile.TILE_HEIGHT),
+                new Door(1, 0, 0, 2*Tile.TILE_HEIGHT)
         };
     }
 }

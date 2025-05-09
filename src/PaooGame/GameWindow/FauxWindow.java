@@ -111,7 +111,7 @@ public class FauxWindow extends JPanel {
 
             //check door
             int newRoom = CollisionChecker.CheckDoor(player.getRectangle(), posX - levelOffset, posY, level.getDoors());
-            if(newRoom != room) {
+            if(newRoom != -1) {
                 win.EnterRoom(newRoom);
                 System.out.println(newRoom);
             } else {
@@ -166,8 +166,8 @@ public class FauxWindow extends JPanel {
                 player.Draw(g);
 
             //draw hitbox for doors
-            for(Door door: level.getDoors())
-                door.drawHitbox(g,posX - levelOffset, posY);
+//            for(Door door: level.getDoors())
+//                door.drawHitbox(g,posX - levelOffset, posY);
         }
     }
 

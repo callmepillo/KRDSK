@@ -104,6 +104,6 @@ public class CollisionChecker {
             if (player.intersects(door.getHitbox(roomX, roomY)))
                 return door.getDestinationRoom();
         }
-        return doors[0].getOriginRoom();
+        return -1;
     }
 }
