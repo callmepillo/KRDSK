@@ -11,6 +11,8 @@ public class Door {
     private int destination = 0;
     private int x;
     private int y;
+    private int destX;
+    private int destY;
 
     public Door(int org, int dest, int x, int y) {
         this.origin = org;
@@ -33,6 +35,9 @@ public class Door {
     public int getDestinationRoom() {
         return destination;
     }
+
+    public int getDestX() { return destX; }
+    public int getDestY() { return destY; }
 
     public int getOriginRoom() {
         return origin;

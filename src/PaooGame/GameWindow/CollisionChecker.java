@@ -99,11 +99,11 @@ public class CollisionChecker {
         return !CanMoveHere(player, roomX, roomY, player.x, player.y + 1, roomMap);
     }
 
-    public static int CheckDoor(Rectangle player, int roomX, int roomY, Door[] doors) {
+    public static Door CheckDoor(Rectangle player, int roomX, int roomY, Door[] doors) {
         for(Door door: doors) {
             if (player.intersects(door.getHitbox(roomX, roomY)))
-                return door.getDestinationRoom();
+                return door;
         }
-        return -1;
+        return null;
     }
 }
