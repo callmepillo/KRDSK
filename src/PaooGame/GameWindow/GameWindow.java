@@ -181,13 +181,13 @@ public class GameWindow
         statusBar.SetActive(true);
 
         player = new Player(300, 910);
-        getRoom(0).enterPlayer(player, 1, 5*Tile.TILE_HEIGHT);
+        getRoom(0).enterPlayer(player);
         canvas.addKeyListener(playerControl);
     }
 
-    public void EnterRoom(int room, int x, int y) {
+    public void EnterRoom(int room) {
         getRoom(GetCurrentRoom()).leavePlayer();
-        getRoom(room).enterPlayer(player, x, y);
+        getRoom(room).enterPlayer(player);
     }
 
     public int GetCurrentRoom() {
@@ -294,7 +294,7 @@ public class GameWindow
                     switch (args[1]) {
                         case "enter":
                             try {
-                                EnterRoom(Integer.parseInt(args[2]), 0, - Tile.TILE_HEIGHT - Tile.TILE_HEIGHT/2);
+                                EnterRoom(Integer.parseInt(args[2]));
                                 HidePauseMenu();
                             }
                             catch(NumberFormatException ex) {

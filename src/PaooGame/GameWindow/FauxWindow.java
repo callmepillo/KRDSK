@@ -110,8 +110,8 @@ public class FauxWindow extends JPanel {
             levelOffset = newOffset;
 
             //check door
-            Door enterDoor = CollisionChecker.CheckDoor(player.getRectangle(), posX - levelOffset, posY, level.getDoors());
-            if(enterDoor != null) {
+            Door enterDoor = null;
+            if (level.getDoors() != null && (enterDoor = CollisionChecker.CheckDoor(player.getRectangle(), posX - levelOffset, posY, level.getDoors())) != null) {
                 win.EnterRoom(enterDoor.getDestinationRoom());
             } else {
                 player.Update(posX - levelOffset, posY, level.GetRoomMap(room));
