@@ -5,6 +5,7 @@ import PaooGame.GameWindow.GameWindow;
 
 //for constants regarding cli messages
 import PaooGame.GameWindow.KeyInput;
+import PaooGame.GameWindow.Options;
 import PaooGame.Graphics.Messages;
 
 //for TILE_HEIGHT and TILE_WIDTH constants
@@ -44,34 +45,55 @@ public class InputController {
         kControl = new MenuControl();
     }
 
+
     //player control (with arrow keys) and primitive boundry check
     public class PlayerControl extends KeyAdapter {
+
         @Override
         public void keyPressed(KeyEvent event) {
-            switch (event.getKeyCode()){
-                case KeyEvent.VK_UP:
-                case KeyEvent.VK_W:
-                    Win.GetPlayer().setUp(true);
-                    break;
-                case KeyEvent.VK_LEFT:
-                case KeyEvent.VK_A:
-                    Win.GetPlayer().setLeft(true);
-                    break;
-                case KeyEvent.VK_DOWN:
-                case KeyEvent.VK_S:
-                    Win.GetPlayer().setDown(true);
-                    break;
-                case KeyEvent.VK_RIGHT:
-                case KeyEvent.VK_D:
-                    Win.GetPlayer().setRight(true);
-                    break;
-                case KeyEvent.VK_SPACE:
-                    Win.GetPlayer().setJump(true);
-                    break;
-                case KeyEvent.VK_ESCAPE:
-                    Win.DisplayPauseMenu();
-                    break;
+            boolean optWASD = Options.getWASD();
+            boolean optSPACE = Options.getSpace();
+
+            if(optWASD) {
+                switch (event.getKeyCode()) {
+                    case KeyEvent.VK_W:
+                        if(!optSPACE)
+                            Win.GetPlayer().setJump(true);
+                        break;
+                    case KeyEvent.VK_A:
+                        Win.GetPlayer().setLeft(true);
+                        break;
+                    case KeyEvent.VK_S:
+                        Win.GetPlayer().setDown(true);
+                        break;
+                    case KeyEvent.VK_D:
+                        Win.GetPlayer().setRight(true);
+                        break;
+                }
             }
+            else {
+                switch (event.getKeyCode()) {
+                    case KeyEvent.VK_UP:
+                        if(!optSPACE)
+                            Win.GetPlayer().setJump(true);
+                        break;
+                    case KeyEvent.VK_LEFT:
+                        Win.GetPlayer().setLeft(true);
+                        break;
+                    case KeyEvent.VK_DOWN:
+                        Win.GetPlayer().setDown(true);
+                        break;
+                    case KeyEvent.VK_RIGHT:
+                        Win.GetPlayer().setRight(true);
+                        break;
+                }
+            }
+
+            if(event.getKeyCode() == KeyEvent.VK_ESCAPE)
+                Win.DisplayPauseMenu();
+
+            if(optSPACE && (event.getKeyCode() == KeyEvent.VK_SPACE))
+                Win.GetPlayer().setJump(true);
 
 
 //            int keyCode = event.getKeyCode();
@@ -103,32 +125,76 @@ public class InputController {
                     Win.addRoom(number);
                     Win.GetBar().setActive(number, true);
                 }
-            }
+           }
         }
 
         public void keyReleased(KeyEvent event)
         {
-            switch (event.getKeyCode()){
-                case KeyEvent.VK_UP:
-                case KeyEvent.VK_W:
-                    Win.GetPlayer().setUp(false);
-                    break;
-                case KeyEvent.VK_LEFT:
-                case KeyEvent.VK_A:
-                    Win.GetPlayer().setLeft(false);
-                    break;
-                case KeyEvent.VK_DOWN:
-                case KeyEvent.VK_S:
-                    Win.GetPlayer().setDown(false);
-                    break;
-                case KeyEvent.VK_RIGHT:
-                case KeyEvent.VK_D:
-                    Win.GetPlayer().setRight(false);
-                    break;
-                case KeyEvent.VK_SPACE:
-                    Win.GetPlayer().setJump(false);
-                    break;
+//            switch (event.getKeyCode()){
+//                case KeyEvent.VK_UP:
+//                case KeyEvent.VK_W:
+//                    Win.GetPlayer().setUp(false);
+//                    break;
+//                case KeyEvent.VK_LEFT:
+//                case KeyEvent.VK_A:
+//                    Win.GetPlayer().setLeft(false);
+//                    break;
+//                case KeyEvent.VK_DOWN:
+//                case KeyEvent.VK_S:
+//                    Win.GetPlayer().setDown(false);
+//                    break;
+//                case KeyEvent.VK_RIGHT:
+//                case KeyEvent.VK_D:
+//                    Win.GetPlayer().setRight(false);
+//                    break;
+//                case KeyEvent.VK_SPACE:
+//                    Win.GetPlayer().setJump(false);
+//                    break;
+//            }
+
+            boolean optWASD = Options.getWASD();
+            boolean optSPACE = Options.getSpace();
+
+            if(optWASD) {
+                switch (event.getKeyCode()) {
+                    case KeyEvent.VK_W:
+                        if(!optSPACE)
+                            Win.GetPlayer().setJump(false);
+                        break;
+                    case KeyEvent.VK_A:
+                        Win.GetPlayer().setLeft(false);
+                        break;
+                    case KeyEvent.VK_S:
+                        Win.GetPlayer().setDown(false);
+                        break;
+                    case KeyEvent.VK_D:
+                        Win.GetPlayer().setRight(false);
+                        break;
+                }
             }
+            else {
+                switch (event.getKeyCode()) {
+                    case KeyEvent.VK_UP:
+                        if(!optSPACE)
+                            Win.GetPlayer().setJump(false);
+                        break;
+                    case KeyEvent.VK_LEFT:
+                        Win.GetPlayer().setLeft(false);
+                        break;
+                    case KeyEvent.VK_DOWN:
+                        Win.GetPlayer().setDown(false);
+                        break;
+                    case KeyEvent.VK_RIGHT:
+                        Win.GetPlayer().setRight(false);
+                        break;
+                }
+            }
+
+            if(event.getKeyCode() == KeyEvent.VK_ESCAPE)
+                Win.DisplayPauseMenu();
+
+            if(optSPACE && (event.getKeyCode() == KeyEvent.VK_SPACE))
+                Win.GetPlayer().setJump(false);
         }
 
 //            int keyCode=event.getKeyCode();
@@ -195,10 +261,11 @@ public class InputController {
             //the enter key works as an 'execute command'
             else if(keyCode == KeyEvent.VK_ENTER) {
                 String prompt = Win.GetCliWindow().getUserInput();
-                String[] args = prompt.split(" ");
+                //String[] args = prompt.split(" ");
                 Win.GetCliWindow().addHistory(); //we are adding the command to the history so we can display it like a terminal would
-
+                Win.handleWindowCommand(prompt);
                 //after we split the command, we are using the first argument to check the requested operation
+                /*
                 switch (args[0]) {
                     case "exit":
                         if(Win.IsInLevel())
@@ -247,6 +314,7 @@ public class InputController {
                         Win.GetCliWindow().addText("Command \"" + prompt + "\" not found");
                         break;
                 }
+                */
             }
             //in order to use the same cliWindow for the pause menu -> WIP
             else if (keyCode == KeyEvent.VK_ESCAPE) {

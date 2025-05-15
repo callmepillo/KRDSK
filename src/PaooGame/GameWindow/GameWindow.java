@@ -24,7 +24,7 @@ public class GameWindow
     private int     mouseX;
     private int     mouseY;
     private boolean mousePressed;
-    private List<FauxWindow> windows = new ArrayList<>();
+    private static List<FauxWindow> windows = new ArrayList<>();
     private CliWindow cliMenu;
     private Bar     statusBar;
     private Level level;
@@ -67,7 +67,9 @@ public class GameWindow
         wndFrame.setLocationRelativeTo(null);
         wndFrame.setVisible(true);
         wndFrame.setFocusable(true);
-        //wndFrame.addFocusListener();
+
+        //Fullscreen
+        GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(wndFrame);
 
         canvas = new Canvas();
         canvas.setPreferredSize(new Dimension(wndWidth, wndHeight));
@@ -86,6 +88,7 @@ public class GameWindow
 //        windows.add(new CliWindow(0,0, wndWidth, wndHeight));
 //        player = new Player(0,0);
 
+        FauxWindow.setWin(this);
         FauxWindow.setWindowSize(8*Tile.TILE_WIDTH, 6*Tile.TILE_HEIGHT);
         cliMenu = new CliWindow(0,0, wndWidth, wndHeight);
 
@@ -143,7 +146,6 @@ public class GameWindow
         wndFrame.dispose();
     }
     public void StartLevel(int levelNumber) {
-        inLevel = true;
         switch (levelNumber) {
             case(1):
                 level = new LevelOne();
@@ -155,9 +157,10 @@ public class GameWindow
                 level = new LevelThree();
                 break;
             default:
-                level = new TestLevel();
-                break;
+                GetCliWindow().addText(Messages.lvlNotAvalible);
+                return;
         }
+        inLevel = true;
         removeAllListeners();
         windows.remove(cliMenu);
         statusBar = new Bar(50, wndHeight - 150, 100, 50, level.GetNumberOfRooms());
@@ -178,16 +181,13 @@ public class GameWindow
         statusBar.SetActive(true);
 
         player = new Player(300, 910);
-        getRoom(0).enterPlayer(player);
-
-        InputController inputController = new InputController(this, distortX, distortY);
-
+        getRoom(0).enterPlayer(player, 0, 2*Tile.TILE_HEIGHT);
         canvas.addKeyListener(playerControl);
     }
 
-    public void EnterRoom(int room) {
+    public void EnterRoom(int room, int playerX, int playerY) {
         getRoom(GetCurrentRoom()).leavePlayer();
-        getRoom(room).enterPlayer(player);
+        getRoom(room).enterPlayer(player, playerX, playerY);
     }
 
     public int GetCurrentRoom() {
@@ -251,7 +251,7 @@ public class GameWindow
         }
     }
 
-    public FauxWindow getRoom(int number) {
+    public static FauxWindow getRoom(int number) {
         for(FauxWindow win: windows) {
             if(win.GetRoom() == number)
                 return win;
@@ -265,4 +265,99 @@ public class GameWindow
         }
     }
 
+    public void handleWindowCommand(String prompt) {
+        String[] args = prompt.split(" ");
+
+        switch (args[0]) {
+            case "exit":
+                if(IsInLevel())
+                    DisplayStartMenu(); //save/load?
+                else
+                    SetStop(true);
+                break;
+            case "clear":
+                GetCliWindow().clearHistory();
+                break;
+            case "play":
+                if(args.length > 1)
+                    try {
+                        StartLevel(Integer.parseInt(args[1]));
+                    }
+                    catch(NumberFormatException ex) {
+                        System.out.println("whoops");
+                    }
+                else
+                    GetCliWindow().addText(Messages.lvlNotAvalible);
+                break;
+            case "db":
+                if(args.length > 2)
+                    switch (args[1]) {
+                        case "enter":
+                            try {
+                                EnterRoom(Integer.parseInt(args[2]), 0, 2*Tile.TILE_HEIGHT);
+                                HidePauseMenu();
+                            }
+                            catch(NumberFormatException ex) {
+                                System.out.println("whoops");
+                            }
+                    }
+                break;
+            case "option":
+                if(args.length > 2)
+                    switch (args[1]) {
+                        case "wasd":
+                            try {
+                                Options.setWASD(Boolean.parseBoolean(args[2]));
+                                GetCliWindow().addText(Messages.option("wasd", args[2]));
+                                HidePauseMenu();
+                            }
+                            catch(NumberFormatException ex) {
+                                System.out.println("whoops");
+                            }
+                            break;
+                        case "space":
+                            try {
+                                Options.setSpace(Boolean.parseBoolean(args[2]));
+                                GetCliWindow().addText(Messages.option("space", args[2]));
+                                HidePauseMenu();
+                            }
+                            catch(NumberFormatException ex) {
+                                System.out.println("whoops");
+                            }
+                            break;
+                        default:
+                            GetCliWindow().addText(Messages.optionNotAvalible);
+                    }
+                else if (args.length == 2 && args[1].equals("status"))
+                    GetCliWindow().addText(Messages.optionStatus());
+
+                break;
+            case "help":
+                if(args.length > 1) {
+                    switch (args[1]) {
+                        case "option":
+                            GetCliWindow().addText(Messages.optionHelp);
+                            break;
+                        default:
+                            GetCliWindow().addText(Messages.helpPageNotAvalible);
+                            break;
+                    }
+                }
+                else
+                    GetCliWindow().addText(Messages.help);
+                break;
+            case "title":
+                GetCliWindow().addText(Messages.title);
+                break;
+            case "paused":
+                GetCliWindow().addText(Messages.paused);
+                break;
+            case "numpie":
+                GetCliWindow().addText("Matematici Discrete - Sebi 2024");
+                break;
+            default:
+                GetCliWindow().addText("Command \"" + prompt + "\" not found");
+                break;
+        }
+    }
 }

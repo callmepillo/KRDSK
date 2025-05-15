@@ -1,5 +1,6 @@
 package PaooGame.GameWindow;
 
+import PaooGame.Levels.Door;
 import PaooGame.Levels.Level;
 import PaooGame.Tiles.Tile;
 
@@ -20,7 +21,8 @@ public class CollisionChecker {
         for(int i = 0; i < lvlMap.length; ++i) {
             for(int j = 0; j < lvlMap[i].length; ++j) {
                 if(lvlMap[i][j] != 0 && Tile.tiles[lvlMap[i][j]].IsSolid()) {
-                    solidObjects.add(new Rectangle(roomX + j*Tile.TILE_WIDTH,roomY + i*Tile.TILE_HEIGHT,  Tile.TILE_WIDTH, Tile.TILE_HEIGHT));
+                    //solidObjects.add(new Rectangle(roomX + j*Tile.TILE_WIDTH,roomY + i*Tile.TILE_HEIGHT,  Tile.TILE_WIDTH, Tile.TILE_HEIGHT));
+                    solidObjects.add(Tile.tiles[lvlMap[i][j]].getHitbox(roomX + j*Tile.TILE_WIDTH, roomY + i*Tile.TILE_HEIGHT));
                 }
             }
         }
@@ -63,18 +65,114 @@ public class CollisionChecker {
         }
     }
 
-    public static int GetEntityYPosUnderRoofOrAboveFloor(Rectangle player, int roomY, int airSpeed) {
-        int currentTile = (int) Math.floor( (player.y - roomY) / (double) Tile.TILE_HEIGHT);
+    public static int GetEntityYPosUnderRoofOrAboveFloorOld(Rectangle player, int roomX, int roomY, int airSpeed, int[][] lvlMap) {
+        int currentTileY = (int) Math.floor( (player.y - roomY) / (double) Tile.TILE_HEIGHT);
+
+        //Calculate current tile in order to implement hitbox
+        int currentTileX = (int) Math.round( (player.x - roomX) / (double) Tile.TILE_WIDTH);
+        int aboveOffset = 0;
+        int underOffset = 0;
+        int tileYPos = currentTileY * Tile.TILE_HEIGHT + roomY;
+        Tile AboveTile = Tile.tiles[lvlMap[currentTileY][currentTileX]];
+
+        Tile UnderTile = null;
+        if(currentTileY + 1 < 6)
+            UnderTile = Tile.tiles[lvlMap[currentTileY + 1][currentTileX]];
+
+        if(AboveTile != null && AboveTile.IsSolid()) {
+            aboveOffset = AboveTile.getHitbox(0, 0).height;
+        }
+
+        if(UnderTile != null && UnderTile.IsSolid()) {
+            underOffset = UnderTile.getHitbox(0, 0).y;
+        }
+
         if( airSpeed > 0 ) {
-            int tileYPos = currentTile * Tile.TILE_HEIGHT + roomY;
             int yOffset = Tile.TILE_HEIGHT - player.height;
-            return tileYPos + yOffset;
+            return tileYPos + yOffset + underOffset;
         }else {
-            return currentTile * Tile.TILE_HEIGHT + roomY;
+            return currentTileY * Tile.TILE_HEIGHT + roomY + aboveOffset;
+        }
+    }
+
+    public static int GetEntityYPosUnderRoofOrAboveFloor(Rectangle player, int roomX, int roomY, int airSpeed, int[][] lvlMap) {
+        if(airSpeed > 0) {
+            //falling
+            int tileUnderX = (int) Math.floor((player.x - roomX) / (double) Tile.TILE_WIDTH);
+            int tileUnderY = (int) Math.floor((player.x + player.width - roomX) / (double) Tile.TILE_WIDTH);
+            int tileUnderLevel = (int) Math.floor((player.y - roomY) / (double) Tile.TILE_HEIGHT);
+            int tileYPos = tileUnderLevel * Tile.TILE_HEIGHT + roomY;
+            int leftOffset = Tile.TILE_HEIGHT, rightOffset = Tile.TILE_HEIGHT;
+            Tile leftTile = null, rightTile = null;
+            boolean objectUnder = false;
+
+            if(tileUnderLevel + 1 < 6 && tileUnderY < 10 && tileUnderX >= 0) {
+                leftTile = Tile.tiles[lvlMap[tileUnderLevel + 1][tileUnderX]];
+                rightTile = Tile.tiles[lvlMap[tileUnderLevel + 1][tileUnderY]];
+            }
+
+            if(leftTile != null && leftTile.IsSolid()) {
+                leftOffset = leftTile.getHitbox(0, 0).y;
+                objectUnder = true;
+            }
+            if(rightTile != null && rightTile.IsSolid()) {
+                rightOffset = rightTile.getHitbox(0, 0).y;
+                objectUnder = true;
+            }
+
+            int offset = 0;
+
+            if(objectUnder)
+                offset = Math.min(leftOffset, rightOffset);
+
+            int yOffset = offset - player.height + Tile.TILE_HEIGHT;
+
+            System.out.println("fall: " + roomX + " " + roomY + " " + (tileYPos + yOffset) + " " + offset);
+            return tileYPos + yOffset;
+        } else {
+            //jumping
+            int tileAboveX = (int) Math.floor((player.x - roomX) / (double) Tile.TILE_WIDTH);
+            int tileAboveY = (int) Math.floor((player.x + player.width - roomX) / (double) Tile.TILE_WIDTH);
+            int tileUnderLevel = (int) Math.floor((player.y - roomY) / (double) Tile.TILE_HEIGHT);
+            int tileYPos = tileUnderLevel * Tile.TILE_HEIGHT + roomY;
+            int leftOffset = Tile.TILE_HEIGHT, rightOffset = Tile.TILE_HEIGHT;
+            Tile leftTile = null, rightTile = null;
+            boolean objectAbove = false;
+
+            if(0 < tileUnderLevel && tileUnderLevel < 6) {
+                leftTile = Tile.tiles[lvlMap[tileUnderLevel][tileAboveX]];
+                rightTile = Tile.tiles[lvlMap[tileUnderLevel][tileAboveY]];
+            }
+
+            if(leftTile != null && leftTile.IsSolid()) {
+                leftOffset = leftTile.getHitbox(0, 0).height;
+                objectAbove = true;
+            }
+
+            if(rightTile != null && rightTile.IsSolid()) {
+                rightOffset = rightTile.getHitbox(0, 0).height;
+                objectAbove = true;
+            }
+
+            int offset = 0;
+
+            if(objectAbove)
+                offset = Math.min(leftOffset, rightOffset);
+
+            System.out.println("jump: " + roomX + " " + roomY + " " + (tileUnderLevel * Tile.TILE_HEIGHT + roomY + offset) + " " + offset);
+            return tileUnderLevel * Tile.TILE_HEIGHT + roomY + offset;
         }
     }
 
     public static boolean IsEntityOnFloor(Rectangle player, int roomX, int roomY, int[][] roomMap) {
         return !CanMoveHere(player, roomX, roomY, player.x, player.y + 1, roomMap);
+    }
+
+    public static Door CheckDoor(Rectangle player, int roomX, int roomY, Door[] doors) {
+        for(Door door: doors) {
+            if (player.intersects(door.getHitbox(roomX, roomY)))
+                return door;
+        }
+        return null;
     }
 }

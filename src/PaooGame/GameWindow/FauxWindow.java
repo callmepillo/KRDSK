@@ -1,6 +1,8 @@
 package PaooGame.GameWindow;
 
+import PaooGame.Game;
 import PaooGame.Graphics.Colors;
+import PaooGame.Levels.Door;
 import PaooGame.Levels.Level;
 import PaooGame.Tiles.Tile;
 import jdk.swing.interop.SwingInterOpUtils;
@@ -25,6 +27,7 @@ public class FauxWindow extends JPanel {
     private static FauxWindow playerWindow = null;
     private boolean isDragged;
     private int levelOffset;
+    private static GameWindow win;
 
     public static void setWindowSize(int width, int height) {
         FauxWindow.width = width;
@@ -54,10 +57,10 @@ public class FauxWindow extends JPanel {
 
     public void setLevel(Level level) { this.level = level; }
     public void setVisible(boolean vis) { this.visible = vis; }
-    public void enterPlayer(Player player) {
+    public void enterPlayer(Player player, int playerX, int playerY) {
         this.player = player;
         playerWindow = this;
-        player.setXY(posX, posY + height - Tile.TILE_HEIGHT - Tile.TILE_HEIGHT/2);
+        player.setXY(posX + playerX, posY + playerY);
         player.setInAir(true);
     }
 
@@ -91,15 +94,28 @@ public class FauxWindow extends JPanel {
         }
     }
 
+    public static void setWin(GameWindow window) {
+        win = window;
+    }
+
     public void Update(int mouseX, int mouseY, boolean mouseP) {
         if(player != null && visible) {
+
+            //check offset
             int newOffset = CollisionChecker.CheckCloseToBorder(player.getRectangle(), levelOffset, posX, posX + width);
             if(newOffset > levelOffset)
                 player.setXY(player.getX() - 2, player.getY());
             else if(newOffset < levelOffset)
                 player.setXY(player.getX() + 2, player.getY());
             levelOffset = newOffset;
-            player.Update(posX - levelOffset, posY, level.GetRoomMap(room));
+
+            //check door
+            Door enterDoor = null;
+            if (level.getRoomDoors(room) != null && (enterDoor = CollisionChecker.CheckDoor(player.getRectangle(), posX - levelOffset, posY, level.getRoomDoors(room))) != null) {
+                win.EnterRoom(enterDoor.getDestinationRoom(), enterDoor.getDestX(), enterDoor.getDestY());
+            } else {
+                player.Update(posX - levelOffset, posY, level.GetRoomMap(room));
+            }
         }
 
         if (draggedWindow == this) {
@@ -139,6 +155,7 @@ public class FauxWindow extends JPanel {
             level.Draw(g, posX, posX + width, posY, room, levelOffset);
             g.setColor(Colors.term);
             g.setStroke(new java.awt.BasicStroke(3));
+            g.drawString("Window:" + room + " X:" + posX + " Y:" + posY, posX, posY - 20);
             if (mouseIn)
                 g.drawRect(posX - 5, posY - 5, width + 10, height + 10);
             else
@@ -147,6 +164,10 @@ public class FauxWindow extends JPanel {
             g.setColor(orgColor);
             if (player != null)
                 player.Draw(g);
+
+            //draw hitbox for doors
+//            for(Door door: level.getDoors())
+//                door.drawHitbox(g,posX - levelOffset, posY);
         }
     }
 

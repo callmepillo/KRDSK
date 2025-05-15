@@ -66,7 +66,7 @@ public class Player {
                 airSpeed += gravity;
                 updateXpos(xSpeed, roomX, roomY, roomMap);
             } else {
-                posY = CollisionChecker.GetEntityYPosUnderRoofOrAboveFloor(getRectangle(), roomY, airSpeed);
+                posY = CollisionChecker.GetEntityYPosUnderRoofOrAboveFloor(getRectangle(), roomX, roomY, airSpeed, roomMap);
                 if(airSpeed > 0)
                     resetInAir();
                 else
@@ -77,6 +77,7 @@ public class Player {
             updateXpos(xSpeed, roomX, roomY, roomMap);
         }
         moving = true;
+        System.out.println(posX + " " + posY);
 
 
 //        if(!onGround) {
@@ -214,7 +215,6 @@ public class Player {
     public void setLeft(boolean left) {
         this.left = left;
     }
-
     public boolean isRight() {
         return right;
     }

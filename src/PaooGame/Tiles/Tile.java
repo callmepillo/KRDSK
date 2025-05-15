@@ -3,6 +3,8 @@ package PaooGame.Tiles;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import PaooGame.Graphics.Assets;
+import org.w3c.dom.css.Rect;
+
 /*! \class public class Tile
     \brief Retine toate dalele intr-un vector si ofera posibilitatea regasirii dupa un id.
  */
@@ -59,11 +61,11 @@ public class Tile
     public static Tile floor_right = new Tile(Assets.floor_right, 59);
     public static Tile small_fence = new Tile(Assets.small_fence, 60);
     public static Tile chair1_up = new Tile(Assets.chair1_up, 61);
-    public static Tile chair1_down = new Tile(Assets.chair1_down, 62);
+    public static Tile chair1_down = new Tile(Assets.chair1_down, 62, true, new Rectangle(5, 25, 70, 20));
     public static Tile chair2_up = new Tile(Assets.chair2_up, 63);
     public static Tile chair2_down = new Tile(Assets.chair2_down, 64);
     public static Tile box = new Tile(Assets.box, 65, true);
-    public static Tile small_table = new Tile(Assets.small_table, 66);
+    public static Tile small_table = new Tile(Assets.small_table, 66, true, new Rectangle(0, 0,70, 10));
     public static Tile grass_left = new Tile(Assets.grass_left, 67);
     public static Tile grass_right = new Tile(Assets.grass_right, 68);
     public static Tile big_bush_left = new Tile(Assets.big_bush_left, 69);
@@ -98,6 +100,7 @@ public class Tile
     protected BufferedImage img;                                    /*!< Imaginea aferenta tipului de dala.*/
     protected final int id;                                         /*!< Id-ul unic aferent tipului de dala.*/
     protected boolean solid;
+    protected Rectangle hitbox;
     /*! \fn public Tile(BufferedImage texture, int id)
         \brief Constructorul aferent clasei.
 
@@ -118,6 +121,16 @@ public class Tile
         id = idd;
         this.solid = solid;
         tiles[id] = this;
+        this.hitbox = new Rectangle(0, 0, TILE_WIDTH, TILE_HEIGHT);
+    }
+
+    public Tile(BufferedImage image, int idd, boolean solid, Rectangle hb)
+    {
+        img = image;
+        id = idd;
+        this.solid = solid;
+        tiles[id] = this;
+        this.hitbox = hb;
     }
 
     /*! \fn public void Update()
@@ -158,6 +171,13 @@ public class Tile
     public boolean IsSolid()
     {
         return solid;
+    }
+
+    public Rectangle getHitbox(int x, int y) {
+        Rectangle hb = new Rectangle(this.hitbox);
+        hb.x = x + hitbox.x;
+        hb.y = y + hitbox.y;
+        return hb;
     }
 
     /*! \fn public int GetId()
