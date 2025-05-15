@@ -7,7 +7,7 @@ import PaooGame.Tiles.Tile;
 
 import java.awt.*;
 
-public class Player {
+public class Player extends Entity {
     private Tile playerSprite;
     private int posX;
     private int posY;
