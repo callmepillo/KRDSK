@@ -77,6 +77,7 @@ public class Player {
             updateXpos(xSpeed, roomX, roomY, roomMap);
         }
         moving = true;
+        System.out.println(posX + " " + posY);
 
 
 //        if(!onGround) {

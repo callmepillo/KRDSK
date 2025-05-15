@@ -44,27 +44,29 @@ public class Level {
             }
         }
 
-        for(Door door: doors) {
-            if(door.getOriginRoom() == room) {
-                int doorX = leftBound + door.getX() - offset;
-                int doorY = upperBound + door.getY();
-                if (doorX + Tile.TILE_WIDTH <= rightBound && doorX >= leftBound)
-                    door.Draw(g, leftBound - offset, upperBound);
-                else if (doorX < rightBound && doorX + Tile.TILE_WIDTH > rightBound)
-                    door.Draw(
-                            g, doorX, doorY,
-                            rightBound - doorX, Tile.TILE_HEIGHT,
-                            0, 0,
-                            rightBound - doorX, Tile.TILE_HEIGHT
-                    );
-                else if (doorX < leftBound && doorX + Tile.TILE_WIDTH > leftBound)
-                    door.Draw(
-                            g,
-                            leftBound, doorY,
-                            doorX + Tile.TILE_WIDTH - leftBound, Tile.TILE_HEIGHT,
-                            leftBound - doorX, 0,
-                            doorX + Tile.TILE_WIDTH - leftBound, Tile.TILE_HEIGHT
-                    );
+        if(doors != null) {
+            for (Door door : doors) {
+                if (door.getOriginRoom() == room) {
+                    int doorX = leftBound + door.getX() - offset;
+                    int doorY = upperBound + door.getY();
+                    if (doorX + Tile.TILE_WIDTH <= rightBound && doorX >= leftBound)
+                        door.Draw(g, leftBound - offset, upperBound);
+                    else if (doorX < rightBound && doorX + Tile.TILE_WIDTH > rightBound)
+                        door.Draw(
+                                g, doorX, doorY,
+                                rightBound - doorX, Tile.TILE_HEIGHT,
+                                0, 0,
+                                rightBound - doorX, Tile.TILE_HEIGHT
+                        );
+                    else if (doorX < leftBound && doorX + Tile.TILE_WIDTH > leftBound)
+                        door.Draw(
+                                g,
+                                leftBound, doorY,
+                                doorX + Tile.TILE_WIDTH - leftBound, Tile.TILE_HEIGHT,
+                                leftBound - doorX, 0,
+                                doorX + Tile.TILE_WIDTH - leftBound, Tile.TILE_HEIGHT
+                        );
+                }
             }
         }
 

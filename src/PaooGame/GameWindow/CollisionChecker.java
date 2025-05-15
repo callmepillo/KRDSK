@@ -65,7 +65,7 @@ public class CollisionChecker {
         }
     }
 
-    public static int GetEntityYPosUnderRoofOrAboveFloor(Rectangle player, int roomX, int roomY, int airSpeed, int[][] lvlMap) {
+    public static int GetEntityYPosUnderRoofOrAboveFloorOld(Rectangle player, int roomX, int roomY, int airSpeed, int[][] lvlMap) {
         int currentTileY = (int) Math.floor( (player.y - roomY) / (double) Tile.TILE_HEIGHT);
 
         //Calculate current tile in order to implement hitbox
@@ -92,6 +92,75 @@ public class CollisionChecker {
             return tileYPos + yOffset + underOffset;
         }else {
             return currentTileY * Tile.TILE_HEIGHT + roomY + aboveOffset;
+        }
+    }
+
+    public static int GetEntityYPosUnderRoofOrAboveFloor(Rectangle player, int roomX, int roomY, int airSpeed, int[][] lvlMap) {
+        if(airSpeed > 0) {
+            //falling
+            int tileUnderX = (int) Math.floor((player.x - roomX) / (double) Tile.TILE_WIDTH);
+            int tileUnderY = (int) Math.floor((player.x + player.width - roomX) / (double) Tile.TILE_WIDTH);
+            int tileUnderLevel = (int) Math.floor((player.y - roomY) / (double) Tile.TILE_HEIGHT);
+            int tileYPos = tileUnderLevel * Tile.TILE_HEIGHT + roomY;
+            int leftOffset = Tile.TILE_HEIGHT, rightOffset = Tile.TILE_HEIGHT;
+            Tile leftTile = null, rightTile = null;
+            boolean objectUnder = false;
+
+            if(tileUnderLevel + 1 < 6) {
+                leftTile = Tile.tiles[lvlMap[tileUnderLevel + 1][tileUnderX]];
+                rightTile = Tile.tiles[lvlMap[tileUnderLevel + 1][tileUnderY]];
+            }
+
+            if(leftTile != null && leftTile.IsSolid()) {
+                leftOffset = leftTile.getHitbox(0, 0).y;
+                objectUnder = true;
+            }
+            if(rightTile != null && rightTile.IsSolid()) {
+                rightOffset = rightTile.getHitbox(0, 0).y;
+                objectUnder = true;
+            }
+
+            int offset = 0;
+
+            if(objectUnder)
+                offset = Math.min(leftOffset, rightOffset);
+
+            int yOffset = offset - player.height + Tile.TILE_HEIGHT;
+
+            System.out.println("fall: " + roomX + " " + roomY + " " + (tileYPos + yOffset) + " " + offset);
+            return tileYPos + yOffset;
+        } else {
+            //jumping
+            int tileAboveX = (int) Math.floor((player.x - roomX) / (double) Tile.TILE_WIDTH);
+            int tileAboveY = (int) Math.floor((player.x + player.width - roomX) / (double) Tile.TILE_WIDTH);
+            int tileUnderLevel = (int) Math.floor((player.y - roomY) / (double) Tile.TILE_HEIGHT);
+            int tileYPos = tileUnderLevel * Tile.TILE_HEIGHT + roomY;
+            int leftOffset = Tile.TILE_HEIGHT, rightOffset = Tile.TILE_HEIGHT;
+            Tile leftTile = null, rightTile = null;
+            boolean objectAbove = false;
+
+            if(0 < tileUnderLevel && tileUnderLevel < 6) {
+                leftTile = Tile.tiles[lvlMap[tileUnderLevel][tileAboveX]];
+                rightTile = Tile.tiles[lvlMap[tileUnderLevel][tileAboveY]];
+            }
+
+            if(leftTile != null && leftTile.IsSolid()) {
+                leftOffset = leftTile.getHitbox(0, 0).height;
+                objectAbove = true;
+            }
+
+            if(rightTile != null && rightTile.IsSolid()) {
+                rightOffset = rightTile.getHitbox(0, 0).height;
+                objectAbove = true;
+            }
+
+            int offset = 0;
+
+            if(objectAbove)
+                offset = Math.min(leftOffset, rightOffset);
+
+            System.out.println("jump: " + roomX + " " + roomY + " " + (tileUnderLevel * Tile.TILE_HEIGHT + roomY + offset) + " " + offset);
+            return tileUnderLevel * Tile.TILE_HEIGHT + roomY + offset;
         }
     }
 
