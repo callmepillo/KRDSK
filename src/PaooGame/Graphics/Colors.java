@@ -10,4 +10,5 @@ public class Colors {
     public static Color term_transp = new Color(32, 178, 170, 204);
     public static Color background_transp = new Color(51, 51, 51, 204);
     public static Color activeCell = new Color(0, 255, 255, 20);
+    public static Color yellow = new Color(255, 255, 0);
 }
