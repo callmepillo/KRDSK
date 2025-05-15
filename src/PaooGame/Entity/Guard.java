@@ -8,7 +8,7 @@ import java.awt.*;
 public class Guard extends Entity {
     private Polygon cone = null;
     public Guard(int x, int y, int walkDistance) {
-        super(x, y, Tile.TILE_WIDTH, 2*Tile.TILE_HEIGHT);
+        super(x, y, Tile.TILE_WIDTH - 20, 2*Tile.TILE_HEIGHT);
         this.speed = 1;
         this.cone = Polygons.guardPolygon(x, y);
         //entitySprite
