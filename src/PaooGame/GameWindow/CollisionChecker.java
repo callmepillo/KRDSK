@@ -106,7 +106,7 @@ public class CollisionChecker {
             Tile leftTile = null, rightTile = null;
             boolean objectUnder = false;
 
-            if(tileUnderLevel + 1 < 6) {
+            if(tileUnderLevel + 1 < 6 && tileUnderY < 10 && tileUnderX >= 0) {
                 leftTile = Tile.tiles[lvlMap[tileUnderLevel + 1][tileUnderX]];
                 rightTile = Tile.tiles[lvlMap[tileUnderLevel + 1][tileUnderY]];
             }

@@ -155,6 +155,7 @@ public class FauxWindow extends JPanel {
             level.Draw(g, posX, posX + width, posY, room, levelOffset);
             g.setColor(Colors.term);
             g.setStroke(new java.awt.BasicStroke(3));
+            g.drawString("Window:" + room + " X:" + posX + " Y:" + posY, posX, posY - 20);
             if (mouseIn)
                 g.drawRect(posX - 5, posY - 5, width + 10, height + 10);
             else

@@ -90,6 +90,9 @@ public class Level {
     }
 
     public Door[] getRoomDoors(int room) {
-        return doors[room];
+        if(doors != null && room < doors.length)
+            return doors[room];
+        else
+            return null;
     }
 }
