@@ -1,5 +1,6 @@
 package PaooGame.Levels;
 
+import PaooGame.Entity.Guard;
 import PaooGame.Tiles.Tile;
 
 import java.awt.*;
@@ -8,6 +9,7 @@ public class Level {
     public static final int LEVEL_WIDTH = 10; //Sizes for the level
     public static final int LEVEL_HEIGHT = 6; //Sizes for the level
     public Door[][] doors;
+    public Guard[][] guards;
     public int[][][] tileMap;
     //this is a tile map that contains the rooms, the rows and the columns of tiles
     //the coordinates correspond to [room][row][column]
@@ -69,6 +71,12 @@ public class Level {
             }
         }
 
+        if (guards != null && room < guards.length) {
+            for (Guard guard : guards[room]) {
+                guard.Draw(g, leftBound, upperBound);
+            }
+        }
+
         /*The draw functions iterates over each tile of a room and draws them if it is visible
          * In this case, the function only searches if the end tile has space in the window
          * (by checking if leftBound + (j+1)* Tile.TILE_WIDHT is smaller than rightBound
@@ -92,6 +100,13 @@ public class Level {
     public Door[] getRoomDoors(int room) {
         if(doors != null && room < doors.length)
             return doors[room];
+        else
+            return null;
+    }
+
+    public Guard[] getRoomGuards(int room) {
+        if(guards != null && room < guards.length)
+            return guards[room];
         else
             return null;
     }

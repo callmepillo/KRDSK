@@ -1,5 +1,6 @@
 package PaooGame.Levels;
 
+import PaooGame.Entity.Guard;
 import PaooGame.Tiles.Tile;
 
 public class LevelOne extends Level{
@@ -54,6 +55,11 @@ public class LevelOne extends Level{
         this.doors = new Door[][] {
                 {new Door(0, 1, 10*Tile.TILE_WIDTH - 10, 2*Tile.TILE_HEIGHT, 10, 2*Tile.TILE_HEIGHT, 10, Tile.TILE_HEIGHT)},
                 {new Door(1, 0, 0, 2*Tile.TILE_HEIGHT, 7*Tile.TILE_WIDTH - 10, 2*Tile.TILE_HEIGHT, 10, Tile.TILE_HEIGHT)}
+        };
+
+        this.guards = new Guard[][] {
+                {},
+                {new Guard(4*Tile.TILE_WIDTH, 4*Tile.TILE_HEIGHT - 1, 2*Tile.TILE_WIDTH)}
         };
     }
 }

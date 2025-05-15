@@ -4,7 +4,6 @@ package PaooGame;
 import PaooGame.GameWindow.GameWindow;
 
 //for constants regarding cli messages
-import PaooGame.GameWindow.KeyInput;
 import PaooGame.GameWindow.Options;
 import PaooGame.Graphics.Messages;
 
