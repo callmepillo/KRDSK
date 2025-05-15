@@ -1,5 +1,6 @@
 package PaooGame.GameWindow;
 
+import PaooGame.Entity.Guard;
 import PaooGame.Levels.Door;
 import PaooGame.Levels.Level;
 import PaooGame.Tiles.Tile;
@@ -11,10 +12,10 @@ import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.TimeoutException;
 
 public class CollisionChecker {
-    public static boolean CanMoveHere(Rectangle player, int roomX, int roomY, int newX, int newY, int[][] lvlMap) {
+    public static boolean CanMoveHere(Rectangle entity, int roomX, int roomY, int newX, int newY, int[][] lvlMap) {
         Rectangle room = new Rectangle(roomX, roomY, Level.LEVEL_WIDTH * Tile.TILE_WIDTH, Level.LEVEL_HEIGHT * Tile.TILE_HEIGHT);
-        Rectangle newPlayer = new Rectangle(newX, newY, player.width, player.height);
-        if(!room.contains(newPlayer))
+        Rectangle newEntity = new Rectangle(newX, newY, entity.width, entity.height);
+        if(!room.contains(newEntity))
             return false;
 
         ArrayList<Rectangle> solidObjects = new ArrayList<>();
@@ -28,7 +29,7 @@ public class CollisionChecker {
         }
 
         for(Rectangle obj: solidObjects) {
-            if(obj.intersects(newPlayer))
+            if(obj.intersects(newEntity))
                 return false;
         }
 
@@ -158,6 +159,7 @@ public class CollisionChecker {
             if(objectAbove)
                 offset = Math.min(leftOffset, rightOffset);
 
+
             return tileUnderLevel * Tile.TILE_HEIGHT + roomY + offset;
         }
     }
@@ -172,5 +174,11 @@ public class CollisionChecker {
                 return door;
         }
         return null;
+    }
+
+    public static void CheckPlayerDetected(Rectangle player, Guard[] guards) {
+        for(Guard guard: guards)
+            if(guard.getDetectionCone().intersects(player))
+                System.out.println("PLAYER DETECED");
     }
 }
