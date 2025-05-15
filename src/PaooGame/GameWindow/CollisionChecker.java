@@ -127,7 +127,6 @@ public class CollisionChecker {
 
             int yOffset = offset - player.height + Tile.TILE_HEIGHT;
 
-            System.out.println("fall: " + roomX + " " + roomY + " " + (tileYPos + yOffset) + " " + offset);
             return tileYPos + yOffset;
         } else {
             //jumping
@@ -159,7 +158,6 @@ public class CollisionChecker {
             if(objectAbove)
                 offset = Math.min(leftOffset, rightOffset);
 
-            System.out.println("jump: " + roomX + " " + roomY + " " + (tileUnderLevel * Tile.TILE_HEIGHT + roomY + offset) + " " + offset);
             return tileUnderLevel * Tile.TILE_HEIGHT + roomY + offset;
         }
     }

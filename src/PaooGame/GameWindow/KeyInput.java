@@ -1,5 +1,7 @@
 package PaooGame.GameWindow;
 
+import PaooGame.Entity.Player;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 

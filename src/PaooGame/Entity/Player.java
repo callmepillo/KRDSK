@@ -1,6 +1,6 @@
-package PaooGame.GameWindow;
+package PaooGame.Entity;
 
-import PaooGame.Game;
+import PaooGame.GameWindow.CollisionChecker;
 import PaooGame.Graphics.Assets;
 import PaooGame.Tiles.Tile;
 
@@ -77,7 +77,7 @@ public class Player {
             updateXpos(xSpeed, roomX, roomY, roomMap);
         }
         moving = true;
-        System.out.println(posX + " " + posY);
+        //System.out.println(posX + " " + posY);
 
 
 //        if(!onGround) {

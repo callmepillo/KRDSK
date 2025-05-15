@@ -1,11 +1,9 @@
 package PaooGame.GameWindow;
 
-import PaooGame.Game;
+import PaooGame.Entity.Player;
 import PaooGame.Graphics.Colors;
 import PaooGame.Levels.Door;
 import PaooGame.Levels.Level;
-import PaooGame.Tiles.Tile;
-import jdk.swing.interop.SwingInterOpUtils;
 
 import javax.swing.*;
 import java.awt.*;

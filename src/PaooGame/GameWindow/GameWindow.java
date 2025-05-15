@@ -1,6 +1,7 @@
 package PaooGame.GameWindow;
 
 import PaooGame.*;
+import PaooGame.Entity.Player;
 import PaooGame.Graphics.Messages;
 import PaooGame.Levels.*;
 import PaooGame.Tiles.Tile;
@@ -14,7 +15,7 @@ import java.util.List;
 public class GameWindow
 {
     private JFrame  wndFrame;       /*!< fereastra principala a jocului*/
-    private Player  player;
+    private Player player;
     private String  wndTitle;       /*!< titlul ferestrei*/
     private int     wndWidth;       /*!< latimea ferestrei in pixeli*/
     private int     wndHeight;      /*!< inaltimea ferestrei in pixeli*/
