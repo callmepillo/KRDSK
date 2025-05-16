@@ -73,7 +73,7 @@ public class Level {
 
         if (guards != null && room < guards.length) {
             for (Guard guard : guards[room]) {
-                guard.Draw(g, leftBound, upperBound);
+                guard.Draw(g, leftBound - offset, upperBound);
             }
         }
 

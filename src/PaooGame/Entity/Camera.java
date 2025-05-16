@@ -5,24 +5,17 @@ import PaooGame.Tiles.Tile;
 
 import java.awt.*;
 
-public class Guard extends Entity {
+public class Camera extends Entity {
     private Polygon cone = null;
-    public Guard(int x, int y, int walkDistance) {
-        super(x, y, Tile.TILE_WIDTH - 20, 2*Tile.TILE_HEIGHT);
-        this.speed = 1;
+    public Camera(int x, int y, boolean direction, double radians) {
+        super(x, y, Tile.TILE_WIDTH/4, Tile.TILE_HEIGHT/4);
+        this.speed = 0;
         //entitySprite
     }
 
     @Override
     public void Update(int roomX, int roomY, int[][] roomMap) {
-        super.Update(roomX, roomY, roomMap);
         updatePolygon(roomX, roomY);
-        if(movementQueue.isEmpty()) {
-            if(right)
-                addMove(Directions.LEFT, 120);
-            else
-                addMove(Directions.RIGHT, 120);
-        }
     }
 
     @Override
@@ -42,7 +35,7 @@ public class Guard extends Entity {
 
     public void updatePolygon(int roomX, int roomY) {
         if(cone == null)
-            cone = new Polygon(Polygons.guardX,Polygons.guardY,4);
+            cone = new Polygon(Polygons.cameraX,Polygons.cameraY,4);
 
         for(int i = 0; i < cone.npoints; ++i) {
             if(right) {

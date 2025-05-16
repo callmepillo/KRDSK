@@ -13,8 +13,8 @@ public class Tile
     private static final int NO_TILES   = 100;
     public static Tile[] tiles          = new Tile[NO_TILES];       /*!< Vector de referinte de tipuri de dale.*/
 
-    /// De remarcat ca urmatoarele dale sunt statice si publice. Acest lucru imi permite sa le am incarcate
-    /// o singura data in memorie
+    // De remarcat ca urmatoarele dale sunt statice si publice. Acest lucru imi permite sa le am incarcate
+    // o singura data in memorie
     public static Tile left_upper_door = new Tile(Assets.left_upper_door, 16);
     public static Tile left_midle_door = new Tile(Assets.left_midle_door, 17);
     public static Tile left_down_door = new Tile(Assets.left_down_door, 18);
@@ -61,9 +61,27 @@ public class Tile
     public static Tile floor_right = new Tile(Assets.floor_right, 59);
     public static Tile small_fence = new Tile(Assets.small_fence, 60);
     public static Tile chair1_up = new Tile(Assets.chair1_up, 61);
+    //un hitbox pentru jucator, pentru vizualizare:
+    /*
+    * ----------------------------------------  <- Tile.TILE_WIDTH
+    * |       ^                              |
+    * |       y     width                    |
+    * |       v       v                      |  <- Tile.TILE_HEIGHT
+    * | < x > -----------------              |
+    * |       |XXXXXXXXXXXXXXX|              |  Aici, 'X' reprezinta zona 'solida', sau zona care va putea fi
+    * |       |XXXXXXXXXXXXXXX|  < height    |  lovita de jucator. Aceasta este in interiorul unui tile, si
+    * |       -----------------              |  poate fi setata prin parametrul rectangle. Incearca sa tii
+    * |                                      |  latimea cat mai mare (daca se poate chiar == Tile.TILE_WIDTH)
+    * |                                      |  si o inaltime adecvata
+    * |                                      |
+    * |                                      |
+    * ----------------------------------------
+    * */
+    //acesta e un exemplu de tile solid cu hitbox observam ca dam ca parametru un Rectangle care va reprezenta
     public static Tile chair1_down = new Tile(Assets.chair1_down, 62, true, new Rectangle(5, 25, 70, 20));
     public static Tile chair2_up = new Tile(Assets.chair2_up, 63);
     public static Tile chair2_down = new Tile(Assets.chair2_down, 64);
+    //tile solid fara hitbox, in acest caz se poate considera ca hitboxul este intregul tile, un bloc intreg solid
     public static Tile box = new Tile(Assets.box, 65, true);
     public static Tile small_table = new Tile(Assets.small_table, 66, true, new Rectangle(0, 0,70, 10));
     public static Tile grass_left = new Tile(Assets.grass_left, 67);

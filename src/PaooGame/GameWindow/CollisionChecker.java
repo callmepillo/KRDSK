@@ -6,8 +6,10 @@ import PaooGame.Levels.Level;
 import PaooGame.Tiles.Tile;
 
 import java.awt.*;
+import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.TimeoutException;
 
@@ -63,36 +65,6 @@ public class CollisionChecker {
             return tileXPos + xOffset;
         }else {
             return currentTile * Tile.TILE_WIDTH + roomX;
-        }
-    }
-
-    public static int GetEntityYPosUnderRoofOrAboveFloorOld(Rectangle player, int roomX, int roomY, int airSpeed, int[][] lvlMap) {
-        int currentTileY = (int) Math.floor( (player.y - roomY) / (double) Tile.TILE_HEIGHT);
-
-        //Calculate current tile in order to implement hitbox
-        int currentTileX = (int) Math.round( (player.x - roomX) / (double) Tile.TILE_WIDTH);
-        int aboveOffset = 0;
-        int underOffset = 0;
-        int tileYPos = currentTileY * Tile.TILE_HEIGHT + roomY;
-        Tile AboveTile = Tile.tiles[lvlMap[currentTileY][currentTileX]];
-
-        Tile UnderTile = null;
-        if(currentTileY + 1 < 6)
-            UnderTile = Tile.tiles[lvlMap[currentTileY + 1][currentTileX]];
-
-        if(AboveTile != null && AboveTile.IsSolid()) {
-            aboveOffset = AboveTile.getHitbox(0, 0).height;
-        }
-
-        if(UnderTile != null && UnderTile.IsSolid()) {
-            underOffset = UnderTile.getHitbox(0, 0).y;
-        }
-
-        if( airSpeed > 0 ) {
-            int yOffset = Tile.TILE_HEIGHT - player.height;
-            return tileYPos + yOffset + underOffset;
-        }else {
-            return currentTileY * Tile.TILE_HEIGHT + roomY + aboveOffset;
         }
     }
 
@@ -177,8 +149,13 @@ public class CollisionChecker {
     }
 
     public static void CheckPlayerDetected(Rectangle player, Guard[] guards) {
-        for(Guard guard: guards)
-            if(guard.getDetectionCone().intersects(player))
+        //Area playerArea = new Area(player);
+        for(Guard guard: guards) {
+//            System.out.println(Arrays.toString(guard.getDetectionCone().xpoints) + " " + Arrays.toString(guard.getDetectionCone().ypoints));
+//            System.out.println((player.x + player.width) + " " + player.y);
+            Area guardArea = new Area(guard.getDetectionCone());
+            if (guardArea.intersects(player))
                 System.out.println("PLAYER DETECED");
+        }
     }
 }
