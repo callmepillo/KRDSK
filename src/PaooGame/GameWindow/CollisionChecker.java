@@ -1,5 +1,6 @@
 package PaooGame.GameWindow;
 
+import PaooGame.Entity.Camera;
 import PaooGame.Entity.Guard;
 import PaooGame.Levels.Door;
 import PaooGame.Levels.Level;
@@ -148,14 +149,25 @@ public class CollisionChecker {
         return null;
     }
 
-    public static void CheckPlayerDetected(Rectangle player, Guard[] guards) {
+    public static void CheckPlayerDetected(Rectangle player, Guard[] guards, Camera[] cameras) {
         //Area playerArea = new Area(player);
-        for(Guard guard: guards) {
+        if(guards != null) {
+            for (Guard guard : guards) {
 //            System.out.println(Arrays.toString(guard.getDetectionCone().xpoints) + " " + Arrays.toString(guard.getDetectionCone().ypoints));
 //            System.out.println((player.x + player.width) + " " + player.y);
-            Area guardArea = new Area(guard.getDetectionCone());
-            if (guardArea.intersects(player))
-                System.out.println("PLAYER DETECED");
+                Area guardArea = new Area(guard.getDetectionCone());
+                if (guardArea.intersects(player))
+                    System.out.println("PLAYER DETECED");
+            }
+        }
+        if(cameras != null) {
+            for (Camera cam : cameras) {
+//            System.out.println(Arrays.toString(guard.getDetectionCone().xpoints) + " " + Arrays.toString(guard.getDetectionCone().ypoints));
+//            System.out.println((player.x + player.width) + " " + player.y);
+                Area cameraArea = new Area(cam.getDetectionCone());
+                if (cameraArea.intersects(player))
+                    System.out.println("PLAYER DETECED");
+            }
         }
     }
 }

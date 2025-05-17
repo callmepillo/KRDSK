@@ -1,5 +1,6 @@
 package PaooGame.Levels;
 
+import PaooGame.Entity.Camera;
 import PaooGame.Entity.Guard;
 import PaooGame.Tiles.Tile;
 
@@ -10,6 +11,7 @@ public class Level {
     public static final int LEVEL_HEIGHT = 6; //Sizes for the level
     public Door[][] doors;
     public Guard[][] guards;
+    public Camera[][] cameras;
     public int[][][] tileMap;
     //this is a tile map that contains the rooms, the rows and the columns of tiles
     //the coordinates correspond to [room][row][column]
@@ -73,7 +75,17 @@ public class Level {
 
         if (guards != null && room < guards.length) {
             for (Guard guard : guards[room]) {
-                guard.Draw(g, leftBound - offset, upperBound);
+                int guardX = leftBound + guard.getX() - offset;
+                if(guardX + guard.getRectangle().width <= rightBound && guardX >= leftBound)
+                    guard.Draw(g, leftBound - offset, upperBound);
+            }
+        }
+
+        if (cameras != null && room < cameras.length) {
+            for (Camera cam: cameras[room]) {
+                int camX = leftBound + cam.getX() - offset;
+                if(camX + cam.getRectangle().width <= rightBound && camX >= leftBound)
+                    cam.Draw(g, leftBound - offset, upperBound);
             }
         }
 
@@ -107,6 +119,13 @@ public class Level {
     public Guard[] getRoomGuards(int room) {
         if(guards != null && room < guards.length)
             return guards[room];
+        else
+            return null;
+    }
+
+    public Camera[] getRoomCameras(int room) {
+        if(cameras != null && room < cameras.length)
+            return cameras[room];
         else
             return null;
     }
