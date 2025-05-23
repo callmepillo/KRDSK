@@ -136,11 +136,6 @@ public class Entity {
         return hitbox;
     }
 
-    public void moveRight(int time) {
-        right = true;
-        moveBuffer = time;
-    }
-
     public void addMove(Directions dir, int time) {
         movementQueue.add(dir);
         timingQueue.add(time);

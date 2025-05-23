@@ -109,24 +109,24 @@ public class FauxWindow extends JPanel {
                 cam.Update(posX - levelOffset, posY, level.GetRoomMap(room));
 
         if(player != null && visible) {
-
-            //check offset
-            int newOffset = CollisionChecker.CheckCloseToBorder(player.getRectangle(), levelOffset, posX, posX + width);
-            if(newOffset > levelOffset)
-                player.setXY(player.getX() - 2, player.getY());
-            else if(newOffset < levelOffset)
-                player.setXY(player.getX() + 2, player.getY());
-            levelOffset = newOffset;
-
-            if(guards != null || cameras != null)
-                CollisionChecker.CheckPlayerDetected(player.getRectangle(), guards, cameras);
-
             //check door
             Door enterDoor = null;
             if (level.getRoomDoors(room) != null && (enterDoor = CollisionChecker.CheckDoor(player.getRectangle(), posX - levelOffset, posY, level.getRoomDoors(room))) != null) {
                 win.EnterRoom(enterDoor.getDestinationRoom(), enterDoor.getDestX(), enterDoor.getDestY());
             } else {
+                //check offset
+                int newOffset = CollisionChecker.CheckCloseToBorder(player.getRectangle(), levelOffset, posX, posX + width);
+                if(newOffset > levelOffset) {
+                    player.setXY(player.getX() - 2, player.getY());
+                }
+                else if(newOffset < levelOffset) {
+                    player.setXY(player.getX() + 2, player.getY());
+                }
                 player.Update(posX - levelOffset, posY, level.GetRoomMap(room));
+                levelOffset = newOffset;
+
+                if(guards != null || cameras != null)
+                    CollisionChecker.CheckPlayerDetected(player.getRectangle(), guards, cameras);
             }
         }
 

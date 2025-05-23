@@ -65,7 +65,7 @@ public class LevelOne extends Level{
 
         this.cameras = new Camera[][] {
                 {},
-                {new Camera(9*Tile.TILE_WIDTH, 0, false, 90, 100)}
+                {new Camera(9*Tile.TILE_WIDTH + (3*Tile.TILE_WIDTH)/4 - 1, 0, true, 45, 100)}
         };
     }
 }
