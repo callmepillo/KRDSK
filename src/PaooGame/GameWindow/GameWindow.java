@@ -182,7 +182,7 @@ public class GameWindow
         statusBar.SetActive(true);
 
         player = new Player(300, 910);
-        getRoom(0).enterPlayer(player, 0, 2*Tile.TILE_HEIGHT);
+        getRoom(0).enterPlayer(player, 0, 3*Tile.TILE_HEIGHT);
         canvas.addKeyListener(playerControl);
     }
 

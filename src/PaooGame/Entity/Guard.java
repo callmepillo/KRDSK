@@ -10,7 +10,6 @@ public class Guard extends Entity {
     public Guard(int x, int y, int walkDistance) {
         super(x, y, Tile.TILE_WIDTH - 20, 2*Tile.TILE_HEIGHT);
         this.speed = 1;
-        this.cone = Polygons.guardPolygon(x, y);
         //entitySprite
     }
 
@@ -42,21 +41,19 @@ public class Guard extends Entity {
     }
 
     public void updatePolygon(int roomX, int roomY) {
-        int[] x = new int[4];
-        int[] y = new int[4];
+        if(cone == null)
+            cone = new Polygon(Polygons.guardX,Polygons.guardY,4);
 
-        for(int i = 0; i < x.length; ++i) {
+        for(int i = 0; i < cone.npoints; ++i) {
             if(right) {
-                x[i] = Polygons.guardX[i] + roomX + posX + Tile.TILE_WIDTH/2;
-                y[i] = Polygons.guardY[i] + roomY + posY + Tile.TILE_WIDTH/4;
+                cone.xpoints[i] = Polygons.guardX[i] + roomX + posX + Tile.TILE_WIDTH/2;
+                cone.ypoints[i] = Polygons.guardY[i] + roomY + posY + Tile.TILE_WIDTH/4;
             }
             else {
-                x[i] = -Polygons.guardX[3-i] + roomX + posX + Tile.TILE_WIDTH/2;
-                y[i] = Polygons.guardY[3-i] + roomY + posY + Tile.TILE_WIDTH/4;
+                cone.xpoints[i] = -Polygons.guardX[3-i] + roomX + posX + Tile.TILE_WIDTH/2;
+                cone.ypoints[i] = Polygons.guardY[3-i] + roomY + posY + Tile.TILE_WIDTH/4;
             }
         }
-
-        cone = new Polygon(x, y, 4);
     }
 
     public Polygon getDetectionCone() {

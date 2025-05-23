@@ -1,5 +1,6 @@
 package PaooGame.GameWindow;
 
+import PaooGame.Entity.Camera;
 import PaooGame.Entity.Guard;
 import PaooGame.Entity.Player;
 import PaooGame.Graphics.Colors;
@@ -99,9 +100,13 @@ public class FauxWindow extends JPanel {
 
     public void Update(int mouseX, int mouseY, boolean mouseP) {
         Guard[] guards = level.getRoomGuards(room);
+        Camera[] cameras = level.getRoomCameras(room);
         if(guards != null)
             for(Guard guard: guards)
                 guard.Update(posX - levelOffset, posY, level.GetRoomMap(room));
+        if(cameras != null)
+            for(Camera cam: cameras)
+                cam.Update(posX - levelOffset, posY, level.GetRoomMap(room));
 
         if(player != null && visible) {
 
@@ -113,8 +118,8 @@ public class FauxWindow extends JPanel {
                 player.setXY(player.getX() + 2, player.getY());
             levelOffset = newOffset;
 
-            if(guards != null)
-                CollisionChecker.CheckPlayerDetected(player.getRectangle(), guards);
+            if(guards != null || cameras != null)
+                CollisionChecker.CheckPlayerDetected(player.getRectangle(), guards, cameras);
 
             //check door
             Door enterDoor = null;
