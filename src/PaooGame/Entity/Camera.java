@@ -65,15 +65,15 @@ public class Camera extends Entity {
 
             for(int i = 0; i < xpts.length; ++i) {
                 if(direction) {
-                    xpts[i] = xpts[i] + roomX + posX;
-                    ypts[i] = ypts[i] + roomY + posY;
+                    coneX[i] = -xpts[i];
+                    coneY[i] = ypts[i];
                 }
                 else {
-                    xpts[i] = xpts[xpts.length - 1 - i] + roomX + posX;
-                    ypts[i] = ypts[xpts.length - 1 - i] + roomY + posY;
+                    coneX[i] = xpts[xpts.length - 1 - i];
+                    coneY[i] = ypts[xpts.length - 1 - i];
                 }
             }
-            cone = new Polygon(xpts, ypts, 4);
+            cone = new Polygon(coneX, coneY, 4);
         }
         else {
             for(int i = 0; i < coneX.length; ++i) {

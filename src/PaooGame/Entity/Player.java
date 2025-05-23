@@ -51,7 +51,9 @@ public class Player extends Entity {
                 airSpeed += gravity;
                 updateXpos(xSpeed, roomX, roomY, roomMap);
             } else {
-                posY = CollisionChecker.GetEntityYPosUnderRoofOrAboveFloor(hitbox, roomX, roomY, airSpeed, roomMap);
+                int tempY = CollisionChecker.GetEntityYPosUnderRoofOrAboveFloor(hitbox, roomX, roomY, airSpeed, roomMap);
+                if(CollisionChecker.CanMoveHere(hitbox, roomX, roomY, posX, tempY, roomMap))
+                    posY = tempY;
                 if(airSpeed > 0)
                     resetInAir();
                 else
