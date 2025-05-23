@@ -16,13 +16,19 @@ public class Camera extends Entity {
     private int[] coneX = Polygons.cameraX.clone();
     private int[] coneY = Polygons.cameraY.clone();
 
-    public Camera(int x, int y, boolean direction, double degrees, int time) {
+    public Camera(int x, int y) {
         super(x, y, Tile.TILE_WIDTH/4, Tile.TILE_HEIGHT/4);
         this.speed = 0;
+//        this.degrees = degrees;
+//        this.time = time;
+//        this.direction = direction;
+        //entitySprite
+    }
+
+    public void setAnim(boolean direction, double degrees, int time) {
+        this.direction = direction;
         this.degrees = degrees;
         this.time = time;
-        this.direction = direction;
-        //entitySprite
     }
 
     @Override

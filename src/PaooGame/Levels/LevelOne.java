@@ -60,12 +60,13 @@ public class LevelOne extends Level{
 
         this.guards = new Guard[][] {
                 {},
-                {new Guard(4*Tile.TILE_WIDTH, 4*Tile.TILE_HEIGHT - 1, 2*Tile.TILE_WIDTH)}
+                {new Guard(4*Tile.TILE_WIDTH, 4*Tile.TILE_HEIGHT - 1)}
         };
 
         this.cameras = new Camera[][] {
                 {},
-                {new Camera(9*Tile.TILE_WIDTH + (3*Tile.TILE_WIDTH)/4 - 1, 0, true, 45, 100)}
+                {new Camera(9*Tile.TILE_WIDTH + (3*Tile.TILE_WIDTH)/4 - 1, 0)}
         };
+        cameras[1][0].setAnim(true, 45, 100);
     }
 }
