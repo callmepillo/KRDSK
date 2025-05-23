@@ -15,28 +15,27 @@ import java.util.List;
 public class GameWindow
 {
     private JFrame  wndFrame;       /*!< fereastra principala a jocului*/
-    private Player player;
     private String  wndTitle;       /*!< titlul ferestrei*/
     private int     wndWidth;       /*!< latimea ferestrei in pixeli*/
     private int     wndHeight;      /*!< inaltimea ferestrei in pixeli*/
     private Canvas  canvas;         /*!< "panza/tablou" in care se poate desena*/
-    private int     playerX;
-    private int     playerY;
-    private int     mouseX;
-    private int     mouseY;
-    private boolean mousePressed;
+
     private static List<FauxWindow> windows = new ArrayList<>();
     private CliWindow cliMenu;
     private Bar     statusBar;
+    private Player player;
     private Level level;
-    private boolean stop;
-    private boolean inLevel;
+
     private KeyListener menuControl;
     private KeyListener playerControl;
     private MouseMotionListener mouseMotionControl;
     private MouseListener mousePressedControl;
-    private int[][]distortX;
-    private int[][]distortY;
+    private int     mouseX;
+    private int     mouseY;
+    private boolean mousePressed;
+
+    private boolean stop;
+    private boolean inLevel;
 
 
     public GameWindow(String title, int width, int height){
@@ -59,8 +58,6 @@ public class GameWindow
             return;
         }
 
-        distortX=new int[wndHeight][wndWidth];
-        distortY=new int[wndHeight][wndWidth];
         wndFrame = new JFrame(wndTitle);
         wndFrame.setSize(wndWidth, wndHeight);
         wndFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -123,8 +120,6 @@ public class GameWindow
     public Canvas GetCanvas() {
         return canvas;
     }
-    public int GetPlayerX() { return playerX; }
-    public int GetPlayerY() { return playerY; }
     public int GetMouseX() { return mouseX; }
     public int GetMouseY() { return mouseY; }
     public boolean GetMousePressed() { return mousePressed; }
@@ -181,7 +176,7 @@ public class GameWindow
         canvas.addMouseMotionListener(mouseMotionControl);
         statusBar.SetActive(true);
 
-        player = new Player(300, 910);
+        player = Player.getInstance(300, 910);
         getRoom(0).enterPlayer(player, 0, 3*Tile.TILE_HEIGHT);
         canvas.addKeyListener(playerControl);
     }

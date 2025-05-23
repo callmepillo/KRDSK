@@ -15,6 +15,17 @@ public class Player extends Entity {
     private int fallSpeedAfterCollision = 1;
     private boolean inAir = false;
 
+    //Utilizam design pattern-ul singleton deoarece vom folosi doar un jucator
+    private static Player instance;
+
+    public static Player getInstance(int x, int y) {
+        if (instance == null)
+            instance = new Player(x, y);
+        instance.posX = x;
+        instance.posY = y;
+        return instance;
+    }
+
     public Player(int x, int y) {
         super(x, y, Tile.TILE_WIDTH - 10, Tile.TILE_HEIGHT/2);
         entitySprite = new Tile(Assets.player_idle, 6);
