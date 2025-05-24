@@ -1,29 +1,19 @@
-package PaooGame;
+package PaooGame.Input;
 
 //the game window which we want to control
 import PaooGame.GameWindow.GameWindow;
-
-//for constants regarding cli messages
-import PaooGame.GameWindow.Options;
-import PaooGame.Graphics.Messages;
-
-//for TILE_HEIGHT and TILE_WIDTH constants
-import PaooGame.Tiles.Tile;
+import PaooGame.InputFacade;
 
 //we use the MouseInputAdapter from Swing and MouseEvent from AWT to handle the mouse
 import javax.swing.event.MouseInputAdapter;
-import java.awt.*;
 import java.awt.event.MouseEvent;
 
 //we use the KeyAdapter/KeyEvent from AWT
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-//using Objects.equals for string comparison for null safety and good practice
-import java.util.Objects;
-
 public class InputController {
-    private GameWindow Win;
+    private InputFacade fac;
     private int[][] distortX; //we use the disotrsion maps in order to correctly
     private int[][] distortY; //handle mouse events
     public PlayerControl pControl;
@@ -35,7 +25,7 @@ public class InputController {
     GameWindow, not all of them; if we would have multiple GameWindows we would need multiple
     InputControllers */
     public InputController(GameWindow Window, int[][] distortX, int[][] distortY) {
-        this.Win = Window;
+        this.fac = new InputFacade(Window);
         this.distortX = distortX;
         this.distortY = distortY;
         pControl = new PlayerControl();
@@ -50,23 +40,23 @@ public class InputController {
 
         @Override
         public void keyPressed(KeyEvent event) {
-            boolean optWASD = Options.getWASD();
-            boolean optSPACE = Options.getSpace();
+            boolean optWASD = fac.optGetWasd();
+            boolean optSPACE = fac.optGetSpace();
 
             if(optWASD) {
                 switch (event.getKeyCode()) {
                     case KeyEvent.VK_W:
                         if(!optSPACE)
-                            Win.GetPlayer().setJump(true);
+                            fac.playerJump(true);
                         break;
                     case KeyEvent.VK_A:
-                        Win.GetPlayer().setLeft(true);
+                        fac.playerLeft(true);
                         break;
                     case KeyEvent.VK_S:
-                        Win.GetPlayer().setDown(true);
+                        fac.playerDown(true);
                         break;
                     case KeyEvent.VK_D:
-                        Win.GetPlayer().setRight(true);
+                        fac.playerRight(true);
                         break;
                 }
             }
@@ -74,57 +64,50 @@ public class InputController {
                 switch (event.getKeyCode()) {
                     case KeyEvent.VK_UP:
                         if(!optSPACE)
-                            Win.GetPlayer().setJump(true);
+                            fac.playerJump(true);
                         break;
                     case KeyEvent.VK_LEFT:
-                        Win.GetPlayer().setLeft(true);
+                        fac.playerLeft(true);
                         break;
                     case KeyEvent.VK_DOWN:
-                        Win.GetPlayer().setDown(true);
+                        fac.playerDown(true);
                         break;
                     case KeyEvent.VK_RIGHT:
-                        Win.GetPlayer().setRight(true);
+                        fac.playerRight(true);
                         break;
                 }
             }
 
             if(event.getKeyCode() == KeyEvent.VK_ESCAPE)
-                Win.DisplayPauseMenu();
+                fac.winDisplayPauseMenu();
 
             if(optSPACE && (event.getKeyCode() == KeyEvent.VK_SPACE))
-                Win.GetPlayer().setJump(true);
+                fac.playerJump(true);
            if (Character.isDigit(event.getKeyChar())) {
                 int number = Integer.parseInt(Character.toString(event.getKeyChar()));
-                if (Win.GetBar().isActive(number)) {
-                    Win.removeRoom(number);
-                    Win.GetBar().setActive(number, false);
-                }
-                else {
-                    Win.addRoom(number);
-                    Win.GetBar().setActive(number, true);
-                }
+                fac.barToggleRoom(number);
            }
         }
 
         public void keyReleased(KeyEvent event)
         {
-            boolean optWASD = Options.getWASD();
-            boolean optSPACE = Options.getSpace();
+            boolean optWASD = fac.optGetWasd();
+            boolean optSPACE = fac.optGetSpace();
 
             if(optWASD) {
                 switch (event.getKeyCode()) {
                     case KeyEvent.VK_W:
                         if(!optSPACE)
-                            Win.GetPlayer().setJump(false);
+                            fac.playerJump(false);
                         break;
                     case KeyEvent.VK_A:
-                        Win.GetPlayer().setLeft(false);
+                        fac.playerLeft(false);
                         break;
                     case KeyEvent.VK_S:
-                        Win.GetPlayer().setDown(false);
+                        fac.playerDown(false);
                         break;
                     case KeyEvent.VK_D:
-                        Win.GetPlayer().setRight(false);
+                        fac.playerRight(false);
                         break;
                 }
             }
@@ -132,25 +115,22 @@ public class InputController {
                 switch (event.getKeyCode()) {
                     case KeyEvent.VK_UP:
                         if(!optSPACE)
-                            Win.GetPlayer().setJump(false);
+                            fac.playerJump(false);
                         break;
                     case KeyEvent.VK_LEFT:
-                        Win.GetPlayer().setLeft(false);
+                        fac.playerLeft(false);
                         break;
                     case KeyEvent.VK_DOWN:
-                        Win.GetPlayer().setDown(false);
+                        fac.playerDown(false);
                         break;
                     case KeyEvent.VK_RIGHT:
-                        Win.GetPlayer().setRight(false);
+                        fac.playerRight(false);
                         break;
                 }
             }
 
-            if(event.getKeyCode() == KeyEvent.VK_ESCAPE)
-                Win.DisplayPauseMenu();
-
             if(optSPACE && (event.getKeyCode() == KeyEvent.VK_SPACE))
-                Win.GetPlayer().setJump(false);
+                fac.playerJump(false);
         }
 
     }
@@ -158,7 +138,7 @@ public class InputController {
     //mouse coordinate handler
     public class MouseMotionControls extends MouseInputAdapter {
         public void mouseMoved(MouseEvent e) {
-            Win.SetMouse(distortX[e.getY()][e.getX()], distortY[e.getY()][e.getX()]);
+            fac.winSetMouse(distortX[e.getY()][e.getX()], distortY[e.getY()][e.getX()]);
             /*We see that we are giving the distorted coordinates as arguments to the
             * SetMouse function in order to correctly the map the real screen coordinates
             * to the distored screen ones. This is necessary because when we are drawing
@@ -169,19 +149,19 @@ public class InputController {
             * and a mouse in a real space.*/
         }
         public void mouseDragged(MouseEvent e) {
-            Win.SetMouse(distortX[e.getY()][e.getX()], distortY[e.getY()][e.getX()]);
+            fac.winSetMouse(distortX[e.getY()][e.getX()], distortY[e.getY()][e.getX()]);
         }
     }
 
     public class MousePressedControls extends MouseInputAdapter {
         @Override
         public void mousePressed(MouseEvent e) {
-            Win.SetMousePressed(true);
+            fac.winSetMousePressed(true);
         }
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            Win.SetMousePressed(false);
+            fac.winSetMousePressed(false);
         }
     }
 
@@ -193,23 +173,21 @@ public class InputController {
             int keyCode = event.getKeyCode();
 
             //we are first checking the backspace character, that should delete a character (only it there are any to delete)
-            if(keyCode == KeyEvent.VK_BACK_SPACE && !Objects.equals(Win.GetCliWindow().getUserInput(), "")) {
-                if(!Objects.equals(Win.GetCliWindow().getUserInput(), ">"))
-                    Win.GetCliWindow().setUserInput(Win.GetCliWindow().getUserInput().substring(0,Win.GetCliWindow().getUserInput().length() - 1));
-            }
+            if(keyCode == KeyEvent.VK_BACK_SPACE)
+                fac.cliBackspace();
+
             //the enter key works as an 'execute command'
             else if(keyCode == KeyEvent.VK_ENTER) {
-                String prompt = Win.GetCliWindow().getUserInput();
-                Win.GetCliWindow().addHistory(); //we are adding the command to the history so we can display it like a terminal would
-                Win.handleWindowCommand(prompt);
+                //we are adding the command to the history so we can display it like a terminal would
+                fac.cliExecute();
             }
             //in order to use the same cliWindow for the pause menu -> WIP
             else if (keyCode == KeyEvent.VK_ESCAPE) {
-                Win.HidePauseMenu();
+                fac.winHidePauseMenu();
             }
             //add the key to the command
             else if(Character.isLetter(key) || Character.isDigit(key) || key == ' '){
-                Win.GetCliWindow().setUserInput(Win.GetCliWindow().getUserInput() + key);
+                fac.cliAddKey(key);
             }
         }
     }
