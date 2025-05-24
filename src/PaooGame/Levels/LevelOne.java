@@ -1,7 +1,9 @@
 package PaooGame.Levels;
 
 import PaooGame.Entity.Camera;
+import PaooGame.Entity.Entity;
 import PaooGame.Entity.Guard;
+import PaooGame.Entity.GuardFactory;
 import PaooGame.Tiles.Tile;
 
 public class LevelOne extends Level{
@@ -58,14 +60,10 @@ public class LevelOne extends Level{
                 {new Door(1, 0, 0, 2*Tile.TILE_HEIGHT, 7*Tile.TILE_WIDTH - 10, 2*Tile.TILE_HEIGHT, 10, Tile.TILE_HEIGHT)}
         };
 
-        this.guards = new Guard[][] {
+        this.entity = new Entity[][] {
                 {},
-                {new Guard(4*Tile.TILE_WIDTH, 4*Tile.TILE_HEIGHT - 1, 2*Tile.TILE_WIDTH)}
+                {guardFactory.createEntity(4*Tile.TILE_WIDTH, 4*Tile.TILE_HEIGHT - 1), cameraFactory.createEntity(9*Tile.TILE_WIDTH + (3*Tile.TILE_WIDTH)/4 - 1, 0)}
         };
-
-        this.cameras = new Camera[][] {
-                {},
-                {new Camera(9*Tile.TILE_WIDTH + (3*Tile.TILE_WIDTH)/4 - 1, 0, true, 45, 100)}
-        };
+        ((Camera) entity[1][1]).setAnim(true, 45, 100);
     }
 }

@@ -48,7 +48,7 @@ public class Bar {
     }
 
     public Bar(int pX, int pY, int size, int space, int noCells) {
-        cells = new ArrayList<Cell>();
+        cells = new ArrayList<>();
         posX = pX;
         posY = pY;
         for(int i = 0; i < noCells; ++i) {
@@ -71,5 +71,10 @@ public class Bar {
 
     public void setActive(int cell, boolean state) {
         cells.get(cell).active = state;
+    }
+
+    public void clear() {
+        for(Cell c: cells)
+            c.active = false;
     }
 }

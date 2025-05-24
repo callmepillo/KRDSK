@@ -60,8 +60,8 @@ public class FauxWindow extends JPanel {
     public void enterPlayer(Player player, int playerX, int playerY) {
         this.player = player;
         playerWindow = this;
-        player.setXY(posX + playerX, posY + playerY);
-        player.setInAir(true);
+        this.player.setXY(posX + playerX, posY + playerY);
+        this.player.setInAir(true);
     }
 
     public void leavePlayer() {
@@ -108,7 +108,7 @@ public class FauxWindow extends JPanel {
             for(Camera cam: cameras)
                 cam.Update(posX - levelOffset, posY, level.GetRoomMap(room));
 
-        if(player != null && visible) {
+        if(playerWindow == this && visible) {
             //check door
             Door enterDoor = null;
             if (level.getRoomDoors(room) != null && (enterDoor = CollisionChecker.CheckDoor(player.getRectangle(), posX - levelOffset, posY, level.getRoomDoors(room))) != null) {

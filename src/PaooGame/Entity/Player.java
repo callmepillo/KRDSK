@@ -18,15 +18,13 @@ public class Player extends Entity {
     //Utilizam design pattern-ul singleton deoarece vom folosi doar un jucator
     private static Player instance;
 
-    public static Player getInstance(int x, int y) {
+    public static Player getInstance() {
         if (instance == null)
-            instance = new Player(x, y);
-        instance.posX = x;
-        instance.posY = y;
+            instance = new Player(0, 0);
         return instance;
     }
 
-    public Player(int x, int y) {
+    private Player(int x, int y) {
         super(x, y, Tile.TILE_WIDTH - 10, Tile.TILE_HEIGHT/2);
         entitySprite = new Tile(Assets.player_idle, 6);
     }
@@ -124,6 +122,16 @@ public class Player extends Entity {
     }
     public void setJump(boolean jump) {
         this.jump = jump;
+    }
+
+    public void reset(int x, int y) {
+        this.posX = x;
+        this.posY = y;
+        this.airSpeed = 0;
+        this.inAir = true; // Assuming player falls from air at spawn
+        this.jump = false;
+        this.moving = false;
+        updateHitboxPos();
     }
 }
 

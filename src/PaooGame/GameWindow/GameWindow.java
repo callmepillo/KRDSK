@@ -3,6 +3,7 @@ package PaooGame.GameWindow;
 import PaooGame.*;
 import PaooGame.Entity.Player;
 import PaooGame.Graphics.Messages;
+import PaooGame.Input.InputController;
 import PaooGame.Levels.*;
 import PaooGame.Tiles.Tile;
 
@@ -163,22 +164,25 @@ public class GameWindow
         for(int i = 0; i < level.GetNumberOfRooms(); ++i) {
             windows.add(new FauxWindow(100, 500, level, i));
         }
-            //Recomended size should be a multiple of Tile.TILE_WIDTH and Tile.TILE_HEIGHT
-//            windows.add(new FauxWindow(100, 500, 8*Tile.TILE_WIDTH, 6*Tile.TILE_HEIGHT, level, 0));
-//            windows.add(new FauxWindow(1000, 200, 8*Tile.TILE_WIDTH, 6*Tile.TILE_HEIGHT, level, 1));
-
-
-        //NU LUCRAM CU KEYINPUT!!! STERGE ACEASTA CLASA!!! NOI LUCRAM DOAR CU INPUTCONTROLLER!!!
-//        KeyInput keyInput=new KeyInput(player);
-//        canvas.addKeyListener(keyInput);
 
         canvas.addMouseListener(mousePressedControl);
         canvas.addMouseMotionListener(mouseMotionControl);
         statusBar.SetActive(true);
 
-        player = Player.getInstance(300, 910);
+        player = Player.getInstance();
+        player.reset(0, 3*Tile.TILE_HEIGHT);
         getRoom(0).enterPlayer(player, 0, 3*Tile.TILE_HEIGHT);
+        //EnterRoom(0, 0, 3*Tile.TILE_HEIGHT);
         canvas.addKeyListener(playerControl);
+    }
+
+    public void ExitLevel() {
+        this.statusBar = null;
+        cliMenu.setTransparent(false);
+        cliMenu.clearHistory();
+        windows.clear();
+        removeAllListeners();
+        DisplayStartMenu();
     }
 
     public void EnterRoom(int room, int playerX, int playerY) {
@@ -204,13 +208,8 @@ public class GameWindow
 
     public void DisplayStartMenu() {
         inLevel = false;
-        windows.clear();
-        cliMenu.setTransparent(false);
-        cliMenu.clearHistory();
         cliMenu.addText(Messages.title);
         windows.add(cliMenu);
-
-        removeAllListeners();
         canvas.addKeyListener(menuControl);
     }
 
@@ -267,7 +266,7 @@ public class GameWindow
         switch (args[0]) {
             case "exit":
                 if(IsInLevel())
-                    DisplayStartMenu(); //save/load?
+                    ExitLevel(); //save/load?
                 else
                     SetStop(true);
                 break;

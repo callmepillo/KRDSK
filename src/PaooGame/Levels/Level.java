@@ -1,18 +1,21 @@
 package PaooGame.Levels;
 
-import PaooGame.Entity.Camera;
-import PaooGame.Entity.Guard;
+import PaooGame.Entity.*;
 import PaooGame.Tiles.Tile;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Level {
     public static final int LEVEL_WIDTH = 10; //Sizes for the level
     public static final int LEVEL_HEIGHT = 6; //Sizes for the level
     public Door[][] doors;
-    public Guard[][] guards;
-    public Camera[][] cameras;
+//    public Guard[][] guards;
+//    public Camera[][] cameras;
+    public Entity[][] entity;
     public int[][][] tileMap;
+    static CameraFactory cameraFactory = new CameraFactory();
+    static GuardFactory guardFactory = new GuardFactory();
     //this is a tile map that contains the rooms, the rows and the columns of tiles
     //the coordinates correspond to [room][row][column]
 
@@ -73,19 +76,27 @@ public class Level {
             }
         }
 
-        if (guards != null && room < guards.length) {
-            for (Guard guard : guards[room]) {
-                int guardX = leftBound + guard.getX() - offset;
-                if(guardX + guard.getRectangle().width <= rightBound && guardX >= leftBound)
-                    guard.Draw(g, leftBound - offset, upperBound);
-            }
-        }
+//        if (guards != null && room < guards.length) {
+//            for (Guard guard : guards[room]) {
+//                int guardX = leftBound + guard.getX() - offset;
+//                if(guardX + guard.getRectangle().width <= rightBound && guardX >= leftBound)
+//                    guard.Draw(g, leftBound - offset, upperBound);
+//            }
+//        }
 
-        if (cameras != null && room < cameras.length) {
-            for (Camera cam: cameras[room]) {
-                int camX = leftBound + cam.getX() - offset;
-                if(camX + cam.getRectangle().width <= rightBound && camX >= leftBound)
-                    cam.Draw(g, leftBound - offset, upperBound);
+//        if (cameras != null && room < cameras.length) {
+//            for (Camera cam: cameras[room]) {
+//                int camX = leftBound + cam.getX() - offset;
+//                if(camX + cam.getRectangle().width <= rightBound && camX >= leftBound)
+//                    cam.Draw(g, leftBound - offset, upperBound);
+//            }
+//        }
+
+        if (entity != null && room < entity.length) {
+            for (Entity ent: entity[room]) {
+                int camX = leftBound + ent.getX() - offset;
+                if(camX + ent.getRectangle().width <= rightBound && camX >= leftBound)
+                    ent.Draw(g, leftBound - offset, upperBound);
             }
         }
 
@@ -117,15 +128,33 @@ public class Level {
     }
 
     public Guard[] getRoomGuards(int room) {
-        if(guards != null && room < guards.length)
-            return guards[room];
+//        if(guards != null && room < guards.length)
+//            return guards[room];
+//        else
+//            return null;
+        if(entity != null && room < entity.length) {
+            ArrayList<Guard> g = new ArrayList<>();
+            for (Entity ent : entity[room])
+                if (ent instanceof Guard)
+                    g.add((Guard) ent);
+            return g.toArray(Guard[]::new);
+        }
         else
             return null;
     }
 
     public Camera[] getRoomCameras(int room) {
-        if(cameras != null && room < cameras.length)
-            return cameras[room];
+//        if(cameras != null && room < cameras.length)
+//            return cameras[room];
+//        else
+//            return null;
+        if(entity != null && room < entity.length) {
+            ArrayList<Camera> g = new ArrayList<>();
+            for (Entity ent : entity[room])
+                if (ent instanceof Camera)
+                    g.add((Camera) ent);
+            return g.toArray(Camera[]::new);
+        }
         else
             return null;
     }
