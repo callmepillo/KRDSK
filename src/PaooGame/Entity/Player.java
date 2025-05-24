@@ -26,7 +26,7 @@ public class Player extends Entity {
         return instance;
     }
 
-    public Player(int x, int y) {
+    private Player(int x, int y) {
         super(x, y, Tile.TILE_WIDTH - 10, Tile.TILE_HEIGHT/2);
         entitySprite = new Tile(Assets.player_idle, 6);
     }

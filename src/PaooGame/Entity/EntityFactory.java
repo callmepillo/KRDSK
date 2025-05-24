@@ -1,5 +1,5 @@
 package PaooGame.Entity;
 
 abstract class EntityFactory {
-    abstract Entity createEntity();
+    abstract Entity createEntity(int x, int y);
 }

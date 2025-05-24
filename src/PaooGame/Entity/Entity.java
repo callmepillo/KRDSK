@@ -20,7 +20,7 @@ public class Entity {
     protected Queue<Directions> movementQueue = new LinkedList<>();
     protected Queue<Integer> timingQueue = new LinkedList<>();
 
-    public Entity(int x, int y, int width, int height) {
+    protected Entity(int x, int y, int width, int height) {
         this.posX = x;
         this.posY = y;
         this.hitbox = new Rectangle(x, y, width, height);
