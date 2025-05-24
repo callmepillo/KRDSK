@@ -93,27 +93,6 @@ public class InputController {
 
             if(optSPACE && (event.getKeyCode() == KeyEvent.VK_SPACE))
                 Win.GetPlayer().setJump(true);
-
-
-//            int keyCode = event.getKeyCode();
-//            if (keyCode == KeyEvent.VK_LEFT) {
-//                Win.GetPlayer().moveLeft();
-//            }
-//            if (keyCode == KeyEvent.VK_RIGHT) {
-//                Win.GetPlayer().moveRight();
-//            }
-//            if (keyCode == KeyEvent.VK_SPACE) {
-//                Win.GetPlayer().jump();
-//            }
-           // if (keyCode == KeyEvent.VK_ESCAPE) {
-                // if(Win.GetPlayer().getY() >= 0)
-             //   Win.DisplayPauseMenu();
-            //}
-//            if (keyCode == KeyEvent.VK_DOWN) {
-//               // if(Win.GetPlayer().getY() <= (Win.GetWndHeight() - Tile.TILE_HEIGHT))
-//                    Win.GetPlayer().moveDown();
-//            }
-//
            if (Character.isDigit(event.getKeyChar())) {
                 int number = Integer.parseInt(Character.toString(event.getKeyChar()));
                 if (Win.GetBar().isActive(number)) {
@@ -129,28 +108,6 @@ public class InputController {
 
         public void keyReleased(KeyEvent event)
         {
-//            switch (event.getKeyCode()){
-//                case KeyEvent.VK_UP:
-//                case KeyEvent.VK_W:
-//                    Win.GetPlayer().setUp(false);
-//                    break;
-//                case KeyEvent.VK_LEFT:
-//                case KeyEvent.VK_A:
-//                    Win.GetPlayer().setLeft(false);
-//                    break;
-//                case KeyEvent.VK_DOWN:
-//                case KeyEvent.VK_S:
-//                    Win.GetPlayer().setDown(false);
-//                    break;
-//                case KeyEvent.VK_RIGHT:
-//                case KeyEvent.VK_D:
-//                    Win.GetPlayer().setRight(false);
-//                    break;
-//                case KeyEvent.VK_SPACE:
-//                    Win.GetPlayer().setJump(false);
-//                    break;
-//            }
-
             boolean optWASD = Options.getWASD();
             boolean optSPACE = Options.getSpace();
 
@@ -196,23 +153,6 @@ public class InputController {
                 Win.GetPlayer().setJump(false);
         }
 
-//            int keyCode=event.getKeyCode();
-//           if (keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT || keyCode == KeyEvent.VK_DOWN) {
-//                Win.GetPlayer().stopMoving();
-//            }
-//        /*    if (keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT) {
-//                Win.GetPlayer().stopMoving();
-//            }
-//            if (keyCode == KeyEvent.VK_DOWN) {
-//                Win.GetPlayer().stopVerticalMoving();
-//            }
-//
-//*/          //int key=event.getKeyCode();
-//            if(keyCode == KeyEvent.VK_SPACE)
-//            {
-//                Win.GetPlayer().releaseJump();
-//            }
-//        }
     }
 
     //mouse coordinate handler
@@ -245,7 +185,7 @@ public class InputController {
         }
     }
 
-    //keyboard input handler for the CliWindow (
+    //keyboard input handler for the CliWindow
     public class MenuControl extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent event) {
@@ -260,60 +200,8 @@ public class InputController {
             //the enter key works as an 'execute command'
             else if(keyCode == KeyEvent.VK_ENTER) {
                 String prompt = Win.GetCliWindow().getUserInput();
-                //String[] args = prompt.split(" ");
                 Win.GetCliWindow().addHistory(); //we are adding the command to the history so we can display it like a terminal would
                 Win.handleWindowCommand(prompt);
-                //after we split the command, we are using the first argument to check the requested operation
-                /*
-                switch (args[0]) {
-                    case "exit":
-                        if(Win.IsInLevel())
-                            Win.DisplayStartMenu(); //save/load?
-                        else
-                            Win.SetStop(true);
-                        break;
-                    case "clear":
-                        Win.GetCliWindow().clearHistory();
-                        break;
-                    case "play":
-                        if(args.length > 1)
-                            try {
-                                Win.StartLevel(Integer.parseInt(args[1]));
-                            }
-                            catch(NumberFormatException ex) {
-                                System.out.println("whoops");
-                            }
-                        break;
-                    case "db":
-                        if(args.length > 2)
-                            switch (args[1]) {
-                                case "enter":
-                                    try {
-                                        Win.EnterRoom(Integer.parseInt(args[2]));
-                                        Win.HidePauseMenu();
-                                    }
-                                    catch(NumberFormatException ex) {
-                                        System.out.println("whoops");
-                                    }
-                            }
-                        break;
-                    case "help":
-                        Win.GetCliWindow().addText(Messages.help);
-                        break;
-                    case "title":
-                        Win.GetCliWindow().addText(Messages.title);
-                        break;
-                    case "paused":
-                        Win.GetCliWindow().addText(Messages.paused);
-                        break;
-                    case "numpie":
-                        Win.GetCliWindow().addText("Matematici Discrete - Sebi 2024");
-                        break;
-                    default:
-                        Win.GetCliWindow().addText("Command \"" + prompt + "\" not found");
-                        break;
-                }
-                */
             }
             //in order to use the same cliWindow for the pause menu -> WIP
             else if (keyCode == KeyEvent.VK_ESCAPE) {
