@@ -76,27 +76,38 @@ public class Level {
             }
         }
 
-//        if (guards != null && room < guards.length) {
-//            for (Guard guard : guards[room]) {
-//                int guardX = leftBound + guard.getX() - offset;
-//                if(guardX + guard.getRectangle().width <= rightBound && guardX >= leftBound)
-//                    guard.Draw(g, leftBound - offset, upperBound);
-//            }
-//        }
-
-//        if (cameras != null && room < cameras.length) {
-//            for (Camera cam: cameras[room]) {
-//                int camX = leftBound + cam.getX() - offset;
-//                if(camX + cam.getRectangle().width <= rightBound && camX >= leftBound)
-//                    cam.Draw(g, leftBound - offset, upperBound);
-//            }
-//        }
-
         if (entity != null && room < entity.length) {
             for (Entity ent: entity[room]) {
-                int camX = leftBound + ent.getX() - offset;
-                if(camX + ent.getRectangle().width <= rightBound && camX >= leftBound)
+                int entXLeft = leftBound + ent.getX() - offset;
+                int entY = upperBound + ent.getY();
+                int width = ent.getFullWidth();
+                int entXRight = entXLeft + width;
+
+                if (!ent.getDirection()) {
+                    entXLeft -= (width - ent.getRectangle().width);
+                    entXRight -= (width - ent.getRectangle().width);
+                }
+
+                if(entXLeft >= leftBound && entXRight <= rightBound)
                     ent.Draw(g, leftBound - offset, upperBound);
+                else if(entXLeft < rightBound && entXRight > rightBound)
+                    ent.DrawPartial(
+                            g,
+                            leftBound - offset, upperBound,
+                            entXLeft, entY,
+                            rightBound - entXLeft,
+                            0,
+                            rightBound - entXLeft
+                    );
+                else if(entXLeft < leftBound && entXRight > leftBound)
+                    ent.DrawPartial(
+                            g,
+                            leftBound - offset, upperBound,
+                            leftBound, entY,
+                            entXRight - leftBound,
+                            leftBound - entXLeft,
+                            entXRight - leftBound
+                    );
             }
         }
 

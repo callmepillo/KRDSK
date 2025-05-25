@@ -149,7 +149,7 @@ public class CollisionChecker {
         return null;
     }
 
-    public static void CheckPlayerDetected(Rectangle player, Guard[] guards, Camera[] cameras) {
+    public static boolean CheckPlayerDetected(Rectangle player, Guard[] guards, Camera[] cameras) {
         //Area playerArea = new Area(player);
         if(guards != null) {
             for (Guard guard : guards) {
@@ -157,7 +157,7 @@ public class CollisionChecker {
 //            System.out.println((player.x + player.width) + " " + player.y);
                 Area guardArea = new Area(guard.getDetectionCone());
                 if (guardArea.intersects(player))
-                    System.out.println("PLAYER DETECED");
+                    return true;
             }
         }
         if(cameras != null) {
@@ -166,8 +166,10 @@ public class CollisionChecker {
 //            System.out.println((player.x + player.width) + " " + player.y);
                 Area cameraArea = new Area(cam.getDetectionCone());
                 if (cameraArea.intersects(player))
-                    System.out.println("PLAYER DETECED");
+                    return true;
             }
         }
+
+        return false;
     }
 }

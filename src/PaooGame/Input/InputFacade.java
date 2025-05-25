@@ -1,4 +1,4 @@
-package PaooGame;
+package PaooGame.Input;
 
 import PaooGame.Entity.Player;
 import PaooGame.GameWindow.Bar;

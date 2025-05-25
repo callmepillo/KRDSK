@@ -37,6 +37,7 @@ public class GameWindow
 
     private boolean stop;
     private boolean inLevel;
+    public static boolean gameOver;
 
 
     public GameWindow(String title, int width, int height){
@@ -353,6 +354,18 @@ public class GameWindow
             default:
                 GetCliWindow().addText("Command \"" + prompt + "\" not found");
                 break;
+        }
+    }
+
+    public void GameOver() {
+        if(!windows.contains(cliMenu) && inLevel) {
+            cliMenu.setTransparent(true);
+            windows.add(cliMenu);
+            cliMenu.clearHistory();
+            cliMenu.addText(Messages.gameOver);
+
+            removeAllListeners();
+            canvas.addKeyListener(menuControl);
         }
     }
 }

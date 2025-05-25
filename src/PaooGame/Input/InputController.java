@@ -2,7 +2,7 @@ package PaooGame.Input;
 
 //the game window which we want to control
 import PaooGame.GameWindow.GameWindow;
-import PaooGame.InputFacade;
+import PaooGame.Input.InputFacade;
 
 //we use the MouseInputAdapter from Swing and MouseEvent from AWT to handle the mouse
 import javax.swing.event.MouseInputAdapter;

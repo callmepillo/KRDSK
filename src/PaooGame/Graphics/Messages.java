@@ -31,6 +31,14 @@ public class Messages {
                                     " 888          .8'     `888.   `88.    .8'  oo     .d8P  888       o  888     d88' \n" +
                                     "o888o        o88o     o8888o    `YbodP'    8\"\"88888P'  o888ooooood8 o888bood8P'   \n" +
                                     "---------------------------------------TUI------------------------------------------\n";
+    public static String gameOver = "  .oooooo.        .o.      ooo        oooo oooooooo   .oooooo. oooooo     oooo oooooooo ooooooooo.   \n" +
+                                    " d8P'  `Y8b      .88.      `88.       .88' `88'  `8  d8P'  `Y8b `888.     .8'  `88'  `8 `888   `Y88. \n" +
+                                    "888             .8\"88.      888b     d'88   88      888      888 `888.   .8'    88       888   .d88' \n" +
+                                    "888            .8' `88.     8 Y88. .P  88   88oo8   888      888  `888. .8'     88oo8    888ooo88P'  \n" +
+                                    "888     ooooo .88ooo888.    8  `888'   88   88 \"    888      888   `888.8'      88 \"     888`88b.    \n" +
+                                    "`88.    .88' .8'     `88.   8    Y     88   88    o `88b    d88'    `888'       88    o  888  `88b.  \n" +
+                                    " `Y8bood8P' o88o     o888o o8o        o88o o88oood8  `Y8bood8P'      `8'       o88oood8 o888o  o888o \n" +
+                                    "-------------------------------------------------TUI--------------------------------------------------\n";
     public static String lvlNotAvalible = "Sorry, but this level is not avalible.";
     public static String optionNotAvalible = "Sorry, this option is not avalible.";
     public static String optionHelp =   "option <op> <value> -- changes the given option to the given value\n" +

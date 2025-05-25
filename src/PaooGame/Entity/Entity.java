@@ -5,6 +5,7 @@ import PaooGame.Graphics.Assets;
 import PaooGame.Tiles.Tile;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -17,6 +18,7 @@ public class Entity {
     protected int speed = 4; //changed to int
     protected boolean moving = false;
     protected int moveBuffer = 0;
+    protected int coneWidth;
     protected Queue<Directions> movementQueue = new LinkedList<>();
     protected Queue<Integer> timingQueue = new LinkedList<>();
 
@@ -122,18 +124,29 @@ public class Entity {
         //entitySprite = new Tile(Assets.player_idle, 6);
 
         //drawing the hitbox for debugging purposes
-        g.setColor(Color.RED);
-        g.setStroke(new java.awt.BasicStroke(3));
-        g.fillRect(hitbox.x + roomX, hitbox.y + roomY, hitbox.width, hitbox.height);
-        //entitySprite.Draw(g, posX - 5, posY - Tile.TILE_HEIGHT/2); //so its centered on the hitbox
+        if(entitySprite != null)
+            entitySprite.Draw(g, posX + roomX, posY + roomY); //so its centered on the hitbox
 
         g.setStroke(orgStroke);
         g.setColor(orgColor);
     }
 
+    public void DrawPartial(Graphics g, int roomX, int roomY, int x, int y, int width, int sx, int sw) {
+        BufferedImage cropped = entitySprite.GetImg().getSubimage(sx, 0, sw, 2*Tile.TILE_HEIGHT);
+        g.drawImage(cropped, x, y, width, 2*Tile.TILE_HEIGHT, null);
+    }
+
     public Rectangle getRectangle() {
         //i wanted to make the hitbox a little smaller
         return hitbox;
+    }
+
+    public int getFullWidth() {
+        return hitbox.width;
+    }
+
+    public boolean getDirection() {
+        return right;
     }
 
     public void addMove(Directions dir, int time) {
