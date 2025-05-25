@@ -24,8 +24,8 @@ public class FauxWindow extends JPanel {
     private boolean mouseIn;
     private Player player;
     protected boolean visible;
-    private boolean detected;
-    private int detectionTimer;
+    private boolean detected = false;
+    private int detectionTimer = 0;
     private static FauxWindow draggedWindow = null;
     private static FauxWindow playerWindow = null;
     private boolean isDragged;

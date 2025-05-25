@@ -181,6 +181,7 @@ public class GameWindow
         this.statusBar = null;
         cliMenu.setTransparent(false);
         cliMenu.clearHistory();
+        gameOver = false;
         windows.clear();
         removeAllListeners();
         DisplayStartMenu();
@@ -365,7 +366,6 @@ public class GameWindow
             cliMenu.addText(Messages.gameOver);
 
             removeAllListeners();
-            canvas.addKeyListener(menuControl);
-        }
+            canvas.addKeyListener(menuControl);}
     }
 }
