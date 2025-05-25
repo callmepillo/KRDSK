@@ -205,4 +205,8 @@ public class Tile
     {
         return id;
     }
+
+    public BufferedImage GetImg() {
+        return img;
+    }
 }

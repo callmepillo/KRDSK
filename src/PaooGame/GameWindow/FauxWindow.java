@@ -9,6 +9,7 @@ import PaooGame.Levels.Level;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Random;
 
 public class FauxWindow extends JPanel {
     private Level level;
@@ -23,6 +24,8 @@ public class FauxWindow extends JPanel {
     private boolean mouseIn;
     private Player player;
     protected boolean visible;
+    private boolean detected;
+    private int detectionTimer;
     private static FauxWindow draggedWindow = null;
     private static FauxWindow playerWindow = null;
     private boolean isDragged;
@@ -126,7 +129,16 @@ public class FauxWindow extends JPanel {
                 levelOffset = newOffset;
 
                 if(guards != null || cameras != null)
-                    CollisionChecker.CheckPlayerDetected(player.getRectangle(), guards, cameras);
+                    detected = CollisionChecker.CheckPlayerDetected(player.getRectangle(), guards, cameras);
+
+                if(detected && !GameWindow.gameOver)
+                    detectionTimer++;
+                else if(detectionTimer > 0 && !GameWindow.gameOver)
+                    detectionTimer--;
+
+                if(detectionTimer == 90) {
+                    GameWindow.gameOver = true;
+                }
             }
         }
 
@@ -168,7 +180,10 @@ public class FauxWindow extends JPanel {
             level.Draw(g, posX, posX + width, posY, room, levelOffset);
             g.setColor(Colors.term);
             g.setStroke(new java.awt.BasicStroke(3));
-            g.drawString("Window:" + room + " X:" + posX + " Y:" + posY, posX, posY - 20);
+            if(playerWindow == this)
+                g.drawString("Window:" + room + " X:" + posX + " Y:" + posY + " DM: " + detectionTimer, posX, posY - 20);
+            else
+                g.drawString("Window:" + room + " X:" + posX + " Y:" + posY, posX, posY - 20);
             if (mouseIn)
                 g.drawRect(posX - 5, posY - 5, width + 10, height + 10);
             else
@@ -177,11 +192,31 @@ public class FauxWindow extends JPanel {
             g.setColor(orgColor);
             if (player != null)
                 player.Draw(g);
+            if (player != null && detectionTimer > 0)
+                drawDetection(g);
 
             //draw hitbox for doors
 //            for(Door door: level.getDoors())
 //                door.drawHitbox(g,posX - levelOffset, posY);
         }
+    }
+
+    public void drawDetection(Graphics2D g) {
+        Color orgColor = g.getColor();
+        Stroke orgStroke = g.getStroke();
+
+        int offsetX = 0;
+        int offsetY = 0;
+
+        if (!GameWindow.gameOver) {
+            offsetX = (int) (Math.random() * 10 - 5);
+            offsetY = (int) (Math.random() * 10 - 5);
+        }
+        g.setColor(new Color(255, 0, 0, detectionTimer));
+        g.fillRect(posX + detectionTimer/10 * offsetX, posY + detectionTimer/10 * offsetY, width, height);
+
+        g.setStroke(orgStroke);
+        g.setColor(orgColor);
     }
 
     public int GetRoom() {

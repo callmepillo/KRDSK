@@ -26,7 +26,7 @@ public class Player extends Entity {
 
     private Player(int x, int y) {
         super(x, y, Tile.TILE_WIDTH - 10, Tile.TILE_HEIGHT/2);
-        entitySprite = new Tile(Assets.player_idle, 6);
+        entitySprite = new Tile(Assets.player_idle, 2);
     }
 
     @Override
@@ -103,8 +103,6 @@ public class Player extends Entity {
     public void Draw(Graphics2D g) {
         Stroke orgStroke = g.getStroke();
         Color orgColor = g.getColor();
-
-        entitySprite = new Tile(Assets.player_idle, 6);
 
         //drawing the hitbox for debugging purposes
         g.setColor(Color.RED);

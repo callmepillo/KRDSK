@@ -115,10 +115,11 @@ public class Game implements Runnable {
         if(wnd.GetStop())
             StopGame();
 
-
         for(FauxWindow win : wnd.GetWindows())
             win.Update(wnd.GetMouseX(), wnd.GetMouseY(), wnd.GetMousePressed());
 
+        if(GameWindow.gameOver)
+            wnd.GameOver();
     }
 
     private void Draw() {
