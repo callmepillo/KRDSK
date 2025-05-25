@@ -63,7 +63,7 @@ public class FauxWindow extends JPanel {
     public void enterPlayer(Player player, int playerX, int playerY) {
         this.player = player;
         playerWindow = this;
-        this.player.setXY(posX + playerX, posY + playerY);
+        this.player.reset(posX + playerX, posY + playerY);
         this.player.setInAir(true);
     }
 

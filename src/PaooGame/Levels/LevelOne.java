@@ -68,7 +68,9 @@ public class LevelOne extends Level{
         //height - the height of the door (in general, one tile height)
         this.doors = new Door[][] {
                 {new Door(0, 1, 10*Tile.TILE_WIDTH - 10, 2*Tile.TILE_HEIGHT, 10, 2*Tile.TILE_HEIGHT, 10, Tile.TILE_HEIGHT)},
-                {new Door(1, 0, 0, 2*Tile.TILE_HEIGHT, 7*Tile.TILE_WIDTH - 10, 2*Tile.TILE_HEIGHT, 10, Tile.TILE_HEIGHT)}
+                {new Door(1, 0, 0, 2*Tile.TILE_HEIGHT, 7*Tile.TILE_WIDTH - 10, 2*Tile.TILE_HEIGHT, 10, Tile.TILE_HEIGHT),
+                new Door(1, 2, 10*Tile.TILE_WIDTH - 10, 4*Tile.TILE_HEIGHT, 10, 4*Tile.TILE_HEIGHT, 10, Tile.TILE_HEIGHT)},
+                {new Door(2, 1, 0, 4*Tile.TILE_HEIGHT, 7*Tile.TILE_WIDTH - 10, 4*Tile.TILE_HEIGHT, 10, Tile.TILE_HEIGHT)}
         };
 
         //so, the way we create an entity: we either a camera or guard factory to create an entity that is saved
