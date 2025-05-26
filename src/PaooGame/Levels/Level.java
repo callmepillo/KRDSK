@@ -10,8 +10,6 @@ public class Level {
     public static final int LEVEL_WIDTH = 10; //Sizes for the level
     public static final int LEVEL_HEIGHT = 6; //Sizes for the level
     public Door[][] doors;
-//    public Guard[][] guards;
-//    public Camera[][] cameras;
     public Entity[][] entity;
     public int[][][] tileMap;
     static CameraFactory cameraFactory = new CameraFactory();
