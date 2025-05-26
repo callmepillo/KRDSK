@@ -65,7 +65,7 @@ public class Camera extends Entity {
         g.setStroke(orgStroke);
     }
 
-    public void DrawPartial(Graphics g, int roomX, int roomY, int x, int y, int width, int sx, int sw) {
+    public void DrawPartial(Graphics2D g, int roomX, int roomY, int x, int y, int width, int sx, int sw) {
         BufferedImage cropped = new BufferedImage(getFullWidth(), 4*Tile.TILE_HEIGHT, BufferedImage.TYPE_INT_ARGB);
         Graphics2D c = (Graphics2D) cropped.getGraphics();
         if (!direction) {

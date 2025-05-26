@@ -21,6 +21,10 @@ public class Entity {
     protected int coneWidth;
     protected Queue<Directions> movementQueue = new LinkedList<>();
     protected Queue<Integer> timingQueue = new LinkedList<>();
+    protected Tile animIdle;
+    protected Tile[] animMoveRight;
+    protected Tile[] animMoveLeft;
+    protected int animationCounter = 0;
 
     protected Entity(int x, int y, int width, int height) {
         this.posX = x;
@@ -131,7 +135,7 @@ public class Entity {
         g.setColor(orgColor);
     }
 
-    public void DrawPartial(Graphics g, int roomX, int roomY, int x, int y, int width, int sx, int sw) {
+    public void DrawPartial(Graphics2D g, int roomX, int roomY, int x, int y, int width, int sx, int sw) {
         BufferedImage cropped = entitySprite.GetImg().getSubimage(sx, 0, sw, 2*Tile.TILE_HEIGHT);
         g.drawImage(cropped, x, y, width, 2*Tile.TILE_HEIGHT, null);
     }
@@ -152,5 +156,20 @@ public class Entity {
     public void addMove(Directions dir, int time) {
         movementQueue.add(dir);
         timingQueue.add(time);
+    }
+
+    public void updateSprite() {
+        if(right) {
+            animationCounter++;
+            entitySprite = animMoveRight[animationCounter/5 % 4];
+            return;
+        }
+        else if (left){
+            animationCounter++;
+            entitySprite = animMoveLeft[animationCounter/5 % 4];
+            return;
+        }
+        entitySprite = animIdle;
+        animationCounter = 0;
     }
 }
