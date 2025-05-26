@@ -1,9 +1,6 @@
 package PaooGame.Levels;
 
-import PaooGame.Entity.Camera;
-import PaooGame.Entity.Entity;
-import PaooGame.Entity.Guard;
-import PaooGame.Entity.GuardFactory;
+import PaooGame.Entity.*;
 import PaooGame.Tiles.Tile;
 
 public class LevelOne extends Level{
@@ -79,7 +76,9 @@ public class LevelOne extends Level{
         //and the ceiling
         this.entity = new Entity[][] {
                 {},
-                {guardFactory.createEntity(4*Tile.TILE_WIDTH, 4*Tile.TILE_HEIGHT - 1), cameraFactory.createEntity(9*Tile.TILE_WIDTH + (3*Tile.TILE_WIDTH)/4 - 1, 0), cameraFactory.createEntity(0, 0)}
+                {guardFactory.createEntity(4*Tile.TILE_WIDTH, 4*Tile.TILE_HEIGHT - 1), cameraFactory.createEntity(9*Tile.TILE_WIDTH + (3*Tile.TILE_WIDTH)/4 - 1, 0), cameraFactory.createEntity(0, 0)},
+                {},
+                {new Ambassador(3*Tile.TILE_WIDTH, 4*Tile.TILE_HEIGHT - 1, false)}
         };
 
         //for the camera, because of the constructor and because we may want to make it move faster/with a different

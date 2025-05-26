@@ -1,5 +1,6 @@
 package PaooGame.GameWindow;
 
+import PaooGame.Entity.Ambassador;
 import PaooGame.Entity.Camera;
 import PaooGame.Entity.Guard;
 import PaooGame.Entity.Player;
@@ -104,12 +105,17 @@ public class FauxWindow extends JPanel {
     public void Update(int mouseX, int mouseY, boolean mouseP) {
         Guard[] guards = level.getRoomGuards(room);
         Camera[] cameras = level.getRoomCameras(room);
+        Ambassador amb = level.getRoomAmbassador(room);
         if(guards != null)
             for(Guard guard: guards)
                 guard.Update(posX - levelOffset, posY, level.GetRoomMap(room));
         if(cameras != null)
             for(Camera cam: cameras)
                 cam.Update(posX - levelOffset, posY, level.GetRoomMap(room));
+        if(amb != null && playerWindow == this) {
+            amb.Update(posX - levelOffset, posY, level.GetRoomMap(room));
+            GameWindow.gameOver = true;
+        }
 
         if(playerWindow == this && visible) {
             //check door

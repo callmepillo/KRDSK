@@ -169,4 +169,12 @@ public class Level {
         else
             return null;
     }
+    public Ambassador getRoomAmbassador(int room) {
+        if(entity != null && room < entity.length) {
+            for (Entity ent : entity[room])
+                if (ent instanceof Ambassador)
+                    return (Ambassador) ent;
+        }
+        return null;
+    }
 }

@@ -10,7 +10,7 @@ import org.w3c.dom.css.Rect;
  */
 public class Tile
 {
-    private static final int NO_TILES   = 100;
+    private static final int NO_TILES   = 177;
     public static Tile[] tiles          = new Tile[NO_TILES];       /*!< Vector de referinte de tipuri de dale.*/
 
     // De remarcat ca urmatoarele dale sunt statice si publice. Acest lucru imi permite sa le am incarcate
