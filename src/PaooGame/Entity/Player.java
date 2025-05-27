@@ -7,6 +7,12 @@ import PaooGame.Tiles.Tile;
 
 import java.awt.*;
 
+//player tile ids:
+//idle = 1
+//jump = 2
+//move_right = 3-6
+//move_left = 7-10
+
 public class Player extends Entity {
     private int gravity = 1;
     private boolean jump;
@@ -14,6 +20,7 @@ public class Player extends Entity {
     private int jumpSpeed = -20;
     private int fallSpeedAfterCollision = 1;
     private boolean inAir = false;
+    protected Tile animJump;
 
     //Utilizam design pattern-ul singleton deoarece vom folosi doar un jucator
     private static Player instance;
@@ -26,18 +33,29 @@ public class Player extends Entity {
 
     private Player(int x, int y) {
         super(x, y, Tile.TILE_WIDTH - 10, Tile.TILE_HEIGHT/2);
-        entitySprite = new Tile(Assets.player_idle, 2);
+        animIdle = new Tile(Assets.player_idle, 1);
+        animJump = new Tile(Assets.player_jump, 2);
+        animMoveRight = new Tile[4];
+        animMoveLeft = new Tile[4];
+        for(int i = 0; i < 4; ++i) {
+            animMoveRight[i] = new Tile(Assets.player_move_right[i], 3 + i);
+            animMoveLeft[i] = new Tile(Assets.player_move_left[i], 7 + i);
+        }
+        entitySprite = animIdle;
+
     }
 
     @Override
     public void Update(int roomX, int roomY, int[][] roomMap) {
         moving = false;
 
-        if(jump)
+        if(jump) {
             jump();
+        }
 
-        if(!left && !right && !inAir)
+        if(!left && !right && !inAir) {
             return;
+        }
 
         int xSpeed = 0;
 
@@ -105,10 +123,11 @@ public class Player extends Entity {
         Color orgColor = g.getColor();
 
         //drawing the hitbox for debugging purposes
-        g.setColor(Color.RED);
-        g.setStroke(new java.awt.BasicStroke(3));
-        g.drawRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+        //g.setColor(Color.RED);
+        //g.setStroke(new java.awt.BasicStroke(3));
+        //g.drawRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 
+        updateSprite();
         entitySprite.Draw(g, posX - 5, posY - Tile.TILE_HEIGHT/2); //so its centered on the hitbox
 
         g.setStroke(orgStroke);
@@ -130,6 +149,15 @@ public class Player extends Entity {
         this.jump = false;
         this.moving = false;
         updateHitboxPos();
+    }
+
+    @Override
+    public void updateSprite() {
+        if(inAir) {
+            entitySprite = animJump;
+            return;
+        }
+        super.updateSprite();
     }
 }
 

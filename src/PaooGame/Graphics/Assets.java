@@ -13,8 +13,21 @@ public class Assets
         public static BufferedImage floor_middle;
 
         public static BufferedImage player_idle;
-        public static BufferedImage player_dance_one;
-        public static BufferedImage player_dance_two;
+        public static BufferedImage player_jump;
+        public static BufferedImage[] player_move_right;
+        public static BufferedImage[] player_move_left;
+
+        public static BufferedImage[] guard_move_right_top;
+        public static BufferedImage[] guard_move_right_bottom;
+        public static BufferedImage[] guard_move_left_top;
+        public static BufferedImage[] guard_move_left_bottom;
+
+        public static BufferedImage amb_idle_top;
+        public static BufferedImage amb_idle_bottom;
+        public static BufferedImage[] amb_salute_right_top;
+        public static BufferedImage[] amb_salute_right_bottom;
+        public static BufferedImage[] amb_salute_left_top;
+        public static BufferedImage[] amb_salute_left_bottom;
 
     public static BufferedImage left_upper_door;
     public static BufferedImage left_midle_door;
@@ -135,8 +148,10 @@ public class Assets
     {
             /// Se creaza temporar un obiect SpriteSheet initializat prin intermediul clasei ImageLoader
         SpriteSheet sheet = new SpriteSheet(ImageLoader.LoadImage("/textures/firstCorrectSprite_resized.png"));
-        SpriteSheet playerSheet = new SpriteSheet(ImageLoader.LoadImage("/textures/krdsk.png"));
-            /// Se obtin subimaginile corespunzatoare elementelor necesare.
+        SpriteSheet playerSheet = new SpriteSheet(ImageLoader.LoadImage("/textures/animatii.png"));
+        SpriteSheet guardSheet = new SpriteSheet(ImageLoader.LoadImage("/textures/guard.png"));
+        SpriteSheet armySheet = new SpriteSheet(ImageLoader.LoadImage("/textures/army.png"));
+        /// Se obtin subimaginile corespunzatoare elementelor necesare.
 //        grass = sheet.crop(0, 0);
 //        soil = sheet.crop(1, 0);
 //        water = sheet.crop(2, 0);
@@ -155,8 +170,37 @@ public class Assets
         floor_middle = sheet.crop(1, 4);
 
         player_idle = playerSheet.crop(0, 0);
-        player_dance_one = playerSheet.crop(1,0);
-        player_dance_two = playerSheet.crop(2,0);
+        player_jump = playerSheet.crop(1, 0);
+        player_move_right = new BufferedImage[4];
+        for(int i = 0; i < 4; ++i)
+            player_move_right[i] = playerSheet.crop(i, 1);
+        player_move_left = new BufferedImage[4];
+        for(int i = 0; i < 4; ++i)
+            player_move_left[i] = playerSheet.crop(i, 2);
+
+        guard_move_right_top = new BufferedImage[10];
+        guard_move_right_bottom = new BufferedImage[10];
+        guard_move_left_top = new BufferedImage[10];
+        guard_move_left_bottom = new BufferedImage[10];
+        for(int i = 0; i < 10; ++i) {
+            guard_move_right_top[i] = guardSheet.crop(i, 0);
+            guard_move_right_bottom[i] = guardSheet.crop(i, 1);
+            guard_move_left_top[i] = guardSheet.crop(i, 2);
+            guard_move_left_bottom[i] = guardSheet.crop(i, 3);
+        }
+
+        amb_idle_top = armySheet.crop(0,0);
+        amb_idle_bottom = armySheet.crop(0, 1);
+        amb_salute_right_top = new BufferedImage[10];
+        amb_salute_right_bottom = new BufferedImage[10];
+        amb_salute_left_top = new BufferedImage[10];
+        amb_salute_left_bottom = new BufferedImage[10];
+        for(int i = 0; i < 10; ++i) {
+            amb_salute_right_top[i] = armySheet.crop(i, 0);
+            amb_salute_right_bottom[i] = armySheet.crop(i, 1);
+            amb_salute_left_top[i] = armySheet.crop(i, 4);
+            amb_salute_left_bottom[i] = armySheet.crop(i, 5);
+        }
 
         left_upper_door=sheet.crop(0,0);
         left_midle_door=sheet.crop(0,1);
