@@ -43,6 +43,7 @@ public class GameWindow
     private boolean stop;
     private boolean inLevel;
     public static boolean gameOver;
+    public static boolean loggedIn;
 
     public GameWindow(String title, int width, int height){
         wndTitle    = title;    /*!< Retine titlul ferestrei.*/
@@ -97,7 +98,7 @@ public class GameWindow
         cliMenu = new CliWindow(0,0, wndWidth, wndHeight);
         dict = new CliDictionary(this);
 
-        DisplayStartMenu();
+        DisplayLoginMenu();
 
         wndFrame.add(canvas);
         wndFrame.pack();
@@ -214,8 +215,22 @@ public class GameWindow
     }
 
     public void DisplayStartMenu() {
-        inLevel = false;
-        cliMenu.addText(Messages.title);
+        if(!windows.contains(cliMenu)) {
+            inLevel = false;
+            windows.add(cliMenu);
+            cliMenu.clearHistory();
+            cliMenu.addText(Messages.title);
+
+            removeAllListeners();
+            canvas.addKeyListener(menuControl);
+        }
+    }
+
+    public void DisplayLoginMenu() {
+        loggedIn = false;
+        cliMenu.setStringX(500);
+        cliMenu.setOffsetLines(10);
+        cliMenu.addText("Please login using the command: login {your_name}");
         windows.add(cliMenu);
         canvas.addKeyListener(menuControl);
     }
@@ -360,7 +375,7 @@ public class GameWindow
 //            default:
 //                GetCliWindow().addText("Command \"" + prompt + "\" not found");
 //                break;
-//        }
+//
         String[] args = prompt.split(" ", 2);
         if(args.length > 1)
             dict.execute(args[0], args[1]);
@@ -377,5 +392,14 @@ public class GameWindow
 
             removeAllListeners();
             canvas.addKeyListener(menuControl);}
+    }
+
+    public void Login(String s) {
+        System.out.println(s + " logged in.");
+        loggedIn = true;
+        PlayerData.name = s;
+        windows.remove(cliMenu);
+        cliMenu.setStringX(50);
+        DisplayStartMenu();
     }
 }

@@ -1,4 +1,5 @@
 package PaooGame.GameWindow;
+import PaooGame.Database.DatabaseManager;
 import PaooGame.Database.PlayerData;
 import PaooGame.Game;
 import PaooGame.Graphics.Messages;
@@ -166,6 +167,44 @@ public class CliDictionary {
             }
         };
 
+        Action<Object> notLoggedIn = new Action<Object>() {
+            @Override
+            public void execute(Object item) {
+                win.GetCliWindow().addText("User not logged in.");
+            }
+        };
+
+        Action<Object> login = new Action<Object>() {
+            @Override
+            public void execute(Object item) {
+                String str = (String) item;
+                if (str != null)
+                    try {
+                        win.Login(str);
+                        return;
+                    }
+                    catch(NumberFormatException ex) {
+                        System.out.println("whoops");
+                    }
+                win.GetCliWindow().addText("User not logged in.");
+            }
+        };
+
+        Action<Object> save = new Action<Object>() {
+            @Override
+            public void execute(Object item) {
+                String str = (String) item;
+
+                DatabaseManager.create();
+                if(str != null)
+                    win.GetCliWindow().addText(Messages.error);
+                else if (DatabaseManager.playerExists(PlayerData.name))
+                    DatabaseManager.save();
+                else
+                    DatabaseManager.addNewPlayer();
+            }
+        };
+
         map.put("exit", exitLevel);
         map.put("clear", clear);
         map.put("play", play);
@@ -176,12 +215,23 @@ public class CliDictionary {
         map.put("paused", paused);
         map.put("numpie", numpie);
         map.put("notFound", notFound);
+        map.put("notLoggedIn", notLoggedIn);
+        map.put("login", login);
+        map.put("save", save);
     }
 
     public void execute(String s, String args) {
-        if(map.containsKey(s))
-            map.get(s).execute(args);
-        else
-            map.get("notFound").execute(s);
+        if(!GameWindow.loggedIn) {
+            if (s.equals("login"))
+                map.get(s).execute(args);
+            else
+                map.get("notLoggedIn").execute(null);
+        }
+        else {
+            if (map.containsKey(s))
+                map.get(s).execute(args);
+            else
+                map.get("notFound").execute(s);
+        }
     }
 }

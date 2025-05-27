@@ -11,6 +11,8 @@ public class Options {
     public void setWinDesc(boolean val) { winDesc = val; }
     public boolean getWASD() { return wasd; }
     public boolean getSpace() { return space; }
+    public boolean getDebug() { return debug; }
+    public boolean getWinDesc() { return winDesc; }
     public String getStatus() {
         return  "wasd: " + wasd + "\n" +
                 "space: " + space + "\n";
