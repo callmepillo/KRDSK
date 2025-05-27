@@ -1,0 +1,25 @@
+@startuml
+class PaooGame.Input.InputFacade {
+- GameWindow win
+- CliWindow cli
+- Player player
+- Bar bar
++ boolean optGetWasd()
++ boolean optGetSpace()
++ void playerJump(boolean)
++ void playerLeft(boolean)
++ void playerDown(boolean)
++ void playerRight(boolean)
++ void winDisplayPauseMenu()
++ void barToggleRoom(int)
++ void winSetMouse(int,int)
++ void winSetMousePressed(boolean)
++ void cliBackspace()
++ void cliExecute()
++ void winHidePauseMenu()
++ void cliAddKey(char)
+- void update()
+}
+
+
+@enduml

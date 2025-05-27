@@ -1,0 +1,36 @@
+@startuml
+class Entity {
+
+}
+
+
+class Guard {
+
+}
+
+
+abstract class EntityFactory {
+~ {abstract}Entity createEntity(int,int)
+}
+
+class CameraFactory {
++ Entity createEntity(int,int)
+}
+
+class Camera {
+
+}
+
+
+class GuardFactory {
++ Entity createEntity(int,int)
+}
+
+
+
+EntityFactory <|-- CameraFactory
+EntityFactory <|-- GuardFactory
+Entity <.. EntityFactory
+Entity <|-- Guard
+Entity <|-- Camera
+@enduml

@@ -1,17 +1,21 @@
 package PaooGame.GameWindow;
 
-import PaooGame.*;
+import PaooGame.Database.Options;
+import PaooGame.Database.PlayerData;
 import PaooGame.Entity.Player;
 import PaooGame.Graphics.Messages;
 import PaooGame.Input.InputController;
 import PaooGame.Levels.*;
 import PaooGame.Tiles.Tile;
+import org.sqlite.Function;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Dictionary;
 import java.util.List;
+import java.util.Objects;
 
 public class GameWindow
 {
@@ -34,11 +38,11 @@ public class GameWindow
     private int     mouseX;
     private int     mouseY;
     private boolean mousePressed;
+    private CliDictionary dict;
 
     private boolean stop;
     private boolean inLevel;
     public static boolean gameOver;
-
 
     public GameWindow(String title, int width, int height){
         wndTitle    = title;    /*!< Retine titlul ferestrei.*/
@@ -91,6 +95,7 @@ public class GameWindow
         FauxWindow.setWin(this);
         FauxWindow.setWindowSize(8*Tile.TILE_WIDTH, 6*Tile.TILE_HEIGHT);
         cliMenu = new CliWindow(0,0, wndWidth, wndHeight);
+        dict = new CliDictionary(this);
 
         DisplayStartMenu();
 
@@ -263,99 +268,104 @@ public class GameWindow
     }
 
     public void handleWindowCommand(String prompt) {
-        String[] args = prompt.split(" ");
-
-        switch (args[0]) {
-            case "exit":
-                if(IsInLevel())
-                    ExitLevel(); //save/load?
-                else
-                    SetStop(true);
-                break;
-            case "clear":
-                GetCliWindow().clearHistory();
-                break;
-            case "play":
-                if(args.length > 1)
-                    try {
-                        StartLevel(Integer.parseInt(args[1]));
-                    }
-                    catch(NumberFormatException ex) {
-                        System.out.println("whoops");
-                    }
-                else
-                    GetCliWindow().addText(Messages.lvlNotAvalible);
-                break;
-            case "db":
-                if(args.length > 2)
-                    switch (args[1]) {
-                        case "enter":
-                            try {
-                                EnterRoom(Integer.parseInt(args[2]), 0, 2*Tile.TILE_HEIGHT);
-                                HidePauseMenu();
-                            }
-                            catch(NumberFormatException ex) {
-                                System.out.println("whoops");
-                            }
-                    }
-                break;
-            case "option":
-                if(args.length > 2)
-                    switch (args[1]) {
-                        case "wasd":
-                            try {
-                                Options.setWASD(Boolean.parseBoolean(args[2]));
-                                GetCliWindow().addText(Messages.option("wasd", args[2]));
-                                HidePauseMenu();
-                            }
-                            catch(NumberFormatException ex) {
-                                System.out.println("whoops");
-                            }
-                            break;
-                        case "space":
-                            try {
-                                Options.setSpace(Boolean.parseBoolean(args[2]));
-                                GetCliWindow().addText(Messages.option("space", args[2]));
-                                HidePauseMenu();
-                            }
-                            catch(NumberFormatException ex) {
-                                System.out.println("whoops");
-                            }
-                            break;
-                        default:
-                            GetCliWindow().addText(Messages.optionNotAvalible);
-                    }
-                else if (args.length == 2 && args[1].equals("status"))
-                    GetCliWindow().addText(Messages.optionStatus());
-
-                break;
-            case "help":
-                if(args.length > 1) {
-                    switch (args[1]) {
-                        case "option":
-                            GetCliWindow().addText(Messages.optionHelp);
-                            break;
-                        default:
-                            GetCliWindow().addText(Messages.helpPageNotAvalible);
-                            break;
-                    }
-                }
-                else
-                    GetCliWindow().addText(Messages.help);
-                break;
-            case "title":
-                GetCliWindow().addText(Messages.title);
-                break;
-            case "paused":
-                GetCliWindow().addText(Messages.paused);
-                break;
-            case "numpie":
-                GetCliWindow().addText("Matematici Discrete - Sebi 2024");
-                break;
-            default:
-                GetCliWindow().addText("Command \"" + prompt + "\" not found");
-                break;
-        }
+//        String[] args = prompt.split(" ");
+//
+//        switch (args[0]) {
+//            case "exit":
+//                if(IsInLevel())
+//                    ExitLevel(); //save/load?
+//                else
+//                    SetStop(true);
+//                break;
+//            case "clear":
+//                GetCliWindow().clearHistory();
+//                break;
+//            case "play":
+//                if(args.length > 1)
+//                    try {
+//                        StartLevel(Integer.parseInt(args[1]));
+//                    }
+//                    catch(NumberFormatException ex) {
+//                        System.out.println("whoops");
+//                    }
+//                else
+//                    GetCliWindow().addText(Messages.lvlNotAvalible);
+//                break;
+//            case "db":
+//                if(args.length > 2)
+//                    switch (args[1]) {
+//                        case "enter":
+//                            try {
+//                                EnterRoom(Integer.parseInt(args[2]), 0, 2*Tile.TILE_HEIGHT);
+//                                HidePauseMenu();
+//                            }
+//                            catch(NumberFormatException ex) {
+//                                System.out.println("whoops");
+//                            }
+//                    }
+//                break;
+//            case "option":
+//                if(args.length > 2)
+//                    switch (args[1]) {
+//                        case "wasd":
+//                            try {
+//                                PlayerData.opt.setWASD(Boolean.parseBoolean(args[2]));
+//                                GetCliWindow().addText(Messages.option("wasd", args[2]));
+//                                HidePauseMenu();
+//                            }
+//                            catch(NumberFormatException ex) {
+//                                System.out.println("whoops");
+//                            }
+//                            break;
+//                        case "space":
+//                            try {
+//                                PlayerData.opt.setSpace(Boolean.parseBoolean(args[2]));
+//                                GetCliWindow().addText(Messages.option("space", args[2]));
+//                                HidePauseMenu();
+//                            }
+//                            catch(NumberFormatException ex) {
+//                                System.out.println("whoops");
+//                            }
+//                            break;
+//                        default:
+//                            GetCliWindow().addText(Messages.optionNotAvalible);
+//                    }
+//                else if (args.length == 2 && args[1].equals("status"))
+//                    GetCliWindow().addText(Messages.optionStatus());
+//
+//                break;
+//            case "help":
+//                if(args.length > 1) {
+//                    switch (args[1]) {
+//                        case "option":
+//                            GetCliWindow().addText(Messages.optionHelp);
+//                            break;
+//                        default:
+//                            GetCliWindow().addText(Messages.helpPageNotAvalible);
+//                            break;
+//                    }
+//                }
+//                else
+//                    GetCliWindow().addText(Messages.help);
+//                break;
+//            case "title":
+//                GetCliWindow().addText(Messages.title);
+//                break;
+//            case "paused":
+//                GetCliWindow().addText(Messages.paused);
+//                break;
+//            case "numpie":
+//                GetCliWindow().addText("Matematici Discrete - Sebi 2024");
+//                break;
+//            default:
+//                GetCliWindow().addText("Command \"" + prompt + "\" not found");
+//                break;
+//        }
+        String[] args = prompt.split(" ", 2);
+        if(args.length > 1)
+            dict.execute(args[0], args[1]);
+        else
+            dict.execute(args[0], null);
     }
 
     public void GameOver() {

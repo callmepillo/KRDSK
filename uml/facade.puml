@@ -1,0 +1,148 @@
+@startuml
+class GameWindow {
+- JFrame wndFrame
+- String wndTitle
+- int wndWidth
+- int wndHeight
+- Canvas canvas
+- {static} List<FauxWindow> windows
+- CliWindow cliMenu
+- Bar statusBar
+- Player player
+- Level level
+- KeyListener menuControl
+- KeyListener playerControl
+- MouseMotionListener mouseMotionControl
+- MouseListener mousePressedControl
+- int mouseX
+- int mouseY
+- boolean mousePressed
+- boolean stop
+- boolean inLevel
++ {static} boolean gameOver
++ void BuildGameWindow(InputController)
++ int GetWndWidth()
++ int GetWndHeight()
++ Canvas GetCanvas()
++ int GetMouseX()
++ int GetMouseY()
++ boolean GetMousePressed()
++ Player GetPlayer()
++ List<FauxWindow> GetWindows()
++ Bar GetBar()
++ Container GetContent()
++ boolean GetStop()
++ CliWindow GetCliWindow()
++ boolean IsInLevel()
++ void SetMouse(int,int)
++ void SetMousePressed(boolean)
++ void SetStop(boolean)
++ void Stop()
++ void StartLevel(int)
++ void ExitLevel()
++ void EnterRoom(int,int,int)
++ int GetCurrentRoom()
++ void DisplayPauseMenu()
++ void DisplayStartMenu()
++ void HidePauseMenu()
++ void removeAllListeners()
++ void removeRoom(int)
++ void addRoom(int)
++ {static} FauxWindow getRoom(int)
++ void windowFocusLost()
++ void handleWindowCommand(String)
++ void GameOver()
+}
+
+
+class Player {
+- int gravity
+- boolean jump
+- int airSpeed
+- int jumpSpeed
+- int fallSpeedAfterCollision
+- boolean inAir
+# Tile animJump
+- {static} Player instance
++ {static} Player getInstance()
++ void Update(int,int,int[][])
+- void updateXpos(int,int,int,int[][])
++ void resetInAir()
++ void setInAir(boolean)
++ void jump()
++ void Draw(Graphics2D)
++ boolean isJump()
++ void setJump(boolean)
++ void reset(int,int)
++ void updateSprite()
+}
+
+
+class CliWindow {
+- String userInput
+- int stringX
+- int cliWidth
+- int cliHeight
+- int stringY
+- ArrayList<String> history
+- boolean transparent
+- int line
++ void addText(String)
++ String getUserInput()
++ void setUserInput(String)
++ void addHistory()
++ ArrayList<String> getHistory()
++ void clearHistory()
++ void setTransparent(boolean)
++ void Update(int,int,boolean)
++ void Draw(Graphics2D)
+}
+
+
+class InputFacade {
++ boolean optGetWasd()
++ boolean optGetSpace()
++ void playerJump(boolean)
++ void playerLeft(boolean)
++ void playerDown(boolean)
++ void playerRight(boolean)
++ void winDisplayPauseMenu()
++ void barToggleRoom(int)
++ void winSetMouse(int,int)
++ void winSetMousePressed(boolean)
++ void cliBackspace()
++ void cliExecute()
++ void winHidePauseMenu()
++ void cliAddKey(char)
+- void update()
+}
+
+
+class InputController {
+- InputFacade fac
+- int[][] distortX
+- int[][] distortY
++ PlayerControl pControl
++ MouseMotionControls mMControl
++ MousePressedControls mPControl
++ MenuControl kControl
+}
+
+class Bar {
+- List<Cell> cells
+- int posX
+- int posY
+- int space
+- boolean active
++ void SetActive(boolean)
++ void Draw(Graphics2D)
++ boolean isActive(int)
++ void setActive(int,boolean)
++ void clear()
+}
+
+InputFacade ..> Player
+InputFacade ..> GameWindow
+InputFacade ..> Bar
+InputFacade ..> CliWindow
+@enduml

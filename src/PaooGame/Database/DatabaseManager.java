@@ -35,8 +35,36 @@ public class DatabaseManager {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.exit(0);
         }
-        System.out.println("Opened database successfully");
-
         return null;
+    }
+
+    public static void load(String name) {
+        Connection c = null;
+        Statement stmt = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:res/databases/players.db");
+            c.setAutoCommit(false);
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM " + name + ";" );
+            PlayerData.name = name;
+            PlayerData.levelsFinished = new boolean[3];
+            while(rs.next()) {
+                PlayerData.opt.setWASD(rs.getBoolean("wasd"));
+                PlayerData.opt.setSpace(rs.getBoolean("space"));
+                PlayerData.opt.setDebug(rs.getBoolean("debug"));
+                PlayerData.opt.setWinDesc(rs.getBoolean("winDesc"));
+                String rowString = rs.getString("levelsFinished");
+                String[] rowVector = rowString.split(",");
+                for(int j = 0; j < 3; ++j)
+                    PlayerData.levelsFinished[j] = Boolean.parseBoolean(rowVector[j]);
+            }
+            rs.close();
+            stmt.close();
+            c.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
     }
 }

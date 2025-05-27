@@ -32,6 +32,8 @@ public class FauxWindow extends JPanel {
     private boolean isDragged;
     private int levelOffset;
     private static GameWindow win;
+    private int randDelay = 0;
+    private double rand = 0;
 
     public static void setWindowSize(int width, int height) {
         FauxWindow.width = width;
@@ -175,6 +177,12 @@ public class FauxWindow extends JPanel {
             mouseIn = false;
             isDragged = false;
         }
+
+        if(randDelay == 4) {
+            rand = Math.random();
+            randDelay = 0;
+        }
+        randDelay++;
     }
 
     public void Draw(Graphics2D g) {
@@ -183,7 +191,8 @@ public class FauxWindow extends JPanel {
             Stroke orgStroke = g.getStroke();
             g.setColor(Colors.background);
             g.fillRect(posX, posY, width, height);
-            level.Draw(g, posX, posX + width, posY, room, levelOffset);
+            if (!tooFar())
+                level.Draw(g, posX, posX + width, posY, room, levelOffset);
             g.setColor(Colors.term);
             g.setStroke(new java.awt.BasicStroke(3));
             if(playerWindow == this)
@@ -200,6 +209,8 @@ public class FauxWindow extends JPanel {
                 player.Draw(g);
             if (player != null && detectionTimer > 0)
                 drawDetection(g);
+            if (Math.abs(playerWindow.room - this.room) > 3)
+                drawFog(g);
 
             //draw hitbox for doors
 //            for(Door door: level.getDoors())
@@ -215,14 +226,40 @@ public class FauxWindow extends JPanel {
         int offsetY = 0;
 
         if (!GameWindow.gameOver) {
-            offsetX = (int) (Math.random() * 10 - 5);
-            offsetY = (int) (Math.random() * 10 - 5);
+            offsetX = (int) (rand * 10 - 5);
+            offsetY = (int) (rand * 10 - 5);
         }
         g.setColor(new Color(255, 0, 0, detectionTimer));
         g.fillRect(posX + detectionTimer/10 * offsetX, posY + detectionTimer/10 * offsetY, width, height);
 
         g.setStroke(orgStroke);
         g.setColor(orgColor);
+    }
+
+    public void drawFog(Graphics2D g) {
+        Color orgColor = g.getColor();
+        Stroke orgStroke = g.getStroke();
+
+        int offsetX = (int) (rand * 10);
+        int offsetY = (int) (rand * 10);
+        int width = (int) (rand * 10);
+
+
+        g.setColor(new Color(255, 255, 255, 50));
+        g.fillRect(posX, posY, FauxWindow.width, height);
+        g.setColor(new Color(0,0,0, 100));
+        g.fillRect(posX + 100 + offsetX, posY + 100 + offsetY, FauxWindow.width - offsetX - 100, 1 + width);
+        g.fillRect(posX, posY + 300 + offsetY, FauxWindow.width - 200 + offsetX, 1 + width);
+        g.fillRect(posX + offsetX, posY + 200 + offsetY, FauxWindow.width - offsetX, 1 + width);
+        g.fillRect(posX, posY + 400 + offsetY, FauxWindow.width - 200 + offsetX, 1 + width);
+
+
+        g.setStroke(orgStroke);
+        g.setColor(orgColor);
+    }
+
+    public boolean tooFar() {
+        return (Math.abs(playerWindow.room - this.room) > 3);
     }
 
     public int GetRoom() {

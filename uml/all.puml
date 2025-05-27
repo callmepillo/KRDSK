@@ -1,0 +1,745 @@
+@startuml
+class PaooGame.Graphics.SpriteSheet {
+- BufferedImage spriteSheet
+- {static} int tileWidth
+- {static} int tileHeight
++ BufferedImage crop(int,int)
+}
+
+
+class PaooGame.Database.DatabaseManager {
++ {static} int[][][] getLevel(int)
++ {static} void load(String)
+}
+
+class PaooGame.Entity.Entity {
+# Tile entitySprite
+# int posX
+# int posY
+# Rectangle hitbox
+# boolean left
+# int speed
+# boolean moving
+# int moveBuffer
+# int coneWidth
+# Queue<Directions> movementQueue
+# Queue<Integer> timingQueue
+# Tile animIdle
+# Tile[] animMoveRight
+# Tile[] animMoveLeft
+# int animationCounter
++ void updateHitboxPos()
++ boolean isLeft()
++ void setLeft(boolean)
++ boolean isRight()
++ void setRight(boolean)
++ boolean isUp()
++ void setUp(boolean)
++ boolean isDown()
++ void setDown(boolean)
++ void resetDirBooleans()
++ int getX()
++ int getY()
++ void setXY(int,int)
++ void Update(int,int,int[][])
++ void Draw(Graphics2D,int,int)
++ void DrawPartial(Graphics2D,int,int,int,int,int,int,int)
++ Rectangle getRectangle()
++ int getFullWidth()
++ boolean getDirection()
++ void addMove(Directions,int)
++ void updateSprite()
+}
+
+
+class PaooGame.Database.Options {
+- boolean wasd
+- boolean space
+- boolean debug
+- boolean winDesc
++ void setWASD(boolean)
++ void setSpace(boolean)
++ void setDebug(boolean)
++ void setWinDesc(boolean)
++ boolean getWASD()
++ boolean getSpace()
++ String getStatus()
+}
+
+
+class PaooGame.Graphics.Colors {
++ {static} Color term
++ {static} Color background
++ {static} Color term_transp
++ {static} Color background_transp
++ {static} Color activeCell
++ {static} Color yellow
++ {static} Color detection
++ {static} Color detectionOutline
+}
+
+class PaooGame.Entity.CameraFactory {
++ Entity createEntity(int,int)
+}
+
+class PaooGame.GameWindow.FauxWindow {
+- Level level
+# int posX
+# int posY
+- int offsetMX
+- int offsetMY
+# {static} int width
+# {static} int height
+# int room
+- boolean mouseIn
+- Player player
+# boolean visible
+- boolean detected
+- int detectionTimer
+- {static} FauxWindow draggedWindow
+- {static} FauxWindow playerWindow
+- boolean isDragged
+- int levelOffset
+- {static} GameWindow win
+- int randDelay
+- double rand
++ {static} void setWindowSize(int,int)
++ void setLevel(Level)
++ void setVisible(boolean)
++ void enterPlayer(Player,int,int)
++ void leavePlayer()
++ {static} int getPlayerRoom()
++ int getWidth()
++ int getHeight()
++ boolean isDraggable(int,int,boolean)
++ void move(int,int)
++ {static} void setWin(GameWindow)
++ void Update(int,int,boolean)
++ void Draw(Graphics2D)
++ void drawDetection(Graphics2D)
++ void drawFog(Graphics2D)
++ boolean tooFar()
++ int GetRoom()
+}
+
+
+class PaooGame.Tiles.TreeTile {
++ boolean IsSolid()
+}
+
+class PaooGame.Levels.TestLevel {
+}
+class PaooGame.Tiles.SoilTile {
+}
+class PaooGame.Tiles.GrassTile {
+}
+class PaooGame.Graphics.ImageLoader {
++ {static} BufferedImage LoadImage(String)
+}
+
+class PaooGame.Entity.Player {
+- int gravity
+- boolean jump
+- int airSpeed
+- int jumpSpeed
+- int fallSpeedAfterCollision
+- boolean inAir
+# Tile animJump
+- {static} Player instance
++ {static} Player getInstance()
++ void Update(int,int,int[][])
+- void updateXpos(int,int,int,int[][])
++ void resetInAir()
++ void setInAir(boolean)
++ void jump()
++ void Draw(Graphics2D)
++ boolean isJump()
++ void setJump(boolean)
++ void reset(int,int)
++ void updateSprite()
+}
+
+
+class PaooGame.Entity.Guard {
+- Polygon cone
+# Tile entitySprite2
+# Tile animIdleBottom
+# Tile[] animMoveRightBottom
+# Tile[] animMoveLeftBottom
++ void Update(int,int,int[][])
++ void Draw(Graphics2D,int,int)
++ void DrawPartial(Graphics2D,int,int,int,int,int,int,int)
++ void updatePolygon(int,int)
++ int getFullWidth()
++ Polygon getDetectionCone()
++ void updateSprite()
+}
+
+
+abstract class PaooGame.Entity.EntityFactory {
+~ {abstract}Entity createEntity(int,int)
+}
+
+class PaooGame.Graphics.Messages {
++ {static} String title
++ {static} String help
++ {static} String paused
++ {static} String gameOver
++ {static} String lvlNotAvalible
++ {static} String optionNotAvalible
++ {static} String optionHelp
++ {static} String helpPageNotAvalible
++ {static} String option(String,String)
++ {static} String optionStatus()
+}
+
+
+class PaooGame.Levels.LevelOne {
+}
+class PaooGame.Levels.Level {
++ {static} int LEVEL_WIDTH
++ {static} int LEVEL_HEIGHT
++ Door[][] doors
++ Entity[][] entity
++ int[][][] tileMap
+~ {static} CameraFactory cameraFactory
+~ {static} GuardFactory guardFactory
++ void Draw(Graphics2D,int,int,int,int,int)
++ int GetNumberOfRooms()
++ int[][] GetRoomMap(int)
++ int[][][] getTileMap()
++ Door[] getRoomDoors(int)
++ Guard[] getRoomGuards(int)
++ Camera[] getRoomCameras(int)
++ Ambassador getRoomAmbassador(int)
+}
+
+
+class PaooGame.Main {
++ {static} void main(String[])
+}
+
+class PaooGame.Tiles.PlantTile {
+}
+class PaooGame.Game {
+- GameWindow wnd
+- InputController ctr
+- boolean runState
+- boolean pausedState
+- Thread gameThread
+- BufferStrategy bs
+- int[][] distortionMapX
+- int[][] distortionMapY
+- BufferedImage frameBuffer
+- void InitGame()
++ void run()
++ void StartGame()
++ void StopGame()
+- void Update()
+- void Draw()
+- void applyScanlines(BufferedImage)
+- void applyNoise(BufferedImage)
+- int[][] precomputeDistortionMapX(int,int,double)
+- int[][] precomputeDistortionMapY(int,int,double)
++ void applyBarrelDistortion(BufferedImage)
++ void applyBarrelDistortionOpt(BufferedImage)
+}
+
+
+class PaooGame.Tiles.Tile {
+- {static} int NO_TILES
++ {static} Tile[] tiles
++ {static} Tile left_upper_door
++ {static} Tile left_midle_door
++ {static} Tile left_down_door
++ {static} Tile right_upper_door
++ {static} Tile right_midle_door
++ {static} Tile right_down_door
++ {static} Tile thin_half_wall_left_up
++ {static} Tile thin_half_wall_left_middle
++ {static} Tile thin_half_wall_left_down
++ {static} Tile thin_half_wall_right_up
++ {static} Tile thin_half_wall_right_middle
++ {static} Tile thin_half_wall_right_down
++ {static} Tile thick_half_wall_left_up
++ {static} Tile thick_half_wall_left_middle
++ {static} Tile thick_half_wall_left_down
++ {static} Tile thin_window_up
++ {static} Tile thin_window_middle
++ {static} Tile thin_window_down
++ {static} Tile rounded_wall_up
++ {static} Tile rounded_wall_middle
++ {static} Tile rounded_wall_down
++ {static} Tile half_left_window
++ {static} Tile half_right_window
++ {static} Tile arcade_tree_up
++ {static} Tile arcade_tree_down
++ {static} Tile small_window
++ {static} Tile large_desk_left
++ {static} Tile large_desk_middle
++ {static} Tile large_desk_right
++ {static} Tile small_desk
++ {static} Tile one_piece_window_up1
++ {static} Tile one_piece_window_down1
++ {static} Tile one_piece_window_up2
++ {static} Tile one_piece_window_down2
++ {static} Tile noarchway_window_left_up
++ {static} Tile noarchway_window_left_down
++ {static} Tile noarchway_window_right_up
++ {static} Tile noarchway_window_right_down
++ {static} Tile round_tree_up
++ {static} Tile round_tree_down
++ {static} Tile bonzai
++ {static} Tile floor_left
++ {static} Tile floor_middle
++ {static} Tile floor_right
++ {static} Tile small_fence
++ {static} Tile chair1_up
++ {static} Tile chair1_down
++ {static} Tile chair2_up
++ {static} Tile chair2_down
++ {static} Tile box
++ {static} Tile small_table
++ {static} Tile grass_left
++ {static} Tile grass_right
++ {static} Tile big_bush_left
++ {static} Tile big_bush_right
++ {static} Tile dumbell_left
++ {static} Tile dumbell_right
++ {static} Tile big_table_left
++ {static} Tile big_table_right
++ {static} Tile up_line
++ {static} Tile small_bush
++ {static} Tile fence_left
++ {static} Tile fence_right
++ {static} Tile double_obstacle_left
++ {static} Tile double_obstacle_right
++ {static} Tile huge_bush_left_up
++ {static} Tile huge_bush_left_down
++ {static} Tile huge_bush_right_up
++ {static} Tile huge_bush_right_down
++ {static} Tile cut_bush_left_up
++ {static} Tile cut_bush_left_down
++ {static} Tile cut_bush_right_up
++ {static} Tile cut_bush_right_down
++ {static} Tile arcade_left
++ {static} Tile arcade_right
++ {static} Tile double_round_obstacle_left
++ {static} Tile double_round_obstacle_right
++ {static} int TILE_WIDTH
++ {static} int TILE_HEIGHT
+# BufferedImage img
+# int id
+# boolean solid
+# Rectangle hitbox
++ void Update()
++ void Draw(Graphics,int,int)
++ void Draw(Graphics,int,int,int,int)
++ void Draw(Graphics,int,int,int,int,int,int,int,int)
++ boolean IsSolid()
++ Rectangle getHitbox(int,int)
++ int GetId()
++ BufferedImage GetImg()
+}
+
+
+class PaooGame.Entity.Camera {
+- Polygon cone
+- boolean rotDiraction
+- boolean direction
+- int time
+- double degrees
+- int[] coneX
+- int[] coneY
++ void setAnim(boolean,double,int)
++ void Update(int,int,int[][])
++ void Draw(Graphics2D,int,int)
++ void DrawPartial(Graphics2D,int,int,int,int,int,int,int)
++ void updatePolygon(int,int)
++ Polygon getDetectionCone()
++ int getFullWidth()
++ boolean getDirection()
+}
+
+
+class PaooGame.GameWindow.Bar {
+- List<Cell> cells
+- int posX
+- int posY
+- int space
+- boolean active
++ void SetActive(boolean)
++ void Draw(Graphics2D)
++ boolean isActive(int)
++ void setActive(int,boolean)
++ void clear()
+}
+
+
+class PaooGame.GameWindow.Bar$Cell {
+- int posX
+- int size
+- boolean active
+- int number
++ void Draw(Graphics2D)
+}
+
+
+class PaooGame.Input.InputController {
+- InputFacade fac
+- int[][] distortX
+- int[][] distortY
++ PlayerControl pControl
++ MouseMotionControls mMControl
++ MousePressedControls mPControl
++ MenuControl kControl
+}
+
+class PaooGame.Input.InputController$PlayerControl {
++ void keyPressed(KeyEvent)
++ void keyReleased(KeyEvent)
+}
+
+class PaooGame.Input.InputController$MouseMotionControls {
++ void mouseMoved(MouseEvent)
++ void mouseDragged(MouseEvent)
+}
+
+class PaooGame.Input.InputController$MousePressedControls {
++ void mousePressed(MouseEvent)
++ void mouseReleased(MouseEvent)
+}
+
+class PaooGame.Input.InputController$MenuControl {
++ void keyPressed(KeyEvent)
+}
+
+class PaooGame.Entity.GuardFactory {
++ Entity createEntity(int,int)
+}
+
+class PaooGame.GameWindow.GameWindow {
+- JFrame wndFrame
+- String wndTitle
+- int wndWidth
+- int wndHeight
+- Canvas canvas
+- {static} List<FauxWindow> windows
+- CliWindow cliMenu
+- Bar statusBar
+- Player player
+- Level level
+- KeyListener menuControl
+- KeyListener playerControl
+- MouseMotionListener mouseMotionControl
+- MouseListener mousePressedControl
+- int mouseX
+- int mouseY
+- boolean mousePressed
+- boolean stop
+- boolean inLevel
++ {static} boolean gameOver
++ void BuildGameWindow(InputController)
++ int GetWndWidth()
++ int GetWndHeight()
++ Canvas GetCanvas()
++ int GetMouseX()
++ int GetMouseY()
++ boolean GetMousePressed()
++ Player GetPlayer()
++ List<FauxWindow> GetWindows()
++ Bar GetBar()
++ Container GetContent()
++ boolean GetStop()
++ CliWindow GetCliWindow()
++ boolean IsInLevel()
++ void SetMouse(int,int)
++ void SetMousePressed(boolean)
++ void SetStop(boolean)
++ void Stop()
++ void StartLevel(int)
++ void ExitLevel()
++ void EnterRoom(int,int,int)
++ int GetCurrentRoom()
++ void DisplayPauseMenu()
++ void DisplayStartMenu()
++ void HidePauseMenu()
++ void removeAllListeners()
++ void removeRoom(int)
++ void addRoom(int)
++ {static} FauxWindow getRoom(int)
++ void windowFocusLost()
++ void handleWindowCommand(String)
++ void GameOver()
+}
+
+
+class PaooGame.Levels.Door {
+- int origin
+- int destination
+- int x
+- int y
+- int destX
+- int destY
+- int width
+- int height
++ int getX()
++ int getY()
++ void Draw(Graphics,int,int)
++ void Draw(Graphics,int,int,int,int,int,int,int,int)
++ int getDestinationRoom()
++ int getDestX()
++ int getDestY()
++ int getOriginRoom()
++ int getWidth()
++ Rectangle getHitbox(int,int)
++ void drawSimple(Graphics2D,int,int)
++ void drawSimple(Graphics2D,int,int,int,int,int,int,int,int)
+}
+
+
+class PaooGame.Entity.Ambassador {
+# Tile entitySprite2
+# Tile animIdleBottom
+# Tile[] animMoveRightBottom
+# Tile[] animMoveLeftBottom
++ void Update(int,int,int[][])
++ void Draw(Graphics2D,int,int)
++ void DrawPartial(Graphics2D,int,int,int,int,int,int,int)
++ void updateSprite()
+}
+
+
+class PaooGame.Graphics.MyFonts {
++ {static} Font JetBrains
++ {static} Font Anon
++ {static} Font Roboto
++ {static} Font Space
++ {static} Font VT323
++ {static} void Init(float)
+}
+
+
+class PaooGame.Entity.Polygons {
++ {static} int[] guardX
++ {static} int[] guardY
++ {static} int[] cameraX
++ {static} int[] cameraY
++ {static} void rotate(int[],int[],double)
+}
+
+
+class PaooGame.GameWindow.CliWindow {
+- String userInput
+- int stringX
+- int cliWidth
+- int cliHeight
+- int stringY
+- ArrayList<String> history
+- boolean transparent
+- int line
++ void addText(String)
++ String getUserInput()
++ void setUserInput(String)
++ void addHistory()
++ ArrayList<String> getHistory()
++ void clearHistory()
++ void setTransparent(boolean)
++ void Update(int,int,boolean)
++ void Draw(Graphics2D)
+}
+
+
+class PaooGame.Input.InputFacade {
+- GameWindow win
+- CliWindow cli
+- Player player
+- Bar bar
++ boolean optGetWasd()
++ boolean optGetSpace()
++ void playerJump(boolean)
++ void playerLeft(boolean)
++ void playerDown(boolean)
++ void playerRight(boolean)
++ void winDisplayPauseMenu()
++ void barToggleRoom(int)
++ void winSetMouse(int,int)
++ void winSetMousePressed(boolean)
++ void cliBackspace()
++ void cliExecute()
++ void winHidePauseMenu()
++ void cliAddKey(char)
+- void update()
+}
+
+
+enum PaooGame.Entity.Directions {
++  LEFT
++  RIGHT
++  UP
++  DOWN
+}
+
+class PaooGame.GameWindow.CollisionChecker {
++ {static} boolean CanMoveHere(Rectangle,int,int,int,int,int[][])
++ {static} int CheckCloseToBorder(Rectangle,int,int,int)
++ {static} int GetEntityXPosNextToWall(Rectangle,int,int)
++ {static} int GetEntityYPosUnderRoofOrAboveFloor(Rectangle,int,int,int,int[][])
++ {static} boolean IsEntityOnFloor(Rectangle,int,int,int[][])
++ {static} Door CheckDoor(Rectangle,int,int,Door[])
++ {static} boolean CheckPlayerDetected(Rectangle,Guard[],Camera[])
+}
+
+class PaooGame.Database.PlayerData {
++ {static} Options opt
++ {static} String name
++ {static} boolean[] levelsFinished
+}
+
+class PaooGame.Tiles.MountainTile {
++ boolean IsSolid()
+}
+
+class PaooGame.Graphics.Assets {
++ {static} BufferedImage floor_middle
++ {static} BufferedImage player_idle
++ {static} BufferedImage player_jump
++ {static} BufferedImage[] player_move_right
++ {static} BufferedImage[] player_move_left
++ {static} BufferedImage[] guard_move_right_top
++ {static} BufferedImage[] guard_move_right_bottom
++ {static} BufferedImage[] guard_move_left_top
++ {static} BufferedImage[] guard_move_left_bottom
++ {static} BufferedImage amb_idle_top
++ {static} BufferedImage amb_idle_bottom
++ {static} BufferedImage[] amb_salute_right_top
++ {static} BufferedImage[] amb_salute_right_bottom
++ {static} BufferedImage[] amb_salute_left_top
++ {static} BufferedImage[] amb_salute_left_bottom
++ {static} BufferedImage left_upper_door
++ {static} BufferedImage left_midle_door
++ {static} BufferedImage left_down_door
++ {static} BufferedImage right_upper_door
++ {static} BufferedImage right_midle_door
++ {static} BufferedImage right_down_door
++ {static} BufferedImage thin_half_wall_left_up
++ {static} BufferedImage thin_half_wall_left_middle
++ {static} BufferedImage thin_half_wall_left_down
++ {static} BufferedImage thin_half_wall_right_up
++ {static} BufferedImage thin_half_wall_right_middle
++ {static} BufferedImage thin_half_wall_right_down
++ {static} BufferedImage thick_half_wall_left_up
++ {static} BufferedImage thick_half_wall_left_middle
++ {static} BufferedImage thick_half_wall_left_down
++ {static} BufferedImage thin_window_up
++ {static} BufferedImage thin_window_middle
++ {static} BufferedImage thin_window_down
++ {static} BufferedImage rounded_wall_up
++ {static} BufferedImage rounded_wall_middle
++ {static} BufferedImage rounded_wall_down
++ {static} BufferedImage half_left_window
++ {static} BufferedImage half_right_window
++ {static} BufferedImage arcade_tree_up
++ {static} BufferedImage arcade_tree_down
++ {static} BufferedImage small_window
++ {static} BufferedImage large_desk_left
++ {static} BufferedImage large_desk_middle
++ {static} BufferedImage large_desk_right
++ {static} BufferedImage small_desk
++ {static} BufferedImage one_piece_window_up1
++ {static} BufferedImage one_piece_window_down1
++ {static} BufferedImage one_piece_window_up2
++ {static} BufferedImage one_piece_window_down2
++ {static} BufferedImage noarchway_window_left_up
++ {static} BufferedImage noarchway_window_left_down
++ {static} BufferedImage noarchway_window_right_up
++ {static} BufferedImage noarchway_window_right_down
++ {static} BufferedImage round_tree_up
++ {static} BufferedImage round_tree_down
++ {static} BufferedImage bonzai
++ {static} BufferedImage floor_left
++ {static} BufferedImage floor_right
++ {static} BufferedImage small_fence
++ {static} BufferedImage chair1_up
++ {static} BufferedImage chair1_down
++ {static} BufferedImage chair2_up
++ {static} BufferedImage chair2_down
++ {static} BufferedImage box
++ {static} BufferedImage small_table
++ {static} BufferedImage grass_left
++ {static} BufferedImage grass_right
++ {static} BufferedImage big_bush_left
++ {static} BufferedImage big_bush_right
++ {static} BufferedImage dumbell_left
++ {static} BufferedImage dumbell_right
++ {static} BufferedImage big_table_left
++ {static} BufferedImage big_table_right
++ {static} BufferedImage up_line
++ {static} BufferedImage small_bush
++ {static} BufferedImage fence_left
++ {static} BufferedImage fence_right
++ {static} BufferedImage double_obstacle_left
++ {static} BufferedImage double_obstacle_right
++ {static} BufferedImage huge_bush_left_up
++ {static} BufferedImage huge_bush_left_down
++ {static} BufferedImage huge_bush_right_up
++ {static} BufferedImage huge_bush_right_down
++ {static} BufferedImage cut_bush_left_up
++ {static} BufferedImage cut_bush_left_down
++ {static} BufferedImage cut_bush_right_up
++ {static} BufferedImage cut_bush_right_down
++ {static} BufferedImage arcade_left
++ {static} BufferedImage arcade_right
++ {static} BufferedImage double_round_obstacle_left
++ {static} BufferedImage double_round_obstacle_right
++ {static} void Init()
+}
+
+
+class PaooGame.Tiles.WaterTile {
++ boolean IsSolid()
+}
+
+class PaooGame.Levels.LevelTwo {
+}
+enum PaooGame.Entity.EntityType {
++  GUARD
++  CAMERA
+}
+
+class PaooGame.Levels.LevelThree {
+}
+class PaooGame.Tiles.FloorTile {
+}
+
+
+PaooGame.Entity.EntityFactory <|-- PaooGame.Entity.CameraFactory
+PaooGame.GameWindow.JPanel <|-- PaooGame.GameWindow.FauxWindow
+PaooGame.Tiles.Tile <|-- PaooGame.Tiles.TreeTile
+PaooGame.Levels.Level <|-- PaooGame.Levels.TestLevel
+PaooGame.Tiles.Tile <|-- PaooGame.Tiles.SoilTile
+PaooGame.Tiles.Tile <|-- PaooGame.Tiles.GrassTile
+PaooGame.Entity.Entity <|-- PaooGame.Entity.Player
+PaooGame.Entity.Entity <|-- PaooGame.Entity.Guard
+PaooGame.Levels.Level <|-- PaooGame.Levels.LevelOne
+PaooGame.Tiles.Tile <|-- PaooGame.Tiles.PlantTile
+PaooGame.Runnable <|.. PaooGame.Game
+PaooGame.Entity.Entity <|-- PaooGame.Entity.Camera
+PaooGame.GameWindow.Bar +.. PaooGame.GameWindow.Bar$Cell
+PaooGame.Input.InputController +.. PaooGame.Input.InputController$PlayerControl
+PaooGame.Input.KeyAdapter <|-- PaooGame.Input.InputController$PlayerControl
+PaooGame.Input.InputController +.. PaooGame.Input.InputController$MouseMotionControls
+PaooGame.Input.MouseInputAdapter <|-- PaooGame.Input.InputController$MouseMotionControls
+PaooGame.Input.InputController +.. PaooGame.Input.InputController$MousePressedControls
+PaooGame.Input.MouseInputAdapter <|-- PaooGame.Input.InputController$MousePressedControls
+PaooGame.Input.InputController +.. PaooGame.Input.InputController$MenuControl
+PaooGame.Input.KeyAdapter <|-- PaooGame.Input.InputController$MenuControl
+PaooGame.Entity.EntityFactory <|-- PaooGame.Entity.GuardFactory
+PaooGame.Entity.Entity <|-- PaooGame.Entity.Ambassador
+PaooGame.GameWindow.FauxWindow <|-- PaooGame.GameWindow.CliWindow
+PaooGame.Tiles.Tile <|-- PaooGame.Tiles.MountainTile
+PaooGame.Tiles.Tile <|-- PaooGame.Tiles.WaterTile
+PaooGame.Levels.Level <|-- PaooGame.Levels.LevelTwo
+PaooGame.Levels.Level <|-- PaooGame.Levels.LevelThree
+PaooGame.Tiles.Tile <|-- PaooGame.Tiles.FloorTile
+@enduml
