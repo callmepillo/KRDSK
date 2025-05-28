@@ -198,10 +198,14 @@ public class CliDictionary {
                 DatabaseManager.create();
                 if(str != null)
                     win.GetCliWindow().addText(Messages.error);
-                else if (DatabaseManager.playerExists(PlayerData.name))
+                else if (DatabaseManager.playerExists(PlayerData.name)) {
                     DatabaseManager.save();
-                else
+                    win.GetCliWindow().addText("Saved progression and options!");
+                }
+                else {
                     DatabaseManager.addNewPlayer();
+                    win.GetCliWindow().addText("Created a profile and saved progression and options!");
+                }
             }
         };
 
