@@ -48,7 +48,7 @@ public class DatabaseManager {
             c = DriverManager.getConnection("jdbc:sqlite:res/databases/players.db");
             c.setAutoCommit(false);
             stmt = c.createStatement();
-            ResultSet rs = stmt.executeQuery( "SELECT * FROM " + name + ";" );
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM players WHERE name='" + name + "';" );
             PlayerData.name = name;
             PlayerData.levelsFinished = new boolean[3];
             while(rs.next()) {
@@ -56,7 +56,7 @@ public class DatabaseManager {
                 PlayerData.opt.setSpace(rs.getBoolean("space"));
                 PlayerData.opt.setDebug(rs.getBoolean("debug"));
                 PlayerData.opt.setWinDesc(rs.getBoolean("winDesc"));
-                String rowString = rs.getString("levelsFinished");
+                String rowString = rs.getString("lvlFinished");
                 String[] rowVector = rowString.split(",");
                 for(int j = 0; j < 3; ++j)
                     PlayerData.levelsFinished[j] = Boolean.parseBoolean(rowVector[j]);
@@ -76,15 +76,15 @@ public class DatabaseManager {
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:res/databases/players.db");
-            c.setAutoCommit(false);
             stmt = c.createStatement();
             String sql = "UPDATE players SET " +
-                    "wasd = " + PlayerData.opt.getWASD() + ", " +
-                    "space = " + PlayerData.opt.getSpace() + ", " +
-                    "debug = " + PlayerData.opt.getDebug() + ", " +
-                    "winDesc = " + PlayerData.opt.getWinDesc() + ", " +
-                    "lvlFinished = '" + Arrays.toString(PlayerData.levelsFinished) + "', " +
-                    "WHERE name = '" + PlayerData.name + "';";
+                    "wasd = " + (PlayerData.opt.getWASD() ? (1) : (0)) + ", " +
+                    "space = " + (PlayerData.opt.getSpace() ? (1) : (0)) + ", " +
+                    "debug = " + (PlayerData.opt.getDebug() ? (1) : (0)) + ", " +
+                    "winDesc = " + (PlayerData.opt.getWinDesc() ? (1) : (0)) + ", " +
+                    "lvlFinished = '" + Arrays.toString(PlayerData.levelsFinished) + "' " +
+                    "WHERE name='" + PlayerData.name + "';";
+            stmt.executeUpdate(sql);
             stmt.close();
             c.close();
         } catch ( Exception e ) {

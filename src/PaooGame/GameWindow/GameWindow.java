@@ -1,5 +1,6 @@
 package PaooGame.GameWindow;
 
+import PaooGame.Database.DatabaseManager;
 import PaooGame.Database.Options;
 import PaooGame.Database.PlayerData;
 import PaooGame.Entity.Player;
@@ -396,6 +397,7 @@ public class GameWindow
 
     public void Login(String s) {
         System.out.println(s + " logged in.");
+        DatabaseManager.load(s);
         loggedIn = true;
         PlayerData.name = s;
         windows.remove(cliMenu);
