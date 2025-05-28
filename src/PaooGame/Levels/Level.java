@@ -10,10 +10,9 @@ public class Level {
     public static final int LEVEL_WIDTH = 10; //Sizes for the level
     public static final int LEVEL_HEIGHT = 6; //Sizes for the level
     public Door[][] doors;
-//    public Guard[][] guards;
-//    public Camera[][] cameras;
     public Entity[][] entity;
     public int[][][] tileMap;
+    protected int levelId;
     static CameraFactory cameraFactory = new CameraFactory();
     static GuardFactory guardFactory = new GuardFactory();
     //this is a tile map that contains the rooms, the rows and the columns of tiles
@@ -176,5 +175,9 @@ public class Level {
                     return (Ambassador) ent;
         }
         return null;
+    }
+
+    public int getLevelId() {
+        return levelId;
     }
 }

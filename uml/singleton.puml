@@ -1,0 +1,27 @@
+@startuml
+class Player {
+- int gravity
+- boolean jump
+- int airSpeed
+- int jumpSpeed
+- int fallSpeedAfterCollision
+- boolean inAir
+# Tile animJump
+- {static} Player instance
++ {static} Player getInstance()
++ void Update(int,int,int[][])
+- void updateXpos(int,int,int,int[][])
++ void resetInAir()
++ void setInAir(boolean)
++ void jump()
++ void Draw(Graphics2D)
++ boolean isJump()
++ void setJump(boolean)
++ void reset(int,int)
++ void updateSprite()
+}
+
+
+Entity <|-- Player
+Player <-- Player
+@enduml

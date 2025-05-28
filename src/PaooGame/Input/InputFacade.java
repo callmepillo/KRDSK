@@ -1,10 +1,11 @@
 package PaooGame.Input;
 
+import PaooGame.Database.PlayerData;
 import PaooGame.Entity.Player;
 import PaooGame.GameWindow.Bar;
 import PaooGame.GameWindow.CliWindow;
 import PaooGame.GameWindow.GameWindow;
-import PaooGame.GameWindow.Options;
+import PaooGame.Database.Options;
 
 public class InputFacade {
     private GameWindow win;
@@ -20,11 +21,11 @@ public class InputFacade {
     }
 
     public boolean optGetWasd() {
-        return Options.getWASD();
+        return PlayerData.opt.getWASD();
     }
 
     public boolean optGetSpace() {
-        return Options.getSpace();
+        return PlayerData.opt.getSpace();
     }
 
     public void playerJump(boolean state) {

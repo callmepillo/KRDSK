@@ -1,6 +1,7 @@
 package PaooGame.Graphics;
 
-import PaooGame.GameWindow.Options;
+import PaooGame.Database.Options;
+import PaooGame.Database.PlayerData;
 
 public class Messages {
     public static String title = "oooo    oooo ooooooooo.   oooooooooo.    .oooooo..o oooo    oooo \n" +
@@ -46,10 +47,11 @@ public class Messages {
                                         "wasd <true/false> -- set the controls to wasd if true, or to arrow keys if false\n" +
                                         "space <true/false> -- set the jump control to spacebar if true, or to the up equivalent if false\n";
     public static String helpPageNotAvalible = "Sorry, but this help page is not avalible.\n";
+    public static String error = "An error has accoured.\n";
     public static String option(String opt, String val) {
         return "Set the option <" + opt + "> to <" + val + ">\n";
     }
     public static String optionStatus() {
-        return Options.getStatus();
+        return PlayerData.opt.getStatus();
     }
 }
