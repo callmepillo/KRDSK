@@ -1,5 +1,6 @@
 package PaooGame.Levels;
 
+import PaooGame.Entity.Ambassador;
 import PaooGame.Entity.Camera;
 import PaooGame.Entity.Entity;
 import PaooGame.Tiles.Tile;
@@ -118,9 +119,22 @@ public class LevelThree extends Level{
 
                 }
         };
-        this.entity = new Entity[][]{
+        this.entity = new Entity[][] {
+                {}, //0
+                {
+                        guardFactory.createEntity(4 * Tile.TILE_WIDTH, 4 * Tile.TILE_HEIGHT - 1),
+                        cameraFactory.createEntity(9 * Tile.TILE_WIDTH + (3 * Tile.TILE_WIDTH) / 4 - 1, 0),
+                        cameraFactory.createEntity(0, 0)
+                }, // 1
+                {}, // 2
+                {}, // 3
                 {},
-                {guardFactory.createEntity(4 * Tile.TILE_WIDTH, 4 * Tile.TILE_HEIGHT - 1), cameraFactory.createEntity(9 * Tile.TILE_WIDTH + (3 * Tile.TILE_WIDTH) / 4 - 1, 0), cameraFactory.createEntity(0, 0)}
+                {},
+                {},
+
+                {
+                        new Ambassador(1* Tile.TILE_WIDTH, 4 * Tile.TILE_HEIGHT - 1, false)
+                } // 7
         };
 
         //for the camera, because of the constructor and because we may want to make it move faster/with a different

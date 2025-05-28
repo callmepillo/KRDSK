@@ -1,5 +1,6 @@
 package PaooGame.Levels;
 
+import PaooGame.Entity.Ambassador;
 import PaooGame.Entity.Camera;
 import PaooGame.Entity.Entity;
 import PaooGame.Tiles.Tile;
@@ -93,9 +94,20 @@ public class LevelTwo extends Level{
         //relative to the room they are positioned in (so everything is calculated from the left border of the room
         //and the ceiling
         this.entity = new Entity[][] {
-                {},
-                {guardFactory.createEntity(4*Tile.TILE_WIDTH, 4*Tile.TILE_HEIGHT - 1), cameraFactory.createEntity(9*Tile.TILE_WIDTH + (3*Tile.TILE_WIDTH)/4 - 1, 0), cameraFactory.createEntity(0, 0)}
+                {}, //0
+                {
+                        guardFactory.createEntity(4 * Tile.TILE_WIDTH, 4 * Tile.TILE_HEIGHT - 1),
+                        cameraFactory.createEntity(9 * Tile.TILE_WIDTH + (3 * Tile.TILE_WIDTH) / 4 - 1, 0),
+                        cameraFactory.createEntity(0, 0)
+                }, // 1
+                {}, // 2
+                {}, // 3
+                {}, // 4
+                {
+                        new Ambassador(7 * Tile.TILE_WIDTH, 4 * Tile.TILE_HEIGHT - 1, false)
+                } // 5
         };
+
 
         //for the camera, because of the constructor and because we may want to make it move faster/with a different
         //angle we need to adjust these parameters manually using hte setAnim method which takes the director the camera
