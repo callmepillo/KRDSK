@@ -57,9 +57,9 @@ public class DatabaseManager {
                 PlayerData.opt.setDebug(rs.getBoolean("debug"));
                 PlayerData.opt.setWinDesc(rs.getBoolean("winDesc"));
                 String rowString = rs.getString("lvlFinished");
-                String[] rowVector = rowString.split(",");
+                String[] rowVector = rowString.split(", ");
                 for(int j = 0; j < 3; ++j)
-                    PlayerData.levelsFinished[j] = Boolean.parseBoolean(rowVector[j]);
+                    PlayerData.levelsFinished[j] = Boolean.parseBoolean(rowVector[j].replace("[","").replace("]",""));
             }
             rs.close();
             stmt.close();

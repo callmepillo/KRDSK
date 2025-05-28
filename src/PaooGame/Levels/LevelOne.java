@@ -53,6 +53,7 @@ public class LevelOne extends Level{
 //
 //        };
         this.tileMap = DatabaseManager.getLevel(1);
+        this.levelId = 0;
 
         //here we create the doors using the Door constructor which uses the following parameters, in order:
         //org - the room where the door is placed

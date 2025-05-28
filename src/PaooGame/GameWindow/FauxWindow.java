@@ -116,7 +116,7 @@ public class FauxWindow extends JPanel {
                 cam.Update(posX - levelOffset, posY, level.GetRoomMap(room));
         if(amb != null && playerWindow == this) {
             amb.Update(posX - levelOffset, posY, level.GetRoomMap(room));
-            GameWindow.gameOver = true;
+            GameWindow.gameWon = true;
         }
 
         if(playerWindow == this && visible) {

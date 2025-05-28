@@ -89,5 +89,6 @@ public class LevelThree extends Level{
 //
 //        };
         this.tileMap = DatabaseManager.getLevel(3);
+        this.levelId = 2;
     }
 }

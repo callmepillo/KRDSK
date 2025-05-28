@@ -118,6 +118,9 @@ public class Game implements Runnable {
 
         if(GameWindow.gameOver)
             wnd.GameOver();
+
+        if(GameWindow.gameWon)
+            wnd.EndLevel();
     }
 
     private void Draw() {

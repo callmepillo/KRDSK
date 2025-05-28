@@ -70,5 +70,6 @@ public class LevelTwo extends Level{
 //
 //        };
         this.tileMap = DatabaseManager.getLevel(2);
+        this.levelId = 1;
     }
 }

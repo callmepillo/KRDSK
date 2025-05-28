@@ -45,6 +45,7 @@ public class GameWindow
     private boolean inLevel;
     public static boolean gameOver;
     public static boolean loggedIn;
+    public static boolean gameWon;
 
     public GameWindow(String title, int width, int height){
         wndTitle    = title;    /*!< Retine titlul ferestrei.*/
@@ -166,6 +167,8 @@ public class GameWindow
                 return;
         }
         inLevel = true;
+        gameWon = false;
+        gameOver = false;
         removeAllListeners();
         windows.remove(cliMenu);
         statusBar = new Bar(50, wndHeight - 150, 100, 50, level.GetNumberOfRooms());
@@ -189,6 +192,7 @@ public class GameWindow
         cliMenu.setTransparent(false);
         cliMenu.clearHistory();
         gameOver = false;
+        gameWon = false;
         windows.clear();
         removeAllListeners();
         DisplayStartMenu();
@@ -391,6 +395,18 @@ public class GameWindow
             cliMenu.clearHistory();
             cliMenu.addText(Messages.gameOver);
 
+            removeAllListeners();
+            canvas.addKeyListener(menuControl);}
+    }
+
+    public void EndLevel() {
+        if(!windows.contains(cliMenu) && inLevel) {
+            cliMenu.setTransparent(true);
+            windows.add(cliMenu);
+            cliMenu.clearHistory();
+            cliMenu.addText("you won.");
+            PlayerData.levelsFinished[level.getLevelId()] = true;
+            System.out.println(level.getLevelId());
             removeAllListeners();
             canvas.addKeyListener(menuControl);}
     }

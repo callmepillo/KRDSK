@@ -12,6 +12,7 @@ public class Level {
     public Door[][] doors;
     public Entity[][] entity;
     public int[][][] tileMap;
+    protected int levelId;
     static CameraFactory cameraFactory = new CameraFactory();
     static GuardFactory guardFactory = new GuardFactory();
     //this is a tile map that contains the rooms, the rows and the columns of tiles
@@ -174,5 +175,9 @@ public class Level {
                     return (Ambassador) ent;
         }
         return null;
+    }
+
+    public int getLevelId() {
+        return levelId;
     }
 }
