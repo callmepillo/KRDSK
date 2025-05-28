@@ -108,7 +108,13 @@ public class LevelThree extends Level{
                         new Door(2, 3, 10 * Tile.TILE_WIDTH - 10, 3 * Tile.TILE_HEIGHT, 10, 1 * Tile.TILE_HEIGHT, 10, Tile.TILE_HEIGHT)},
                 {new Door(3, 2, 0, 1 * Tile.TILE_HEIGHT, 6 * Tile.TILE_WIDTH - 10, 5 * Tile.TILE_HEIGHT, 10, Tile.TILE_HEIGHT),
                         new Door(3, 4, 10 * Tile.TILE_WIDTH - 10, 5 * Tile.TILE_HEIGHT, 10, 4 * Tile.TILE_HEIGHT, 10, Tile.TILE_HEIGHT)},
-                {new Door(4, 3, 0, 4 * Tile.TILE_HEIGHT, 6 * Tile.TILE_WIDTH - 10, 1 * Tile.TILE_HEIGHT, 10, Tile.TILE_HEIGHT)
+                {new Door(4, 3, 0, 4 * Tile.TILE_HEIGHT, 6 * Tile.TILE_WIDTH - 10, 1 * Tile.TILE_HEIGHT, 10, Tile.TILE_HEIGHT),
+                        new Door(4,5, 10*Tile.TILE_WIDTH-10, 4*Tile.TILE_HEIGHT, 10, 2* Tile.TILE_HEIGHT, 10, Tile.TILE_HEIGHT)},
+                {new Door(5,4, 0, 4 * Tile.TILE_HEIGHT, 6 * Tile.TILE_WIDTH - 10, 1 * Tile.TILE_HEIGHT, 10, Tile.TILE_HEIGHT),
+                        new Door(5,6, 10*Tile.TILE_WIDTH-10, 4*Tile.TILE_HEIGHT, 10, 2* Tile.TILE_HEIGHT, 10, Tile.TILE_HEIGHT)},
+                {new Door(6,5, 0, 4 * Tile.TILE_HEIGHT, 6 * Tile.TILE_WIDTH - 10, 1 * Tile.TILE_HEIGHT, 10, Tile.TILE_HEIGHT),
+                        new Door(6,7, 10*Tile.TILE_WIDTH-10, 4*Tile.TILE_HEIGHT, 10, 2* Tile.TILE_HEIGHT, 10, Tile.TILE_HEIGHT)},
+                {new Door(7,6, 0, 4 * Tile.TILE_HEIGHT, 6 * Tile.TILE_WIDTH - 10, 1 * Tile.TILE_HEIGHT, 10, Tile.TILE_HEIGHT)
 
                 }
         };
