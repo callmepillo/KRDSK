@@ -1,5 +1,6 @@
 package PaooGame.Levels;
 import PaooGame.Database.DatabaseManager;
+import PaooGame.Entity.Ambassador;
 import PaooGame.Entity.Camera;
 import PaooGame.Entity.Entity;
 import PaooGame.Tiles.Tile;

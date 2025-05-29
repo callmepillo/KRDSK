@@ -148,6 +148,8 @@ public class Player extends Entity {
         this.inAir = true; // Assuming player falls from air at spawn
         this.jump = false;
         this.moving = false;
+        this.left = false;
+        this.right = false;
         updateHitboxPos();
     }
 

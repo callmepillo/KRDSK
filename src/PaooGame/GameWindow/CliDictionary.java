@@ -33,6 +33,11 @@ public class CliDictionary {
             @Override
             public void execute(Object item) {
                 String str = (String) item;
+                if (GameWindow.gameOver || GameWindow.gameWon) {
+                    win.GetCliWindow().addText("You need to exit first.");
+                    return;
+                }
+
                 if (str != null)
                     try {
                         win.StartLevel(Integer.parseInt(str));
