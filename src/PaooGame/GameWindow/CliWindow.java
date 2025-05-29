@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import PaooGame.Database.PlayerData;
 import PaooGame.Graphics.Colors;
 
 public class CliWindow extends FauxWindow {
@@ -34,14 +35,23 @@ public class CliWindow extends FauxWindow {
             history.add(line);
     }
 
+    public int getStringX() { return stringX; }
+    public void setStringX(int val) { stringX = val; }
+    public void setOffsetLines(int val) {
+        while(val != 0) {
+            history.add("");
+            val--;
+        }
+    }
+
     public String getUserInput() {
         if(!Objects.equals(userInput, ""))
-            return userInput.substring(1);
+            return userInput.replace("<" + PlayerData.name + "> ", "");
         else return "";
     }
 
     public void setUserInput(String src) {
-        userInput = ">" + src;
+        userInput = "<" + PlayerData.name + "> " + src;
     }
 
     public void addHistory() {
@@ -88,7 +98,7 @@ public class CliWindow extends FauxWindow {
             line+=1;
         }
         if(Objects.equals(userInput, ""))
-            g.drawString( ">_", stringX, line*30);
+            g.drawString( "<" + PlayerData.name + "> _", stringX, line*30);
         else
             g.drawString(userInput + "_", stringX, line*30);
         g.setStroke(orgStroke);

@@ -1,78 +1,14 @@
 package PaooGame.Levels;
-
-import PaooGame.Entity.Ambassador;
+import PaooGame.Database.DatabaseManager;
 import PaooGame.Entity.Camera;
 import PaooGame.Entity.Entity;
 import PaooGame.Tiles.Tile;
 
 public class LevelTwo extends Level{
     public LevelTwo() {
-        this.tileMap = new int[][][] {
-                //camera 0
-                {
-                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 0, 65, 65, 65, 0, 0, 0, 0, 0},
-                        {65, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 61, 0, 61, 0, 0, 65, 65, 0, 0},
-                        {65, 62, 65, 62, 73, 74, 65, 65, 0, 65},
-                },
-
-                //camera 1
-
-                {
-                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 0, 65, 0, 0, 0, 0, 0, 0, 0},
-                        {65, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 65},
-                        {0, 65, 0, 0, 0, 0, 0, 0, 65, 65},
-                        {65, 65, 71, 72, 0, 0, 0, 0, 79, 80},
-
-                },
-                //camera 2 Level 2
-                {
-                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 0, 0, 0, 0, 0, 0, 0, 65, 0},
-                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 0, 61, 0, 0, 0, 0, 0, 0, 65},
-                        {0, 0, 62, 0, 79, 80, 65, 0, 65, 65},
-
-
-
-                },
-                //camera 3 Level 2
-
-                {
-                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {65, 0, 65, 65, 0, 0, 0, 0, 0, 0},
-                        {65, 0, 65, 65, 65, 65, 0, 0, 0, 0},
-                        {0, 0, 65, 65, 65, 65, 65, 0, 54, 0},
-                        {0, 0, 65, 65, 65, 65, 65, 65, 55, 0},
-                },
-                //camera 4
-                {
-                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 65},
-                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 65},
-                        {0, 0, 0, 0, 65, 0, 65, 0, 0, 65},
-                        {42, 43, 44, 65, 65, 76, 65, 0, 0, 65},
-                },
-                //camera 5 - fianala
-                {
-                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 0, 61, 0, 0, 0, 61, 0, 0, 0},
-                        {0, 0, 62, 42, 43, 44, 62, 0, 0, 0},
-                }
-
-
-        };
-        this.doors = new Door[][] {
+        this.tileMap = DatabaseManager.getLevel(2);
+        this.levelId = 1;
+      this.doors = new Door[][] {
                 {new Door(0, 1, 10* Tile.TILE_WIDTH - 10, 2*Tile.TILE_HEIGHT, 10, 2*Tile.TILE_HEIGHT, 10, Tile.TILE_HEIGHT)},
                 {new Door(1, 0, 0, 4*Tile.TILE_HEIGHT, 7*Tile.TILE_WIDTH - 10, 4*Tile.TILE_HEIGHT, 10, Tile.TILE_HEIGHT),
                         new Door(1, 2, 10*Tile.TILE_WIDTH - 10, 2*Tile.TILE_HEIGHT, 10, 2*Tile.TILE_HEIGHT, 10, Tile.TILE_HEIGHT)},
