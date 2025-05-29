@@ -54,5 +54,7 @@ public class LevelOne extends Level{
         //notice that we need to reference the camera directly from the entity vector and cast it to a camera object
         ((Camera) entity[1][1]).setAnim(true, 45, 100);
         ((Camera) entity[1][2]).setAnim(false, -45, 100);
+       // ((Camera) entity[2][2]).setAnim(true, 45, 100);
+        //((Camera) entity[2][3]).setAnim(false, -45, 100);
     }
 }

@@ -40,10 +40,12 @@ public class LevelTwo extends Level{
                         cameraFactory.createEntity(9 * Tile.TILE_WIDTH + (3 * Tile.TILE_WIDTH) / 4 - 1, 0),
                         cameraFactory.createEntity(0, 0)},
 
-                {       guardFactory.createEntity(4 * Tile.TILE_WIDTH, 4 * Tile.TILE_HEIGHT - 1),
-                        cameraFactory.createEntity(9 * Tile.TILE_WIDTH + (3 * Tile.TILE_WIDTH) / 4 - 1, 0),
-                        cameraFactory.createEntity(0, 0)}, // 3
-                {},
+                {       //guardFactory.createEntity(4 * Tile.TILE_WIDTH, 4 * Tile.TILE_HEIGHT - 1),
+                       cameraFactory.createEntity(9 * Tile.TILE_WIDTH + (3 * Tile.TILE_WIDTH) / 4 - 1, 0),
+                        cameraFactory.createEntity(0, 0)
+                        }, // 3
+                {cameraFactory.createEntity(9 * Tile.TILE_WIDTH + (3 * Tile.TILE_WIDTH) / 4 - 1, 0),
+                        cameraFactory.createEntity(0, 0)},
                 {
                         new Ambassador(7 * Tile.TILE_WIDTH, 4 * Tile.TILE_HEIGHT - 1, false)
                 }
@@ -56,6 +58,13 @@ public class LevelTwo extends Level{
         //notice that we need to reference the camera directly from the entity vector and cast it to a camera object
         ((Camera) entity[1][1]).setAnim(true, 45, 100);
         ((Camera) entity[1][2]).setAnim(false, -45, 100);
+        ((Camera) entity[2][1]).setAnim(true, 45, 100);
+        ((Camera) entity[2][2]).setAnim(false, -45, 100);
+        ((Camera) entity[3][0]).setAnim(true, 45, 100);
+        ((Camera) entity[3][1]).setAnim(false, -45, 100);
+        ((Camera) entity[4][0]).setAnim(true, 45, 100);
+        ((Camera) entity[4][1]).setAnim(false, -45, 100);
+
 
     }
 }
