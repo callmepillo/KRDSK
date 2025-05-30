@@ -40,7 +40,13 @@ public class CliDictionary {
 
                 if (str != null)
                     try {
-                        win.StartLevel(Integer.parseInt(str));
+                        int level = Integer.parseInt(str);
+                        if(level > 1 && level < 4 && PlayerData.levelsFinished[level-2]) //here 3 should be replaced with level number
+                            win.StartLevel(level);
+                        else if(level == 1)
+                            win.StartLevel(1);
+                        else
+                            win.GetCliWindow().addText("You need to finish level " + (level - 1) + " first.");
                         return;
                     }
                     catch(NumberFormatException ex) {
