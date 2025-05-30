@@ -65,12 +65,20 @@ public class Bar {
         }
     }
 
+    public boolean isValid(int digit) {
+        if (digit < cells.size() && cells.get(digit) != null)
+            return true;
+        else
+            return false;
+    }
+
     public boolean isActive(int number) {
         return cells.get(number).active;
     }
 
     public void setActive(int cell, boolean state) {
-        cells.get(cell).active = state;
+        if (cell < cells.size())
+            cells.get(cell).active = state;
     }
 
     public void clear() {

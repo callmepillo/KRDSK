@@ -54,7 +54,7 @@ public class InputFacade {
 
     public void barToggleRoom(int digit) {
         update();
-        if (bar.isActive(digit)) {
+        if (bar.isValid(digit) && bar.isActive(digit)) {
             win.removeRoom(digit);
             bar.setActive(digit, false);
         }
