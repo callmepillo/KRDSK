@@ -13,7 +13,8 @@ public class Messages {
                                  "o888o  o888o o888o  o888o o888bood8P'   8\"\"88888P'  o888o  o888o \n\n" +
                                  "-----------Kronell-Rapid-Drone-Scouter-and-Keyfinder-------------\n" +
                                  "----------------------------v3.4.4-------------------------------\n" +
-                                 "------------------------------TUI--------------------------------\n";
+                                 "------------------------------TUI--------------------------------\n" +
+                                 "<TYPE 'help' FOR COMMANDS AND ARGUMENTS>\n";
     public static String help = "play <x>   -- play the 'x' level\n" +
                                 "title      -- display the title\n" +
                                 "help       -- display the avalible commands\n" +
