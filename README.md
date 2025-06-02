@@ -1,3 +1,3 @@
 KRDSK
 
-Proiect PAOO realizat de Iliescu Matei si Ignat Ionut-Sebastian
+A game I made with a collegue for Uni.
